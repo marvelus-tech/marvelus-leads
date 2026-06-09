@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Marvelus Leads | Mission Control</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -29,8 +30,8 @@
             --gradient-start: #00d4ff;
             --gradient-end: #7b2ff7;
             --font-display: 'Space Grotesk', sans-serif;
-            --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -45,6 +46,7 @@
             overflow-x: hidden;
         }
 
+        /* Atmospheric background */
         body::before {
             content: '';
             position: fixed;
@@ -62,6 +64,17 @@
             50% { transform: scale(1.1); opacity: 0.8; }
         }
 
+        /* Noise texture overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header */
         .header {
             position: sticky;
             top: 0;
@@ -90,6 +103,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: var(--font-display);
             font-weight: 800;
             font-size: 18px;
             color: white;
@@ -121,6 +135,7 @@
             letter-spacing: 2px;
         }
 
+        /* Stats bar */
         .stats-bar {
             display: flex;
             gap: 20px;
@@ -170,6 +185,7 @@
             letter-spacing: 1px;
         }
 
+        /* Filters */
         .filters {
             padding: 20px 24px;
             border-bottom: 1px solid var(--border);
@@ -203,6 +219,7 @@
             font-family: var(--font-body);
             position: relative;
             overflow: hidden;
+            min-height: 48px;
         }
 
         .filter-btn::before {
@@ -230,6 +247,7 @@
             box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
         }
 
+        /* Main */
         .main {
             max-width: 900px;
             margin: 0 auto;
@@ -257,6 +275,7 @@
             background: linear-gradient(90deg, var(--border), transparent);
         }
 
+        /* Lead Cards */
         .lead-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -323,6 +342,7 @@
             align-items: center;
         }
 
+        /* Badges */
         .badge {
             display: inline-flex;
             align-items: center;
@@ -385,6 +405,7 @@
             border: 1px solid var(--border);
         }
 
+        /* Score Ring */
         .score-ring {
             width: 52px;
             height: 52px;
@@ -431,6 +452,14 @@
             z-index: 1;
         }
 
+        .score-high { animation: glowPulse 2s ease-in-out infinite; }
+
+        @keyframes glowPulse {
+            0%, 100% { text-shadow: 0 0 20px var(--accent-glow); }
+            50% { text-shadow: 0 0 40px var(--accent-glow), 0 0 60px rgba(0, 212, 255, 0.2); }
+        }
+
+        /* Card Body */
         .card-body {
             max-height: 0;
             overflow: hidden;
@@ -489,6 +518,7 @@
             padding-left: 4px;
         }
 
+        /* Action Items */
         .action-items {
             display: flex;
             flex-direction: column;
@@ -504,6 +534,8 @@
             border-radius: 12px;
             border: 1px solid var(--border);
             transition: all 0.3s ease;
+            cursor: pointer;
+            min-height: 48px;
         }
 
         .action-item:hover {
@@ -549,6 +581,12 @@
 
         .action-item:hover .action-text { color: var(--text-primary); }
 
+        .action-item.completed .action-text {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        /* Source Link */
         .source-link {
             display: inline-flex;
             align-items: center;
@@ -571,6 +609,7 @@
             transform: translateY(-1px);
         }
 
+        /* Expand Icon */
         .expand-icon {
             width: 28px;
             height: 28px;
@@ -586,6 +625,7 @@
 
         .expand-icon.rotated { transform: rotate(180deg); }
 
+        /* Footer */
         .footer {
             text-align: center;
             padding: 48px 24px;
@@ -597,11 +637,13 @@
             z-index: 1;
         }
 
+        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-primary); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
 
+        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -612,6 +654,16 @@
             to { opacity: 1; transform: translateX(0); }
         }
 
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
         .lead-card {
             animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0;
@@ -620,6 +672,8 @@
         .lead-card:nth-child(1) { animation-delay: 0.1s; }
         .lead-card:nth-child(2) { animation-delay: 0.2s; }
         .lead-card:nth-child(3) { animation-delay: 0.3s; }
+        .lead-card:nth-child(4) { animation-delay: 0.4s; }
+        .lead-card:nth-child(5) { animation-delay: 0.5s; }
 
         .stat {
             animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -631,20 +685,71 @@
         .stat:nth-child(3) { animation-delay: 0.3s; }
         .stat:nth-child(4) { animation-delay: 0.4s; }
 
-        @media (max-width: 640px) {
+        .filter-btn {
+            animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .filter-btn:nth-child(1) { animation-delay: 0.05s; }
+        .filter-btn:nth-child(2) { animation-delay: 0.1s; }
+        .filter-btn:nth-child(3) { animation-delay: 0.15s; }
+        .filter-btn:nth-child(4) { animation-delay: 0.2s; }
+        .filter-btn:nth-child(5) { animation-delay: 0.25s; }
+        .filter-btn:nth-child(6) { animation-delay: 0.3s; }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
             .header { padding: 16px 20px; }
             .main { padding: 20px; }
             .card-header { padding: 20px; }
             .card-title { font-size: 18px; }
             .score-ring { width: 44px; height: 44px; font-size: 15px; }
             .stat-value { font-size: 20px; }
+            .filter-btn { padding: 8px 16px; font-size: 12px; }
+            .card-body.expanded { padding: 0 20px 20px; }
+            .action-item { padding: 12px; }
         }
 
-        .score-high { animation: glowPulse 2s ease-in-out infinite; }
+        @media (max-width: 480px) {
+            .logo-text { font-size: 18px; }
+            .card-title { font-size: 16px; }
+            .card-meta { gap: 6px; }
+            .badge { padding: 4px 8px; font-size: 10px; }
+            .score-ring { width: 40px; height: 40px; font-size: 14px; }
+            .stat-value { font-size: 18px; }
+        }
 
-        @keyframes glowPulse {
-            0%, 100% { text-shadow: 0 0 20px var(--accent-glow); }
-            50% { text-shadow: 0 0 40px var(--accent-glow), 0 0 60px rgba(0, 212, 255, 0.2); }
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state-title {
+            font-family: var(--font-display);
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .empty-state-text {
+            font-size: 14px;
         }
     </style>
 </head>
@@ -744,19 +849,19 @@
                     <div class="card-section">
                         <div class="card-section-title">Action Items</div>
                         <div class="action-items">
-                            <div class="action-item">
+                            <div class="action-item" onclick="toggleAction(this)">
                                 <div class="action-checkbox"></div>
                                 <div class="action-text">Call John within 24 hours</div>
                             </div>
-                            <div class="action-item">
+                            <div class="action-item" onclick="toggleAction(this)">
                                 <div class="action-checkbox"></div>
                                 <div class="action-text">Prepare demo for plumbing vertical</div>
                             </div>
-                            <div class="action-item">
+                            <div class="action-item" onclick="toggleAction(this)">
                                 <div class="action-checkbox"></div>
                                 <div class="action-text">Send pricing proposal</div>
                             </div>
-                            <div class="action-item">
+                            <div class="action-item" onclick="toggleAction(this)">
                                 <div class="action-checkbox"></div>
                                 <div class="action-text">Schedule follow-up for next week</div>
                             </div>
@@ -815,15 +920,15 @@
                     <div class="card-section">
                         <div class="card-section-title">Action Items</div>
                         <div class="action-items">
-                            <div class="action-item">
+                            <div class="action-item" onclick="toggleAction(this)">
                                 <div class="action-checkbox"></div>
                                 <div class="action-text">Send portfolio of similar projects</div>
                             </div>
-                            <div class="action-item">
+                            <div class="action-item" onclick="toggleAction(this)">
                                 <div class="action-checkbox"></div>
                                 <div class="action-text">Schedule discovery call</div>
                             </div>
-                            <div class="action-item">
+                            <div class="action-item" onclick="toggleAction(this)">
                                 <div class="action-checkbox"></div>
                                 <div class="action-text">Prepare custom proposal</div>
                             </div>
@@ -882,15 +987,15 @@
                     <div class="card-section">
                         <div class="card-section-title">Action Items</div>
                         <div class="action-items">
-                            <div class="action-item">
+                            <div class="action-item" onclick="toggleAction(this)">
                                 <div class="action-checkbox"></div>
                                 <div class="action-text">Prepare contract for signature</div>
                             </div>
-                            <div class="action-item">
+                            <div class="action-item" onclick="toggleAction(this)">
                                 <div class="action-checkbox"></div>
                                 <div class="action-text">Schedule onboarding call</div>
                             </div>
-                            <div class="action-item">
+                            <div class="action-item" onclick="toggleAction(this)">
                                 <div class="action-checkbox"></div>
                                 <div class="action-text">Set up ServiceM8 integration</div>
                             </div>
@@ -914,6 +1019,12 @@
             
             body.classList.toggle('expanded');
             icon.classList.toggle('rotated');
+        }
+
+        function toggleAction(item) {
+            const checkbox = item.querySelector('.action-checkbox');
+            checkbox.classList.toggle('checked');
+            item.classList.toggle('completed');
         }
 
         const filterBtns = document.querySelectorAll('.filter-btn');
@@ -954,13 +1065,6 @@
             document.getElementById('qualified-count').textContent = qualified;
             document.getElementById('avg-score').textContent = avgScore;
         }
-
-        document.querySelectorAll('.action-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('click', function(e) {
-                e.stopPropagation();
-                this.classList.toggle('checked');
-            });
-        });
 
         updateStats();
     </script>
