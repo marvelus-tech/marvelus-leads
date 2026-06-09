@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Marvelus Leads | Mission Control</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #050508;
@@ -28,7 +28,8 @@
             --danger-dim: rgba(255, 68, 68, 0.15);
             --gradient-start: #00d4ff;
             --gradient-end: #7b2ff7;
-            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
         }
 
@@ -102,6 +103,7 @@
         }
 
         .logo-text {
+            font-family: var(--font-display);
             font-size: 22px;
             font-weight: 700;
             letter-spacing: -0.5px;
@@ -255,67 +257,147 @@
             background: linear-gradient(90deg, var(--border), transparent);
         }
 
-        .table-container {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 16px;
-            border: 1px solid var(--border);
+        .lead-card {
             background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
         }
 
-        .table-container::-webkit-scrollbar { height: 6px; }
-        .table-container::-webkit-scrollbar-track { background: var(--bg-primary); }
-        .table-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 700px;
+        .lead-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        th {
-            padding: 16px;
-            text-align: left;
+        .lead-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 212, 255, 0.1);
+        }
+
+        .lead-card:hover::before { opacity: 0.5; }
+
+        .card-header {
+            padding: 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .card-header-left { flex: 1; min-width: 0; }
+
+        .lead-source {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--accent);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            line-height: 1.3;
+            letter-spacing: -0.3px;
+        }
+
+        .card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 8px;
             font-size: 11px;
             font-weight: 600;
-            color: var(--text-muted);
+            font-family: var(--font-mono);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border-bottom: 1px solid var(--border);
-            cursor: pointer;
+            letter-spacing: 0.5px;
             transition: all 0.3s ease;
-            white-space: nowrap;
         }
 
-        th:hover {
+        .badge-category {
+            background: var(--accent-dim);
             color: var(--accent);
-            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
         }
 
-        td {
-            padding: 16px;
-            border-bottom: 1px solid var(--border);
-            font-size: 14px;
+        .badge-status-new {
+            background: var(--success-dim);
+            color: var(--success);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .badge-status-contacted {
+            background: var(--warning-dim);
+            color: var(--warning);
+            border: 1px solid rgba(255, 170, 0, 0.2);
+        }
+
+        .badge-status-qualified {
+            background: var(--accent-dim);
+            color: var(--accent);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .badge-status-closed {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .badge-priority-high {
+            background: var(--danger-dim);
+            color: var(--danger);
+            border: 1px solid rgba(255, 68, 68, 0.2);
+        }
+
+        .badge-priority-medium {
+            background: var(--warning-dim);
+            color: var(--warning);
+            border: 1px solid rgba(255, 170, 0, 0.2);
+        }
+
+        .badge-priority-low {
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-secondary);
-            transition: all 0.3s ease;
-        }
-
-        tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
-            color: var(--text-primary);
+            border: 1px solid var(--border);
         }
 
         .score-ring {
-            width: 40px;
-            height: 40px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: var(--font-mono);
-            font-size: 14px;
+            font-size: 18px;
             font-weight: 700;
+            flex-shrink: 0;
             position: relative;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .score-ring::before {
@@ -323,12 +405,18 @@
             position: absolute;
             inset: 0;
             border-radius: 50%;
-            padding: 2px;
+            padding: 3px;
             background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .score-value {
@@ -343,54 +431,147 @@
             z-index: 1;
         }
 
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            font-family: var(--font-mono);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .card-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), padding 0.5s ease;
         }
 
-        .badge-new {
-            background: var(--accent-dim);
+        .card-body.expanded {
+            max-height: 2000px;
+            padding: 0 24px 24px;
+        }
+
+        .card-section { margin-bottom: 24px; }
+
+        .card-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .card-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .card-list li:last-child { border-bottom: none; }
+
+        .card-list li::before {
+            content: '›';
             color: var(--accent);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .card-list li:hover {
+            color: var(--text-primary);
+            padding-left: 4px;
+        }
+
+        .action-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .action-item:hover {
+            border-color: var(--border-hover);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .action-checkbox {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            border: 2px solid var(--border-hover);
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-checkbox:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .action-checkbox.checked {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .action-checkbox.checked::after {
+            content: '✓';
+            color: var(--bg-primary);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .action-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .action-item:hover .action-text { color: var(--text-primary); }
+
+        .source-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: var(--accent-dim);
             border: 1px solid rgba(0, 212, 255, 0.2);
         }
 
-        .badge-contacted {
-            background: var(--warning-dim);
-            color: var(--warning);
-            border: 1px solid rgba(255, 170, 0, 0.2);
+        .source-link:hover {
+            background: rgba(0, 212, 255, 0.25);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+            transform: translateY(-1px);
         }
 
-        .badge-qualified {
-            background: var(--success-dim);
-            color: var(--success);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-        }
-
-        .badge-closed {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-        }
-
-        .feature-missing {
-            color: var(--danger);
-            font-weight: 600;
-        }
-
-        .feature-present {
-            color: var(--success);
-            font-weight: 600;
-        }
-
-        .expand-btn {
+        .expand-icon {
             width: 28px;
             height: 28px;
             display: flex;
@@ -401,47 +582,9 @@
             flex-shrink: 0;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.05);
-            cursor: pointer;
         }
 
-        .expand-btn.rotated { transform: rotate(180deg); }
-
-        .detail-row {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .detail-row.expanded {
-            max-height: 500px;
-        }
-
-        .detail-content {
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .add-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            border-radius: 12px;
-            border: 1px solid var(--accent);
-            background: var(--accent-dim);
-            color: var(--accent);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-        }
-
-        .add-btn:hover {
-            background: rgba(0, 212, 255, 0.25);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
-            transform: translateY(-2px);
-        }
+        .expand-icon.rotated { transform: rotate(180deg); }
 
         .footer {
             text-align: center;
@@ -469,14 +612,14 @@
             to { opacity: 1; transform: translateX(0); }
         }
 
-        tr {
+        .lead-card {
             animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0;
         }
 
-        tr:nth-child(1) { animation-delay: 0.1s; }
-        tr:nth-child(2) { animation-delay: 0.2s; }
-        tr:nth-child(3) { animation-delay: 0.3s; }
+        .lead-card:nth-child(1) { animation-delay: 0.1s; }
+        .lead-card:nth-child(2) { animation-delay: 0.2s; }
+        .lead-card:nth-child(3) { animation-delay: 0.3s; }
 
         .stat {
             animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -491,7 +634,17 @@
         @media (max-width: 640px) {
             .header { padding: 16px 20px; }
             .main { padding: 20px; }
+            .card-header { padding: 20px; }
+            .card-title { font-size: 18px; }
+            .score-ring { width: 44px; height: 44px; font-size: 15px; }
             .stat-value { font-size: 20px; }
+        }
+
+        .score-high { animation: glowPulse 2s ease-in-out infinite; }
+
+        @keyframes glowPulse {
+            0%, 100% { text-shadow: 0 0 20px var(--accent-glow); }
+            50% { text-shadow: 0 0 40px var(--accent-glow), 0 0 60px rgba(0, 212, 255, 0.2); }
         }
     </style>
 </head>
@@ -502,25 +655,25 @@
                 <div class="logo-icon">M</div>
                 <div>
                     <div class="logo-text">Marvelus Leads</div>
-                    <div class="subtitle">Daily SMB Lead Tracker // v1.0</div>
+                    <div class="subtitle">Lead Pipeline // v1.0</div>
                 </div>
             </div>
             <div class="stats-bar">
                 <div class="stat">
-                    <div class="stat-value" id="total-leads">3</div>
-                    <div class="stat-label">Leads</div>
+                    <div class="stat-value" id="total-count">3</div>
+                    <div class="stat-label">Total</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-value" id="new-leads">2</div>
+                    <div class="stat-value" id="new-count">1</div>
                     <div class="stat-label">New</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-value" id="high-score">3</div>
-                    <div class="stat-label">High Score</div>
+                    <div class="stat-value" id="qualified-count">1</div>
+                    <div class="stat-label">Qualified</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-value" id="missing-ai">3</div>
-                    <div class="stat-label">Missing AI</div>
+                    <div class="stat-value" id="avg-score">7.3</div>
+                    <div class="stat-label">Avg Score</div>
                 </div>
             </div>
         </div>
@@ -529,160 +682,242 @@
     <div class="filters">
         <div class="filter-group">
             <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="melbourne">Melbourne</button>
-            <button class="filter-btn" data-filter="sydney">Sydney</button>
-            <button class="filter-btn" data-filter="brisbane">Brisbane</button>
             <button class="filter-btn" data-filter="new">New</button>
-            <button class="filter-btn" data-filter="missing-ai">Missing AI</button>
+            <button class="filter-btn" data-filter="contacted">Contacted</button>
+            <button class="filter-btn" data-filter="qualified">Qualified</button>
+            <button class="filter-btn" data-filter="closed">Closed</button>
+            <button class="filter-btn" data-filter="high-priority">High Priority</button>
         </div>
     </div>
 
     <main class="main">
-        <button class="add-btn" onclick="alert('Add Lead - Coming Soon')">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 5v14M5 12h14"/>
-            </svg>
-            Add Lead
-        </button>
-
         <div class="section-title">Active Leads</div>
         
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('score')">Score ↕</th>
-                        <th>Business</th>
-                        <th>City</th>
-                        <th>Phone</th>
-                        <th>Website</th>
-                        <th>AI Agent</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="leads-table">
-                    <tr data-city="melbourne" data-status="new" data-ai="missing" data-score="9">
-                        <td>
-                            <div class="score-ring">
-                                <div class="score-value">9</div>
+        <div id="leads-container">
+            <div class="lead-card" data-category="ai-service" data-status="new" data-priority="high" data-score="8">
+                <div class="card-header" onclick="toggleCard(this)">
+                    <div class="card-header-left">
+                        <div class="lead-source">Website Inquiry</div>
+                        <div class="card-title">Melbourne Plumbing Co</div>
+                        <div class="card-meta">
+                            <span class="badge badge-status-new">New</span>
+                            <span class="badge badge-priority-high">High Priority</span>
+                            <span class="badge badge-category">AI Service</span>
+                        </div>
+                    </div>
+                    <div class="score-ring score-high">
+                        <div class="score-value">8</div>
+                    </div>
+                    <div class="expand-icon">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 6l4 4 4-4"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-section">
+                        <div class="card-section-title">Contact Info</div>
+                        <div class="card-text">
+                            <strong>Name:</strong> John Smith<br>
+                            <strong>Email:</strong> john@melbourneplumbing.com.au<br>
+                            <strong>Phone:</strong> +61 412 345 678<br>
+                            <strong>Company:</strong> Melbourne Plumbing Co (15 employees)
+                        </div>
+                    </div>
+                    <div class="card-section">
+                        <div class="card-section-title">Requirements</div>
+                        <ul class="card-list">
+                            <li>AI voice agent for after-hours calls</li>
+                            <li>Integration with existing booking system</li>
+                            <li>Lead qualification and routing</li>
+                            <li>Monthly reporting on call metrics</li>
+                        </ul>
+                    </div>
+                    <div class="card-section">
+                        <div class="card-section-title">Budget & Timeline</div>
+                        <div class="card-text">
+                            <strong>Budget:</strong> $500-800/month<br>
+                            <strong>Timeline:</strong> Start within 2 weeks<br>
+                            <strong>Decision Maker:</strong> John Smith (Owner)
+                        </div>
+                    </div>
+                    <div class="card-section">
+                        <div class="card-section-title">Action Items</div>
+                        <div class="action-items">
+                            <div class="action-item">
+                                <div class="action-checkbox"></div>
+                                <div class="action-text">Call John within 24 hours</div>
                             </div>
-                        </td>
-                        <td><strong>Joe's Plumbing</strong></td>
-                        <td>Melbourne</td>
-                        <td class="feature-missing">Missing</td>
-                        <td class="feature-missing">No</td>
-                        <td class="feature-missing">No</td>
-                        <td><span class="badge badge-new">New</span></td>
-                        <td>
-                            <div class="expand-btn" onclick="toggleDetail(this)">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 6l4 4 4-4"/>
-                                </svg>
+                            <div class="action-item">
+                                <div class="action-checkbox"></div>
+                                <div class="action-text">Prepare demo for plumbing vertical</div>
                             </div>
-                        </td>
-                    </tr>
-                    <tr class="detail-row" data-city="melbourne" data-status="new" data-ai="missing">
-                        <td colspan="8">
-                            <div class="detail-content">
-                                <div class="section-title" style="margin-bottom: 16px;">Contact Details</div>
-                                <div style="color: var(--text-secondary); font-size: 14px; line-height: 1.7;">
-                                    <strong>Address:</strong> 123 Main St, Melbourne VIC 3000<br>
-                                    <strong>Industry:</strong> Plumbing / Home Services<br>
-                                    <strong>Notes:</strong> Family business, 15+ years. Owner is Joe Sr. No digital presence. Perfect for AI voice agent + website package.<br>
-                                    <strong>Next Action:</strong> Cold call to offer free website audit
-                                </div>
+                            <div class="action-item">
+                                <div class="action-checkbox"></div>
+                                <div class="action-text">Send pricing proposal</div>
                             </div>
-                        </td>
-                    </tr>
-                    <tr data-city="sydney" data-status="contacted" data-ai="missing" data-score="7">
-                        <td>
-                            <div class="score-ring">
-                                <div class="score-value">7</div>
+                            <div class="action-item">
+                                <div class="action-checkbox"></div>
+                                <div class="action-text">Schedule follow-up for next week</div>
                             </div>
-                        </td>
-                        <td><strong>Elite Hair Salon</strong></td>
-                        <td>Sydney</td>
-                        <td class="feature-present">Yes</td>
-                        <td class="feature-present">Yes</td>
-                        <td class="feature-missing">No</td>
-                        <td><span class="badge badge-contacted">Contacted</span></td>
-                        <td>
-                            <div class="expand-btn" onclick="toggleDetail(this)">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 6l4 4 4-4"/>
-                                </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lead-card" data-category="consulting" data-status="contacted" data-priority="medium" data-score="7">
+                <div class="card-header" onclick="toggleCard(this)">
+                    <div class="card-header-left">
+                        <div class="lead-source">Referral</div>
+                        <div class="card-title">Sydney Event Hire</div>
+                        <div class="card-meta">
+                            <span class="badge badge-status-contacted">Contacted</span>
+                            <span class="badge badge-priority-medium">Medium Priority</span>
+                            <span class="badge badge-category">Consulting</span>
+                        </div>
+                    </div>
+                    <div class="score-ring">
+                        <div class="score-value">7</div>
+                    </div>
+                    <div class="expand-icon">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 6l4 4 4-4"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-section">
+                        <div class="card-section-title">Contact Info</div>
+                        <div class="card-text">
+                            <strong>Name:</strong> Sarah Chen<br>
+                            <strong>Email:</strong> sarah@sydeventhire.com.au<br>
+                            <strong>Phone:</strong> +61 423 456 789<br>
+                            <strong>Company:</strong> Sydney Event Hire (8 employees)
+                        </div>
+                    </div>
+                    <div class="card-section">
+                        <div class="card-section-title">Requirements</div>
+                        <ul class="card-list">
+                            <li>Website redesign for better conversion</li>
+                            <li>AI chatbot for inventory inquiries</li>
+                            <li>Booking system integration</li>
+                            <li>SEO optimization for local search</li>
+                        </ul>
+                    </div>
+                    <div class="card-section">
+                        <div class="card-section-title">Budget & Timeline</div>
+                        <div class="card-text">
+                            <strong>Budget:</strong> $2-5K project + $300/mo<br>
+                            <strong>Timeline:</strong> Start next month<br>
+                            <strong>Decision Maker:</strong> Sarah Chen (Director)
+                        </div>
+                    </div>
+                    <div class="card-section">
+                        <div class="card-section-title">Action Items</div>
+                        <div class="action-items">
+                            <div class="action-item">
+                                <div class="action-checkbox"></div>
+                                <div class="action-text">Send portfolio of similar projects</div>
                             </div>
-                        </td>
-                    </tr>
-                    <tr class="detail-row" data-city="sydney" data-status="contacted" data-ai="missing">
-                        <td colspan="8">
-                            <div class="detail-content">
-                                <div class="section-title" style="margin-bottom: 16px;">Contact Details</div>
-                                <div style="color: var(--text-secondary); font-size: 14px; line-height: 1.7;">
-                                    <strong>Address:</strong> 456 Fashion Ave, Sydney NSW 2000<br>
-                                    <strong>Industry:</strong> Beauty / Hair Salon<br>
-                                    <strong>Notes:</strong> Has website and phone but no AI. Sent email about AI booking assistant. Waiting for response.<br>
-                                    <strong>Next Action:</strong> Follow up in 3 days if no response
-                                </div>
+                            <div class="action-item">
+                                <div class="action-checkbox"></div>
+                                <div class="action-text">Schedule discovery call</div>
                             </div>
-                        </td>
-                    </tr>
-                    <tr data-city="brisbane" data-status="new" data-ai="missing" data-score="8">
-                        <td>
-                            <div class="score-ring">
-                                <div class="score-value">8</div>
+                            <div class="action-item">
+                                <div class="action-checkbox"></div>
+                                <div class="action-text">Prepare custom proposal</div>
                             </div>
-                        </td>
-                        <td><strong>Fast Fix HVAC</strong></td>
-                        <td>Brisbane</td>
-                        <td class="feature-present">Yes</td>
-                        <td class="feature-missing">No</td>
-                        <td class="feature-missing">No</td>
-                        <td><span class="badge badge-new">New</span></td>
-                        <td>
-                            <div class="expand-btn" onclick="toggleDetail(this)">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 6l4 4 4-4"/>
-                                </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lead-card" data-category="ai-service" data-status="qualified" data-priority="high" data-score="6">
+                <div class="card-header" onclick="toggleCard(this)">
+                    <div class="card-header-left">
+                        <div class="lead-source">LinkedIn Outreach</div>
+                        <div class="card-title">Brisbane HVAC Services</div>
+                        <div class="card-meta">
+                            <span class="badge badge-status-qualified">Qualified</span>
+                            <span class="badge badge-priority-high">High Priority</span>
+                            <span class="badge badge-category">AI Service</span>
+                        </div>
+                    </div>
+                    <div class="score-ring">
+                        <div class="score-value">6</div>
+                    </div>
+                    <div class="expand-icon">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 6l4 4 4-4"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-section">
+                        <div class="card-section-title">Contact Info</div>
+                        <div class="card-text">
+                            <strong>Name:</strong> Mike Johnson<br>
+                            <strong>Email:</strong> mike@brisbanehvac.com.au<br>
+                            <strong>Phone:</strong> +61 434 567 890<br>
+                            <strong>Company:</strong> Brisbane HVAC Services (25 employees)
+                        </div>
+                    </div>
+                    <div class="card-section">
+                        <div class="card-section-title">Requirements</div>
+                        <ul class="card-list">
+                            <li>AI voice agent for emergency calls</li>
+                            <li>24/7 availability for after-hours</li>
+                            <li>Integration with ServiceM8</li>
+                            <li>Multi-language support (English + Mandarin)</li>
+                        </ul>
+                    </div>
+                    <div class="card-section">
+                        <div class="card-section-title">Budget & Timeline</div>
+                        <div class="card-text">
+                            <strong>Budget:</strong> $800-1200/month<br>
+                            <strong>Timeline:</strong> Start within 1 month<br>
+                            <strong>Decision Maker:</strong> Mike Johnson (Owner)
+                        </div>
+                    </div>
+                    <div class="card-section">
+                        <div class="card-section-title">Action Items</div>
+                        <div class="action-items">
+                            <div class="action-item">
+                                <div class="action-checkbox"></div>
+                                <div class="action-text">Prepare contract for signature</div>
                             </div>
-                        </td>
-                    </tr>
-                    <tr class="detail-row" data-city="brisbane" data-status="new" data-ai="missing">
-                        <td colspan="8">
-                            <div class="detail-content">
-                                <div class="section-title" style="margin-bottom: 16px;">Contact Details</div>
-                                <div style="color: var(--text-secondary); font-size: 14px; line-height: 1.7;">
-                                    <strong>Address:</strong> 789 Industrial Rd, Brisbane QLD 4000<br>
-                                    <strong>Industry:</strong> HVAC / Home Services<br>
-                                    <strong>Notes:</strong> 24/7 emergency service. Has phone but no website. High-value lead for website + AI voice agent.<br>
-                                    <strong>Next Action:</strong> Call during business hours to discuss website package
-                                </div>
+                            <div class="action-item">
+                                <div class="action-checkbox"></div>
+                                <div class="action-text">Schedule onboarding call</div>
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            <div class="action-item">
+                                <div class="action-checkbox"></div>
+                                <div class="action-text">Set up ServiceM8 integration</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="footer">
             <div>Marvelus Leads Dashboard</div>
-            <div style="margin-top: 4px; opacity: 0.6;">Updated daily with new SMB opportunities</div>
+            <div style="margin-top: 4px; opacity: 0.6;">Updated automatically when new leads arrive</div>
         </div>
     </main>
 
     <script>
-        function toggleDetail(btn) {
-            const row = btn.closest('tr');
-            const detailRow = row.nextElementSibling;
-            if (detailRow && detailRow.classList.contains('detail-row')) {
-                detailRow.classList.toggle('expanded');
-                btn.classList.toggle('rotated');
-            }
+        function toggleCard(header) {
+            const card = header.parentElement;
+            const body = card.querySelector('.card-body');
+            const icon = header.querySelector('.expand-icon');
+            
+            body.classList.toggle('expanded');
+            icon.classList.toggle('rotated');
         }
 
         const filterBtns = document.querySelectorAll('.filter-btn');
-        const rows = document.querySelectorAll('tbody tr:not(.detail-row)');
+        const cards = document.querySelectorAll('.lead-card');
 
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -691,24 +926,13 @@
 
                 const filter = btn.dataset.filter;
 
-                rows.forEach(row => {
-                    const detailRow = row.nextElementSibling;
-                    let show = true;
-                    
+                cards.forEach(card => {
                     if (filter === 'all') {
-                        show = true;
-                    } else if (filter === 'new') {
-                        show = row.dataset.status === 'new';
-                    } else if (filter === 'missing-ai') {
-                        show = row.dataset.ai === 'missing';
-                    } else if (['melbourne', 'sydney', 'brisbane'].includes(filter)) {
-                        show = row.dataset.city === filter;
-                    }
-
-                    row.style.display = show ? 'table-row' : 'none';
-                    if (detailRow && detailRow.classList.contains('detail-row')) {
-                        detailRow.style.display = show ? 'table-row' : 'none';
-                        if (!show) detailRow.classList.remove('expanded');
+                        card.style.display = 'block';
+                    } else if (filter === 'high-priority') {
+                        card.style.display = card.dataset.priority === 'high' ? 'block' : 'none';
+                    } else {
+                        card.style.display = card.dataset.status === filter ? 'block' : 'none';
                     }
                 });
 
@@ -717,44 +941,26 @@
         });
 
         function updateStats() {
-            const visibleRows = Array.from(rows).filter(r => r.style.display !== 'none');
-            const total = visibleRows.length;
-            const newLeads = visibleRows.filter(r => r.dataset.status === 'new').length;
-            const highScore = visibleRows.filter(r => parseInt(r.dataset.score) >= 8).length;
-            const missingAI = visibleRows.filter(r => r.dataset.ai === 'missing').length;
-            
-            document.getElementById('total-leads').textContent = total;
-            document.getElementById('new-leads').textContent = newLeads;
-            document.getElementById('high-score').textContent = highScore;
-            document.getElementById('missing-ai').textContent = missingAI;
+            const visibleCards = Array.from(cards).filter(c => c.style.display !== 'none');
+            const total = visibleCards.length;
+            const newLeads = visibleCards.filter(c => c.dataset.status === 'new').length;
+            const qualified = visibleCards.filter(c => c.dataset.status === 'qualified').length;
+            const avgScore = total > 0 
+                ? (visibleCards.reduce((sum, c) => sum + parseInt(c.dataset.score), 0) / total).toFixed(1)
+                : '0.0';
+
+            document.getElementById('total-count').textContent = total;
+            document.getElementById('new-count').textContent = newLeads;
+            document.getElementById('qualified-count').textContent = qualified;
+            document.getElementById('avg-score').textContent = avgScore;
         }
 
-        let sortDirection = 1;
-        function sortTable(column) {
-            const tbody = document.getElementById('leads-table');
-            const allRows = Array.from(tbody.querySelectorAll('tr:not(.detail-row)'));
-            
-            allRows.sort((a, b) => {
-                let valA, valB;
-                
-                if (column === 'score') {
-                    valA = parseInt(a.dataset.score);
-                    valB = parseInt(b.dataset.score);
-                }
-                
-                return (valA - valB) * sortDirection;
+        document.querySelectorAll('.action-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('checked');
             });
-
-            sortDirection *= -1;
-            
-            allRows.forEach(row => {
-                const detailRow = row.nextElementSibling;
-                tbody.appendChild(row);
-                if (detailRow && detailRow.classList.contains('detail-row')) {
-                    tbody.appendChild(detailRow);
-                }
-            });
-        }
+        });
 
         updateStats();
     </script>
