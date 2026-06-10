@@ -1,347 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Marvelus Leads</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Marvelus Leads Dashboard</title>
   <style>
-    :root {
-      --bg: #f5f5f0;
-      --surface: #fafaf6;
-      --surface-2: #ffffff;
-      --text: #1a1a2e;
-      --muted: #5e6072;
-      --border: #e6e7df;
-      --accent: #00d4ff;
-      --font-display: "Space Grotesk", sans-serif;
-      --font-body: "Plus Jakarta Sans", sans-serif;
-      --font-mono: "JetBrains Mono", monospace;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: var(--font-body);
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    .app {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 36px 24px 28px;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 24px;
-      height: 100vh;
-    }
-
-    .topbar {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .title {
-      font-family: var(--font-display);
-      font-size: clamp(28px, 4vw, 40px);
-      letter-spacing: -0.03em;
-      font-weight: 600;
-    }
-
-    .subtitle {
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .primary-action {
-      border: 1px solid transparent;
-      background: var(--accent);
-      color: #00313c;
-      height: 44px;
-      padding: 0 18px;
-      border-radius: 999px;
-      font: 600 14px var(--font-body);
-      cursor: pointer;
-      transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
-      white-space: nowrap;
-    }
-
-    .primary-action:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 20px rgba(0, 212, 255, 0.22);
-    }
-
-    .primary-action:active {
-      transform: translateY(0);
-      box-shadow: none;
-    }
-
-    .list-shell {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 18px;
-      overflow: hidden;
-      min-height: 0;
-    }
-
-    .lead-list {
-      display: grid;
-      gap: 16px;
-      overflow-y: auto;
-      max-height: 100%;
-      padding-right: 4px;
-      scrollbar-width: thin;
-      scrollbar-color: #d5d6ce transparent;
-    }
-
-    .lead-list::-webkit-scrollbar { width: 8px; }
-    .lead-list::-webkit-scrollbar-thumb {
-      background: #d5d6ce;
-      border-radius: 999px;
-    }
-
-    .lead-card {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 22px;
-      display: grid;
-      gap: 18px;
-      animation: appear 320ms ease both;
-    }
-
-    .lead-card:nth-child(2) { animation-delay: 40ms; }
-    .lead-card:nth-child(3) { animation-delay: 80ms; }
-    .lead-card:nth-child(4) { animation-delay: 120ms; }
-    .lead-card:nth-child(5) { animation-delay: 160ms; }
-
-    @keyframes appear {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .lead-head {
-      display: grid;
-      gap: 4px;
-    }
-
-    .lead-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .lead-name {
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-    }
-
-    .lead-company {
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    .lead-date {
-      color: var(--muted);
-      font-size: 13px;
-      letter-spacing: 0.01em;
-    }
-
-    .meta {
-      display: grid;
-      gap: 10px;
-      color: var(--text);
-      font-family: var(--font-mono);
-      font-size: 13px;
-      line-height: 1.5;
-      padding-top: 2px;
-    }
-
-    .meta a {
-      color: var(--text);
-      text-decoration: none;
-      border-bottom: 1px solid #cfd0c8;
-    }
-
-    .meta a:hover {
-      border-bottom-color: var(--accent);
-      color: #0d6072;
-    }
-
-    .notes {
-      color: #2b2e43;
-      font-size: 14px;
-      line-height: 1.7;
-    }
-
-    .actions {
-      display: grid;
-      gap: 8px;
-      padding-top: 4px;
-    }
-
-    .action-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #3b3f57;
-      font-size: 14px;
-    }
-
-    .action-item input[type="checkbox"] {
-      appearance: none;
-      width: 15px;
-      height: 15px;
-      border-radius: 4px;
-      border: 1px solid #cfd1c7;
-      background: transparent;
-      position: relative;
-      cursor: pointer;
-      transition: border-color 140ms ease, background-color 140ms ease;
-      flex: 0 0 auto;
-    }
-
-    .action-item input[type="checkbox"]:checked {
-      background: #dff8ff;
-      border-color: var(--accent);
-    }
-
-    .action-item input[type="checkbox"]:checked::after {
-      content: "";
-      position: absolute;
-      left: 3px;
-      top: 0px;
-      width: 5px;
-      height: 9px;
-      border: solid #007d96;
-      border-width: 0 1.5px 1.5px 0;
-      transform: rotate(45deg);
-    }
-
-    @media (max-width: 760px) {
-      .app { padding: 26px 16px 18px; gap: 16px; }
-      .topbar { align-items: center; }
-      .title { font-size: 30px; }
-      .primary-action { height: 40px; padding: 0 14px; font-size: 13px; }
-      .list-shell { padding: 12px; border-radius: 18px; }
-      .lead-card { padding: 18px; border-radius: 14px; }
-      .lead-name { font-size: 21px; }
-    }
+    :root { --bg:#0b1020; --card:#131a2f; --text:#e8edff; --muted:#9aa6cf; --line:#273155; --hot:#ff5470; --warm:#ffb454; --cold:#5b8cff; }
+    *{box-sizing:border-box} body{margin:0;font:14px/1.45 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{max-width:1100px;margin:0 auto;padding:20px}
+    h1{font-size:28px;margin:0 0 8px} .sub{color:var(--muted);margin-bottom:16px}
+    .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:12px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+    .label{color:var(--muted);font-size:12px} .num{font-size:28px;font-weight:700}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 18px}
+    .chip{display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);padding:6px 10px;border-radius:999px;color:var(--muted)}
+    .chip b{color:var(--text)}
+    table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:block}
+    thead,tbody{display:table;width:100%;table-layout:fixed}
+    tbody{max-height:65vh;overflow:auto;display:block}
+    th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+    th{font-size:12px;color:var(--muted);position:sticky;top:0;background:var(--card)}
+    .pill{padding:3px 8px;border-radius:999px;font-size:12px;font-weight:600}
+    .hot{background:rgba(255,84,112,.15);color:#ff8aa0} .warm{background:rgba(255,180,84,.15);color:#ffc979} .cold{background:rgba(91,140,255,.15);color:#95b6ff}
+    @media (max-width:800px){.stats{grid-template-columns:1fr} table{font-size:12px} th:nth-child(4),td:nth-child(4),th:nth-child(6),td:nth-child(6){display:none}}
   </style>
 </head>
 <body>
-  <main class="app">
-    <header class="topbar">
-      <div>
-        <h1 class="title">Marvelus Leads</h1>
-        <p class="subtitle">All active leads, fully expanded for faster review.</p>
-      </div>
-      <button class="primary-action" type="button" aria-label="Add lead">Add lead</button>
-    </header>
-
-    <section class="list-shell" aria-label="Lead list">
-      <div class="lead-list" id="leadList"></div>
-    </section>
-  </main>
-
-  <script>
-    const leads = [
-      {
-        name: "Sarah Chen",
-        company: "Nimble Freight",
-        date: "Jun 09, 2026",
-        email: "sarah.chen@nimblefreight.com",
-        phone: "+61 412 890 114",
-        source: "Inbound web inquiry",
-        note: "Looking for a lightweight support workflow for growing ops team. Wants rollout in under two weeks.",
-        actions: ["Send pricing summary", "Book implementation call", "Share onboarding checklist"]
-      },
-      {
-        name: "Marcus Rivera",
-        company: "Orbit Dental Group",
-        date: "Jun 08, 2026",
-        email: "marcus@orbitdental.com",
-        phone: "+61 434 102 559",
-        source: "Referral",
-        note: "Interested in centralizing all patient follow-ups in one inbox. Needs stakeholder demo with practice manager.",
-        actions: ["Confirm demo attendees", "Prepare healthcare use-case deck", "Draft pilot plan"]
-      },
-      {
-        name: "Priya Nandakumar",
-        company: "Stride Renewables",
-        date: "Jun 07, 2026",
-        email: "priya@striderenewables.io",
-        phone: "+61 488 700 361",
-        source: "Outbound response",
-        note: "Operations lead evaluating automation quality and escalation logic. Asked for references from energy clients.",
-        actions: ["Share 2 customer case studies", "Send security one-pager", "Follow up Thursday"]
-      },
-      {
-        name: "Daniel Brooks",
-        company: "Harbor Legal",
-        date: "Jun 06, 2026",
-        email: "daniel.brooks@harborlegal.au",
-        phone: "+61 401 522 804",
-        source: "LinkedIn",
-        note: "Needs a cleaner lead qualification handoff between intake and legal assistants. Prefers low-change migration.",
-        actions: ["Map current intake workflow", "Propose phase-1 deployment", "Schedule legal compliance check"]
-      },
-      {
-        name: "Elena Kovac",
-        company: "Bluegrove Interiors",
-        date: "Jun 05, 2026",
-        email: "elena@bluegroveinteriors.com",
-        phone: "+61 426 266 930",
-        source: "Conference lead",
-        note: "Wants better visibility on response times and project stage transitions. Requested quick-start plan for sales team.",
-        actions: ["Deliver timeline estimate", "Set up workspace sandbox", "Send kickoff proposal"]
-      }
-    ];
-
-    const list = document.getElementById('leadList');
-
-    list.innerHTML = leads.map((lead) => `
-      <article class="lead-card">
-        <header class="lead-head">
-          <div class="lead-line">
-            <h2 class="lead-name">${lead.name}</h2>
-            <time class="lead-date">${lead.date}</time>
-          </div>
-          <p class="lead-company">${lead.company}</p>
-        </header>
-
-        <div class="meta" aria-label="Contact details">
-          <div><a href="mailto:${lead.email}">${lead.email}</a></div>
-          <div><a href="tel:${lead.phone.replace(/\s+/g, '')}">${lead.phone}</a></div>
-          <div>${lead.source}</div>
-        </div>
-
-        <p class="notes">${lead.note}</p>
-
-        <div class="actions" aria-label="Action items">
-          ${lead.actions.map((a, idx) => `
-            <label class="action-item">
-              <input type="checkbox" aria-label="${lead.name} action ${idx + 1}">
-              <span>${a}</span>
-            </label>
-          `).join('')}
-        </div>
-      </article>
-    `).join('');
-  </script>
+  <div class="wrap">
+    <h1>Marvelus Leads Dashboard</h1>
+    <div class="sub">Generated 2026-06-10 17:23 • Source: ~/Obsidian/Penelopi/Leads/By-Category/all_*.csv</div>
+    <div class="stats">
+      <div class="card"><div class="label">Total Leads</div><div class="num">77</div></div>
+      <div class="card"><div class="label">Hot (75+)</div><div class="num">77</div></div>
+      <div class="card"><div class="label">Warm (50-74)</div><div class="num">0</div></div>
+    </div>
+    <div class="chips"><div class="chip"><span>Dentists</span><b>13</b></div><div class="chip"><span>Plumbers</span><b>12</b></div><div class="chip"><span>Hvac</span><b>11</b></div><div class="chip"><span>Roofers</span><b>11</b></div><div class="chip"><span>Cleaning</span><b>10</b></div><div class="chip"><span>Electricians</span><b>10</b></div><div class="chip"><span>Locksmiths</span><b>10</b></div></div>
+    <table>
+      <thead><tr><th>Business</th><th>Score</th><th>Priority</th><th>Category</th><th>Missing Signals</th><th>Date</th></tr></thead>
+      <tbody><tr><td>Seddon Dental, Victoria St Clinic</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-09</td></tr><tr><td>Gorgeous Smiles Dentist Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-09</td></tr><tr><td>Smile Solutions - Dentist Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-09</td></tr><tr><td>Australian Dentists Clinic</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-09</td></tr><tr><td>Art De Dente - Dentist Melbourne CBD</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-09</td></tr><tr><td>Collins Street Dental</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-09</td></tr><tr><td>Melbourne Dentist Clinic</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-09</td></tr><tr><td>The Affordable Dentist Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-09</td></tr><tr><td>MC Dental Melbourne Central Shopping Centre</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-09</td></tr><tr><td>Balaclava Dental Care</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-09</td></tr><tr><td>Millerwatts Electricians</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-08</td></tr><tr><td>Melbourne General Electrical Services</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-08</td></tr><tr><td>Melbourne Wide Electrical &amp; Plumbing</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-08</td></tr><tr><td>SBH Electrical Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-08</td></tr><tr><td>All Electrics Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-08</td></tr><tr><td>Eastern Melbourne Electricians</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-08</td></tr><tr><td>O&#x27;Shea Electrical - Electrician Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-08</td></tr><tr><td>24 Hour Power Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-08</td></tr><tr><td>Melbourne Electrical Co</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-08</td></tr><tr><td>Electrx</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-08</td></tr><tr><td>Your Pro Plumber - Blocked Drain &amp; Emergency Plumber | Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>plumbers</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-07</td></tr><tr><td>24 Hour Melbourne Plumber</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>plumbers</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-07</td></tr><tr><td>Melbourne Plumbing Co</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>plumbers</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-07</td></tr><tr><td>Your Choice Plumbers</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>plumbers</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-07</td></tr><tr><td>Melbourne Metro Plumbing Group</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>plumbers</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-07</td></tr><tr><td>Maintenance Plumbing Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>plumbers</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-07</td></tr><tr><td>Neighborhood Plumbers Melbourne | Blocked Drains | Gas leak | Water Leak | Hot Water Unit | Emergency Plumber</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>plumbers</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-07</td></tr><tr><td>Velaqua Plumbing</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>plumbers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-07</td></tr><tr><td>Plumb Medic - Emergency Plumber Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>plumbers</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-07</td></tr><tr><td>Fix It Right Plumbing Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>plumbers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-07</td></tr><tr><td>Clean House Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-06</td></tr><tr><td>CLEANING MELBOURNE SERVICES PTY LTD</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-06</td></tr><tr><td>Boost Bond Cleaning Melbourne - End of lease cleaning Melbourne | Vacate cleaners Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-06</td></tr><tr><td>Calibre Cleaning Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-06</td></tr><tr><td>Yes Cleaning - Commercial and Office Cleaning Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-06</td></tr><tr><td>Simply Spotless Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-06</td></tr><tr><td>Fantastic Cleaners</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-06</td></tr><tr><td>VCare’s End of lease cleaning Melbourne - Bond cleaning Melbourne | Vacate cleaning Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-06</td></tr><tr><td>Spiffy Clean - Commercial and Office Cleaning Services Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-06</td></tr><tr><td>Inner City Maids</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-06</td></tr><tr><td>Metropolitan Roof Repairs</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-05</td></tr><tr><td>Melbourne Quality Roofing</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-05</td></tr><tr><td>Central Roofing and Repairs</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-05</td></tr><tr><td>Melbourne Roof Repairs</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-05</td></tr><tr><td>First Class Roofing</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-05</td></tr><tr><td>Captain Roof Repair</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-05</td></tr><tr><td>Exclusive Roofing &amp; Home Improvements</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-05</td></tr><tr><td>New Look Roofing &amp; Home Improvements</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-05</td></tr><tr><td>BRP Roof Repair Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-05</td></tr><tr><td>Correct Roofing Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-05</td></tr></tbody>
+    </table>
+  </div>
 </body>
 </html>
