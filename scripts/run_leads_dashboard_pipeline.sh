@@ -54,19 +54,14 @@ else
 fi
 
 if [[ "$SEND_TELEGRAM" == "1" ]]; then
-  if [[ -n "${TELEGRAM_BOT_TOKEN:-}" && -n "${TELEGRAM_CHAT_ID:-}" ]]; then
-    if [[ "$CHANGED" == "1" ]]; then
-      MSG="✅ Marvelus Leads dashboard updated: $PAGES_URL"
-    else
-      MSG="ℹ️ Marvelus Leads dashboard checked (no content changes): $PAGES_URL"
-    fi
-    curl -fsS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-      --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
-      --data-urlencode "text=${MSG}" >/dev/null
-    log "Telegram notification sent"
+  # OpenClaw handles Telegram delivery via cron job delivery.mode=announce
+  # No bot token needed — uses native channel routing
+  if [[ "$CHANGED" == "1" ]]; then
+    echo "✅ Dashboard updated: $PAGES_URL"
   else
-    log "Skipping Telegram (TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID not set)"
+    echo "ℹ️ Dashboard checked (no changes): $PAGES_URL"
   fi
+  log "Telegram notification queued via OpenClaw delivery"
 fi
 
 log "Done. Dashboard: $PAGES_URL"
