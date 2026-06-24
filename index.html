@@ -817,82 +817,86 @@
       grid.innerHTML = '';
 
       if (!filtered.length) {
-        grid.innerHTML = '<div class="col-span-full py-12 text-center text-[#a0a0a0]">No leads match the current view.</div>';
+        grid.innerHTML = '<div class="col-span-full py-12 text-center text-[#a0a0a0]"><i class="fa-solid fa-inbox text-2xl mb-2 block"></i>No leads match the current view.</div>';
         return;
       }
 
       filtered.forEach((lead, index) => {
-        const isContacted = contactedLeads.includes(lead.id);
-        const isClosed = closedLeads.includes(lead.id);
-        const delay = Math.min(index * 0.05, 0.5);
-        
-        const div = document.createElement('div');
-        div.className = 'card-mercury p-5 cursor-pointer';
-        div.style.animation = `modalIn 0.4s cubic-bezier(0.32, 0.72, 0, 1) ${delay}s both`;
-        
-        // Score color logic
-        const techColor = lead.seo <= 30 ? 'text-[#ff4757]' : lead.seo <= 60 ? 'text-[#f5a623]' : 'text-[#00a86b]';
-        const scoreColor = lead.overall >= 80 ? 'text-[#00a86b]' : lead.overall >= 60 ? 'text-[#f5a623]' : 'text-[#a0a0a0]';
-        
-        // Priority badge
-        let badgeClass = 'badge-cool';
-        let badgeText = 'COOL';
-        if (lead.priority === 'high') { badgeClass = 'badge-hot'; badgeText = 'HOT'; }
-        else if (lead.priority === 'medium') { badgeClass = 'badge-warm'; badgeText = 'WARM'; }
-        
-        div.innerHTML = `
-          <div class="flex justify-between items-start mb-4">
-            <div class="min-w-0 flex-1">
-              <div class="flex items-center gap-2 mb-1">
-                <div class="font-semibold text-[#1a1a1a] text-base truncate">${lead.name}</div>
-                ${isClosed ? '<i class="fa-solid fa-trophy text-[#d4a574] flex-shrink-0" title="Deal closed!"></i>' : ''}
-                ${isContacted && !isClosed ? '<i class="fa-solid fa-phone text-[#00a86b] flex-shrink-0" title="Contacted"></i>' : ''}
+        try {
+          const isContacted = contactedLeads.includes(lead.id);
+          const isClosed = closedLeads.includes(lead.id);
+          const delay = Math.min(index * 0.05, 0.5);
+          
+          const div = document.createElement('div');
+          div.className = 'card-mercury p-5 cursor-pointer';
+          div.style.animation = `modalIn 0.4s cubic-bezier(0.32, 0.72, 0, 1) ${delay}s both`;
+          
+          // Score color logic
+          const techColor = lead.seo <= 30 ? 'text-[#ff4757]' : lead.seo <= 60 ? 'text-[#f5a623]' : 'text-[#00a86b]';
+          const scoreColor = lead.overall >= 80 ? 'text-[#00a86b]' : lead.overall >= 60 ? 'text-[#f5a623]' : 'text-[#a0a0a0]';
+          
+          // Priority badge
+          let badgeClass = 'badge-cool';
+          let badgeText = 'COOL';
+          if (lead.priority === 'high') { badgeClass = 'badge-hot'; badgeText = 'HOT'; }
+          else if (lead.priority === 'medium') { badgeClass = 'badge-warm'; badgeText = 'WARM'; }
+          
+          div.innerHTML = `
+            <div class="flex justify-between items-start mb-4">
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2 mb-1">
+                  <div class="font-semibold text-[#1a1a1a] text-base truncate">${lead.name || 'Unknown'}</div>
+                  ${isClosed ? '<i class="fa-solid fa-trophy text-[#d4a574] flex-shrink-0" title="Deal closed!"></i>' : ''}
+                  ${isContacted && !isClosed ? '<i class="fa-solid fa-phone text-[#00a86b] flex-shrink-0" title="Contacted"></i>' : ''}
+                </div>
+                <div class="text-sm text-[#a0a0a0]">${lead.category || 'business'} • ${lead.location || 'Unknown'}</div>
               </div>
-              <div class="text-sm text-[#a0a0a0]">${lead.category} • ${lead.location}</div>
+              <div class="flex items-center gap-2 ml-2 flex-shrink-0">
+                <span class="px-2.5 py-1 text-[10px] font-bold rounded-lg ${badgeClass}">${badgeText}</span>
+              </div>
             </div>
-            <div class="flex items-center gap-2 ml-2 flex-shrink-0">
-              <span class="px-2.5 py-1 text-[10px] font-bold rounded-lg ${badgeClass}">${badgeText}</span>
-            </div>
-          </div>
 
-          <div class="flex items-center gap-6 mb-4">
-            <div class="flex items-center gap-2">
-              <div class="w-10 h-10 rounded-xl bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center">
-                <span class="text-lg font-bold ${techColor} font-mono">${lead.seo}</span>
+            <div class="flex items-center gap-6 mb-4">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center">
+                  <span class="text-lg font-bold ${techColor} font-mono">${lead.seo || 0}</span>
+                </div>
+                <div>
+                  <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">Tech</div>
+                  <div class="text-xs text-[#a0a0a0]">${(lead.seo || 0) <= 30 ? 'High opp' : (lead.seo || 0) <= 60 ? 'Moderate' : 'Low opp'}</div>
+                </div>
               </div>
-              <div>
-                <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">Tech</div>
-                <div class="text-xs text-[#a0a0a0]">${lead.seo <= 30 ? 'High opp' : lead.seo <= 60 ? 'Moderate' : 'Low opp'}</div>
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center">
+                  <span class="text-lg font-bold ${scoreColor} font-mono">${lead.overall || 0}</span>
+                </div>
+                <div>
+                  <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">Score</div>
+                  <div class="text-xs text-[#a0a0a0]">${(lead.overall || 0) >= 80 ? 'Excellent' : (lead.overall || 0) >= 60 ? 'Good' : 'Fair'}</div>
+                </div>
               </div>
             </div>
-            <div class="flex items-center gap-2">
-              <div class="w-10 h-10 rounded-xl bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center">
-                <span class="text-lg font-bold ${scoreColor} font-mono">${lead.overall}</span>
-              </div>
-              <div>
-                <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">Score</div>
-                <div class="text-xs text-[#a0a0a0]">${lead.overall >= 80 ? 'Excellent' : lead.overall >= 60 ? 'Good' : 'Fair'}</div>
-              </div>
-            </div>
-          </div>
 
-          <div class="flex items-center justify-between pt-3 border-t border-[#e8e8e6]">
-            <div class="flex items-center gap-2">
-              <span class="px-2 py-1 text-[10px] font-semibold bg-[#e8f0ff] border border-[#0055ff]/20 text-[#0055ff] rounded-lg">${lead.recommended}</span>
-              ${lead.multi ? '<span class="px-2 py-1 text-[10px] font-semibold bg-[#f0f0ee] border border-[#e8e8e6] text-[#6b6b6b] rounded-lg">MULTI</span>' : ''}
+            <div class="flex items-center justify-between pt-3 border-t border-[#e8e8e6]">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-1 text-[10px] font-semibold bg-[#e8f0ff] border border-[#0055ff]/20 text-[#0055ff] rounded-lg">${lead.recommended || 'General'}</span>
+                ${lead.multi ? '<span class="px-2 py-1 text-[10px] font-semibold bg-[#f0f0ee] border border-[#e8e8e6] text-[#6b6b6b] rounded-lg">MULTI</span>' : ''}
+              </div>
+              <div class="flex gap-1">
+                <button onclick="event.stopImmediatePropagation(); copyLeadSMS(${lead.id})" class="w-8 h-8 rounded-lg bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:bg-[#e8e8e6] transition-all">
+                  <i class="fa-regular fa-copy text-xs"></i>
+                </button>
+                <button onclick="event.stopImmediatePropagation(); window.open('${lead.website || '#'}', '_blank')" class="w-8 h-8 rounded-lg bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:bg-[#e8e8e6] transition-all">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </button>
+              </div>
             </div>
-            <div class="flex gap-1">
-              <button onclick="event.stopImmediatePropagation(); copyLeadSMS(${lead.id})" class="w-8 h-8 rounded-lg bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:bg-[#e8e8e6] transition-all">
-                <i class="fa-regular fa-copy text-xs"></i>
-              </button>
-              <button onclick="event.stopImmediatePropagation(); window.open('${lead.website}', '_blank')" class="w-8 h-8 rounded-lg bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:bg-[#e8e8e6] transition-all">
-                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-              </button>
-            </div>
-          </div>
-        `;
-        div.onclick = () => showDetail(lead);
-        grid.appendChild(div);
+          `;
+          div.onclick = () => showDetail(lead);
+          grid.appendChild(div);
+        } catch (err) {
+          console.error('Error rendering lead:', lead, err);
+        }
       });
     }
 
