@@ -807,9 +807,13 @@
       const high = filtered.filter(l => l.priority === 'high').length;
       const multi = filtered.filter(l => l.multi).length;
 
-      document.getElementById('stat-total').textContent = total;
-      document.getElementById('stat-high').textContent = high;
-      document.getElementById('stat-multi').textContent = multi;
+      const statTotal = document.getElementById('stat-total');
+      const statHigh = document.getElementById('stat-high');
+      const statMulti = document.getElementById('stat-multi');
+      
+      if (statTotal) statTotal.textContent = total;
+      if (statHigh) statHigh.textContent = high;
+      if (statMulti) statMulti.textContent = multi;
     }
 
     function renderLeads(filtered) {
