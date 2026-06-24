@@ -1005,18 +1005,14 @@
 
             <div class="flex items-center gap-6 mb-4">
               <div class="flex items-center gap-2">
-                <div class="w-10 h-10 rounded-xl bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center">
-                  <span class="text-lg font-bold ${techColor} font-mono">${lead.seo || 0}</span>
-                </div>
+                <span class="text-2xl font-bold ${techColor} font-mono">${lead.seo || 0}</span>
                 <div>
                   <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">SEO</div>
                   <div class="text-xs text-[#a0a0a0]">${(lead.seo || 0) <= 30 ? 'High opp' : (lead.seo || 0) <= 60 ? 'Moderate' : 'Low opp'}</div>
                 </div>
               </div>
               <div class="flex items-center gap-2">
-                <div class="w-10 h-10 rounded-xl bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center">
-                  <span class="text-lg font-bold ${scoreColor} font-mono">${lead.overall || 0}</span>
-                </div>
+                <span class="text-2xl font-bold ${scoreColor} font-mono">${lead.overall || 0}</span>
                 <div>
                   <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">Score</div>
                   <div class="text-xs text-[#a0a0a0]">${(lead.overall || 0) >= 80 ? 'Excellent' : (lead.overall || 0) >= 60 ? 'Good' : 'Fair'}</div>
