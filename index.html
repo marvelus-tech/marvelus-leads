@@ -387,9 +387,26 @@
       100% { transform: translateX(100%); }
     }
 
-    /* Streak hidden by default */
-    .streak-hidden {
-      display: none !important;
+    /* Sticky header */
+    .header-sticky {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(247,247,245,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+      margin: 0 -16px;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    @media (min-width: 640px) {
+      .header-sticky {
+        margin: 0 -24px;
+        padding-left: 24px;
+        padding-right: 24px;
+      }
     }
 
     /* Metric block in modal */
@@ -428,17 +445,15 @@
   </style>
 </head>
 <body>
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-20">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 pb-20">
     
-    <!-- Header -->
-    <div class="flex items-center justify-between mb-8">
-      <div class="flex items-center gap-3">
-        <div>
-          <h1 class="text-xl font-bold tracking-tight text-[#1a1a1a]">Lead Engine</h1>
-          <p class="text-sm text-[#a0a0a0]">Marvelus</p>
-        </div>
+    <!-- Sticky Header -->
+    <div class="header-sticky flex items-center justify-between mb-6">
+      <div>
+        <h1 class="text-xl font-bold tracking-tight text-[#1a1a1a]">Lead Engine</h1>
+        <p class="text-sm text-[#a0a0a0]">Marvelus</p>
       </div>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2">
         <!-- Level Badge -->
         <div class="hidden sm:flex items-center gap-2 bg-white border border-[#e8e8e6] rounded-xl px-3 py-2">
           <span class="level-badge-mercury">LVL 3</span>
@@ -453,6 +468,10 @@
           <span class="text-sm font-bold text-[#1a1a1a]">5</span>
           <span class="text-xs text-[#a0a0a0]">day streak</span>
         </div>
+        <!-- Sales Playbook Toggle -->
+        <button onclick="toggleScripts()" class="w-10 h-10 rounded-xl bg-white border border-[#e8e8e6] flex items-center justify-center text-[#0055ff] hover:bg-[#e8f0ff] hover:border-[#0055ff]/30 transition-all active:scale-95" title="Sales Playbook">
+          <i class="fa-solid fa-book-open text-sm"></i>
+        </button>
         <button onclick="refreshData()" class="w-10 h-10 rounded-xl bg-white border border-[#e8e8e6] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:border-[#d0d0ce] transition-all active:scale-95">
           <i class="fa-solid fa-rotate text-sm"></i>
         </button>
@@ -541,22 +560,8 @@
       <!-- JS populated -->
     </div>
 
-    <!-- Sales Playbook -->
-    <div class="mt-8">
-      <button onclick="toggleScripts()" class="w-full flex items-center justify-between p-4 bg-white border border-[#e8e8e6] rounded-2xl hover:border-[#d0d0ce] transition-all group">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0055ff]/10 to-[#00a86b]/10 border border-[#0055ff]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-            <i class="fa-solid fa-book-open text-[#0055ff]"></i>
-          </div>
-          <div class="text-left">
-            <div class="font-semibold text-[#1a1a1a] text-sm">Sales Playbook</div>
-            <div class="text-xs text-[#a0a0a0]">Cold call scripts, objection handling, closing tactics</div>
-          </div>
-        </div>
-        <i id="scripts-chevron" class="fa-solid fa-chevron-down text-[#a0a0a0] transition-transform duration-300"></i>
-      </button>
-      
-      <div id="scripts-panel" class="hidden mt-3 space-y-3">
+    <!-- Sales Playbook (moved from bottom, now toggled from header) -->
+    <div id="scripts-panel" class="hidden mb-6 space-y-3">
         
         <!-- Script 1 -->
         <div class="script-card">
