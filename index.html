@@ -50,21 +50,22 @@
 
     .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-    /* Mercury-style card with subtle shadow */
+    /* Card — borderless, shadow only */
     .card-mercury {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02);
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .card-mercury:hover {
-      border-color: #d0d0ce;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
-      transform: translateY(-1px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+      transform: translateY(-2px);
     }
     .card-mercury:active {
-      transform: translateY(0);
+      transform: translateY(0) scale(0.98);
       box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      transition-duration: 0.1s;
     }
 
     /* Gradient accent bar */
@@ -244,19 +245,50 @@
       background: linear-gradient(90deg, var(--success), var(--accent));
     }
 
-    /* Confetti */
-    @keyframes confettiFall {
-      0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    /* Gold pulse — replaces confetti */
+    @keyframes goldPulse {
+      0% { box-shadow: 0 0 0 0 rgba(212,165,116,0.4); }
+      70% { box-shadow: 0 0 0 20px rgba(212,165,116,0); }
+      100% { box-shadow: 0 0 0 0 rgba(212,165,116,0); }
     }
-    .confetti-piece {
-      position: fixed;
-      width: 8px;
-      height: 8px;
-      top: -10px;
-      z-index: 9999;
-      animation: confettiFall 3s ease-out forwards;
-      border-radius: 2px;
+    .gold-pulse {
+      animation: goldPulse 1.2s ease-out;
+    }
+
+    /* Hot badge — icon only, no border */
+    .badge-hot-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--danger-light);
+      color: var(--danger);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    /* Stat pills — merged style */
+    .stat-pill {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02);
+      transition: all 0.2s ease;
+    }
+    .stat-pill:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    /* Filter with count */
+    .filter-count {
+      background: var(--danger-light);
+      color: var(--danger);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 6px;
+      margin-left: 4px;
     }
 
     /* Toast */
@@ -496,33 +528,21 @@
       </div>
     </div>
 
-    <!-- Stats Row -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-      <div class="stat-mercury">
+    <!-- Stats Row — Consolidated: Pipeline + Contacted merged, Hot moved to filter -->
+    <div class="grid grid-cols-3 gap-3 mb-6">
+      <div class="stat-pill">
         <div class="flex items-center justify-between mb-2">
           <span class="text-xs font-medium text-[#a0a0a0] uppercase tracking-wider">Pipeline</span>
           <i class="fa-solid fa-layer-group text-[#0055ff]/40 text-sm"></i>
         </div>
-        <div id="stat-total" class="text-2xl font-bold text-[#1a1a1a] font-mono">0</div>
-        <div class="text-xs text-[#a0a0a0] mt-1">Total leads</div>
-      </div>
-      <div class="stat-mercury">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-medium text-[#a0a0a0] uppercase tracking-wider">Hot Leads</span>
-          <i class="fa-solid fa-fire text-[#ff4757]/40 text-sm"></i>
+        <div class="flex items-baseline gap-1">
+          <span id="stat-contacted" class="text-2xl font-bold text-[#00a86b] font-mono">0</span>
+          <span class="text-sm text-[#a0a0a0] font-mono">/</span>
+          <span id="stat-total" class="text-lg font-bold text-[#1a1a1a] font-mono">0</span>
         </div>
-        <div id="stat-high" class="text-2xl font-bold text-[#ff4757] font-mono">0</div>
-        <div class="text-xs text-[#a0a0a0] mt-1">High priority</div>
+        <div class="text-xs text-[#a0a0a0] mt-1">Contacted</div>
       </div>
-      <div class="stat-mercury">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-medium text-[#a0a0a0] uppercase tracking-wider">Contacted</span>
-          <i class="fa-solid fa-phone text-[#00a86b]/40 text-sm"></i>
-        </div>
-        <div id="stat-contacted" class="text-2xl font-bold text-[#00a86b] font-mono">0</div>
-        <div class="text-xs text-[#a0a0a0] mt-1">This week</div>
-      </div>
-      <div class="stat-mercury">
+      <div class="stat-pill">
         <div class="flex items-center justify-between mb-2">
           <span class="text-xs font-medium text-[#a0a0a0] uppercase tracking-wider">Closed</span>
           <i class="fa-solid fa-trophy text-[#d4a574]/40 text-sm"></i>
@@ -530,13 +550,21 @@
         <div id="stat-closed" class="text-2xl font-bold text-[#d4a574] font-mono">0</div>
         <div class="text-xs text-[#a0a0a0] mt-1">Deals won</div>
       </div>
+      <div class="stat-pill">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-medium text-[#a0a0a0] uppercase tracking-wider">Hot Leads</span>
+          <i class="fa-solid fa-fire text-[#ff4757]/40 text-sm"></i>
+        </div>
+        <div id="stat-high" class="text-2xl font-bold text-[#ff4757] font-mono">0</div>
+        <div class="text-xs text-[#a0a0a0] mt-1">High priority</div>
+      </div>
     </div>
 
     <!-- Controls -->
     <div class="flex flex-col sm:flex-row gap-3 mb-6">
       <div class="segment-mercury">
         <button onclick="setSegment(this, 'all')" class="segment-btn-mercury active" data-segment="all">All</button>
-        <button onclick="setSegment(this, 'high')" class="segment-btn-mercury" data-segment="high"><i class="fa-solid fa-fire mr-1 text-xs"></i> Hot</button>
+        <button onclick="setSegment(this, 'high')" class="segment-btn-mercury" data-segment="high"><i class="fa-solid fa-fire mr-1 text-xs"></i> Hot<span id="filter-hot-count" class="filter-count"></span></button>
         <button onclick="setSegment(this, 'contacted')" class="segment-btn-mercury" data-segment="contacted"><i class="fa-solid fa-phone mr-1 text-xs"></i> Contacted</button>
         <button onclick="setSegment(this, 'closed')" class="segment-btn-mercury" data-segment="closed"><i class="fa-solid fa-trophy mr-1 text-xs"></i> Closed</button>
       </div>
@@ -894,11 +922,11 @@
 
       const statTotal = document.getElementById('stat-total');
       const statHigh = document.getElementById('stat-high');
-      const statMulti = document.getElementById('stat-multi');
+      const filterHotCount = document.getElementById('filter-hot-count');
       
       if (statTotal) statTotal.textContent = total;
       if (statHigh) statHigh.textContent = high;
-      if (statMulti) statMulti.textContent = multi;
+      if (filterHotCount) filterHotCount.textContent = high > 0 ? high : '';
     }
 
     function renderLeads(filtered) {
@@ -941,7 +969,7 @@
                 <div class="text-sm text-[#a0a0a0]">${lead.category || 'business'} • ${lead.location || 'Unknown'}</div>
               </div>
               <div class="flex items-center gap-2 ml-2 flex-shrink-0">
-                <span class="px-2 py-1 text-[10px] font-semibold ${badgeClass} rounded-lg flex items-center gap-1">${badgeText === 'HOT' ? '<i class="fa-solid fa-fire text-[10px]"></i> ' : ''}${badgeText}</span>
+                ${badgeText === 'HOT' ? `<div class="badge-hot-icon" title="Hot lead"><i class="fa-solid fa-fire"></i></div>` : `<span class="px-2 py-1 text-[10px] font-semibold ${badgeClass} rounded-lg">${badgeText}</span>`}
               </div>
             </div>
 
@@ -1188,16 +1216,14 @@
     }
 
     function triggerConfetti() {
-      const colors = ['#0055ff', '#00a86b', '#f5a623', '#ff4757', '#d4a574', '#6366f1'];
-      for (let i = 0; i < 50; i++) {
-        const piece = document.createElement('div');
-        piece.className = 'confetti-piece';
-        piece.style.left = Math.random() * 100 + 'vw';
-        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-        piece.style.animationDelay = Math.random() * 2 + 's';
-        piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
-        document.body.appendChild(piece);
-        setTimeout(() => piece.remove(), 4000);
+      // Subtle gold pulse on the closed stat card
+      const closedStat = document.getElementById('stat-closed');
+      if (closedStat) {
+        const card = closedStat.closest('.stat-pill');
+        if (card) {
+          card.classList.add('gold-pulse');
+          setTimeout(() => card.classList.remove('gold-pulse'), 1200);
+        }
       }
     }
 
