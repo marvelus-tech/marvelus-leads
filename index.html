@@ -785,7 +785,7 @@
     async function loadLeads() {
       try {
         const response = await fetch('dashboard_data.json');
-        if (!response.ok) throw new Error('Failed to load leads');
+        if (!response.ok) throw new Error('Failed to load leads: ' + response.status);
         leads = await response.json();
         console.log(`Loaded ${leads.length} leads`);
         updateGamificationStats();
@@ -793,7 +793,7 @@
       } catch (err) {
         console.error('Error loading leads:', err);
         document.getElementById('leads-grid').innerHTML = 
-          '<div class="col-span-full py-12 text-center text-[#a0a0a0]">Error loading leads. Please refresh.</div>';
+          '<div class="col-span-full py-12 text-center text-[#a0a0a0]"><i class="fa-solid fa-triangle-exclamation mb-2 text-2xl"></i><br>Error loading leads: ' + err.message + '<br><button onclick="loadLeads()" class="mt-4 px-4 py-2 bg-[#0055ff] text-white rounded-lg text-sm font-medium">Retry</button></div>';
       }
     }
 
