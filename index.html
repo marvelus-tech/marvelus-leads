@@ -1,44 +1,602 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Marvelus Leads Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Leads • Marvelus</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
-    :root { --bg:#0b1020; --card:#131a2f; --text:#e8edff; --muted:#9aa6cf; --line:#273155; --hot:#ff5470; --warm:#ffb454; --cold:#5b8cff; }
-    *{box-sizing:border-box} body{margin:0;font:14px/1.45 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
-    .wrap{max-width:1100px;margin:0 auto;padding:20px}
-    h1{font-size:28px;margin:0 0 8px} .sub{color:var(--muted);margin-bottom:16px}
-    .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:12px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
-    .label{color:var(--muted);font-size:12px} .num{font-size:28px;font-weight:700}
-    .chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 18px}
-    .chip{display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);padding:6px 10px;border-radius:999px;color:var(--muted)}
-    .chip b{color:var(--text)}
-    table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:block}
-    thead,tbody{display:table;width:100%;table-layout:fixed}
-    tbody{max-height:65vh;overflow:auto;display:block}
-    th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-    th{font-size:12px;color:var(--muted);position:sticky;top:0;background:var(--card)}
-    .pill{padding:3px 8px;border-radius:999px;font-size:12px;font-weight:600}
-    .hot{background:rgba(255,84,112,.15);color:#ff8aa0} .warm{background:rgba(255,180,84,.15);color:#ffc979} .cold{background:rgba(91,140,255,.15);color:#95b6ff}
-    @media (max-width:800px){.stats{grid-template-columns:1fr} table{font-size:12px} th:nth-child(4),td:nth-child(4),th:nth-child(6),td:nth-child(6){display:none}}
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=SF+Pro+Display:wght@400;500;600&display=swap');
+
+    :root {
+      --system-blue: #0071e3;
+      --system-green: #30d158;
+      --system-orange: #ff9500;
+      --system-red: #ff3b30;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .apple-container {
+      max-width: 1024px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+
+    .lead-card {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1px solid #d2d2d7;
+      transition: box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1),
+                  transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+
+    .lead-card:active {
+      transform: scale(0.985);
+    }
+
+    .lead-name {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      color: #1d1d1f;
+    }
+
+    .meta-text {
+      font-size: 13px;
+      color: #8e8e93;
+      font-weight: 400;
+    }
+
+    .score-large {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.8px;
+      line-height: 1;
+    }
+
+    .metric-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: #8e8e93;
+    }
+
+    .recommended-pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      background: #f1f5f9;
+      color: #1d1d1f;
+    }
+
+    .segmented-control {
+      display: inline-flex;
+      background: #f2f2f7;
+      border-radius: 9999px;
+      padding: 2px;
+    }
+
+    .segment {
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 9999px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .segment.active {
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      color: #1d1d1f;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      border: 1px solid #d2d2d7;
+      border-radius: 16px;
+      padding: 12px 14px;
+    }
+
+    .ios-modal {
+      animation: modalEnter 0.22s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .popover {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 4px 6px rgba(0, 0, 0, 0.05);
+      animation: popoverEnter 0.15s ease forwards;
+    }
+
+    .hierarchy-primary {
+      color: #1d1d1f;
+    }
+
+    .hierarchy-secondary {
+      color: #8e8e93;
+    }
+
+    .system-blue {
+      color: #0071e3;
+    }
   </style>
 </head>
-<body>
-  <div class="wrap">
-    <h1>Marvelus Leads Dashboard</h1>
-    <div class="sub">Generated 2026-06-24 09:03 • Source: ~/Obsidian/Penelopi/Leads/By-Category/all_*.csv</div>
-    <div class="stats">
-      <div class="card"><div class="label">Total Leads</div><div class="num">85</div></div>
-      <div class="card"><div class="label">Hot (75+)</div><div class="num">85</div></div>
-      <div class="card"><div class="label">Warm (50-74)</div><div class="num">0</div></div>
+<body class="bg-[#f5f5f7] text-[#1d1d1f]">
+  <div class="apple-container px-5 pt-6 pb-8">
+    
+    <!-- Header -->
+    <div class="flex items-baseline justify-between mb-6">
+      <div>
+        <h1 class="section-title">Leads</h1>
+        <p class="text-[#8e8e93] text-[13px] mt-0.5">Marvelus • 24 Jun 2026</p>
+      </div>
+      <div class="flex items-center gap-x-2">
+        <div class="px-3 py-1 rounded-full bg-white border border-[#d2d2d7] text-xs font-medium flex items-center gap-x-1.5">
+          <div class="w-2 h-2 rounded-full bg-[#30d158]"></div>
+          <span class="text-[#1d1d1f]">Live</span>
+        </div>
+        <button onclick="refreshData()" 
+                class="w-9 h-9 flex items-center justify-center bg-white border border-[#d2d2d7] rounded-2xl active:bg-[#f2f2f7]">
+          <i class="fa-solid fa-sync text-[#8e8e93]"></i>
+        </button>
+      </div>
     </div>
-    <div class="chips"><div class="chip"><span>Electricians</span><b>14</b></div><div class="chip"><span>Dentists</span><b>13</b></div><div class="chip"><span>Roofers</span><b>13</b></div><div class="chip"><span>Cleaning</span><b>12</b></div><div class="chip"><span>Plumbers</span><b>12</b></div><div class="chip"><span>Hvac</span><b>11</b></div><div class="chip"><span>Locksmiths</span><b>10</b></div></div>
-    <table>
-      <thead><tr><th>Business</th><th>Score</th><th>Priority</th><th>Category</th><th>Missing Signals</th><th>Date</th></tr></thead>
-      <tbody><tr><td>Millerwatts Electricians</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-15</td></tr><tr><td>Melbourne General Electrical Services</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-15</td></tr><tr><td>Melbourne Wide Electrical &amp; Plumbing</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-15</td></tr><tr><td>SBH Electrical Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-15</td></tr><tr><td>All Electrics Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-15</td></tr><tr><td>Eastern Melbourne Electricians</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-15</td></tr><tr><td>Taskforce - Electrical, Gas and Smoke Alarm Safety Checks</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-15</td></tr><tr><td>DMACK Electrix Group Pty Ltd | Electrician Frankston</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-15</td></tr><tr><td>Near Me Electrical</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-15</td></tr><tr><td>Allan Electrics Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>electricians</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-15</td></tr><tr><td>Clean House Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-13</td></tr><tr><td>CLEANING MELBOURNE SERVICES PTY LTD</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-13</td></tr><tr><td>Boost Bond Cleaning Melbourne - End of lease cleaning Melbourne | Vacate cleaners Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-13</td></tr><tr><td>Calibre Cleaning Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-13</td></tr><tr><td>Yes Cleaning - Commercial and Office Cleaning Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-13</td></tr><tr><td>VCare’s End of lease cleaning Melbourne - Bond cleaning Melbourne | Vacate cleaning Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-13</td></tr><tr><td>Spiffy Clean - Commercial and Office Cleaning Services Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-13</td></tr><tr><td>Inner City Maids</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-13</td></tr><tr><td>Whistle Clean Australia | Office Cleaning Melbourne | Commercial Cleaning Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-13</td></tr><tr><td>Clean Group - Commercial Cleaning and Office Cleaning Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>cleaning</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-13</td></tr><tr><td>Metropolitan Roof Repairs</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-12</td></tr><tr><td>Melbourne Quality Roofing</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-12</td></tr><tr><td>Melbourne Roof Repairs</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-12</td></tr><tr><td>First Class Roofing</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-12</td></tr><tr><td>Captain Roof Repair</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-12</td></tr><tr><td>Exclusive Roofing &amp; Home Improvements</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-12</td></tr><tr><td>New Look Roofing &amp; Home Improvements</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-12</td></tr><tr><td>BRP Roof Repair Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-12</td></tr><tr><td>ApexX Roof Plumbing Services</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-12</td></tr><tr><td>Central Roofing and Property Repairs</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>roofers</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-12</td></tr><tr><td>MB Locksmiths Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>locksmiths</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-11</td></tr><tr><td>Central Melbourne 24H Locksmiths</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>locksmiths</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-11</td></tr><tr><td>Wynns Locksmiths Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>locksmiths</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-11</td></tr><tr><td>Paragon Locksmiths Richmond</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>locksmiths</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-11</td></tr><tr><td>ASAP Locksmiths Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>locksmiths</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-11</td></tr><tr><td>Port Melbourne Locksmiths</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>locksmiths</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-11</td></tr><tr><td>John Barnes &amp; Co Pty Ltd</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>locksmiths</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-11</td></tr><tr><td>Precision Locksmiths Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>locksmiths</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-11</td></tr><tr><td>On Call Locksmith</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>locksmiths</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-11</td></tr><tr><td>Southern Cross Locksmiths &amp; Auto Keys</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>locksmiths</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-11</td></tr><tr><td>Seddon Dental, Victoria St Clinic</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-09</td></tr><tr><td>Gorgeous Smiles Dentist Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-09</td></tr><tr><td>Smile Solutions - Dentist Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-09</td></tr><tr><td>Australian Dentists Clinic</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-09</td></tr><tr><td>Art De Dente - Dentist Melbourne CBD</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-09</td></tr><tr><td>Collins Street Dental</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-09</td></tr><tr><td>Melbourne Dentist Clinic</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button</td><td>2026-06-09</td></tr><tr><td>The Affordable Dentist Melbourne</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-09</td></tr><tr><td>MC Dental Melbourne Central Shopping Centre</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-09</td></tr><tr><td>Balaclava Dental Care</td><td>100</td><td><span class='pill hot'>Hot</span></td><td>dentists</td><td>AI voice, Web presence, Reputation, Call button, Email</td><td>2026-06-09</td></tr></tbody>
-    </table>
+
+    <!-- Segmented Control (Phase 2) -->
+    <div class="mb-5">
+      <div class="segmented-control">
+        <div onclick="setSegment(this, 'all')" class="segment active cursor-pointer" data-segment="all">All</div>
+        <div onclick="setSegment(this, 'high')" class="segment cursor-pointer" data-segment="high">High</div>
+        <div onclick="setSegment(this, 'multi')" class="segment cursor-pointer" data-segment="multi">Multi</div>
+        <div onclick="setSegment(this, 'ai-voice')" class="segment cursor-pointer" data-segment="ai-voice">AI Voice</div>
+      </div>
+    </div>
+
+    <!-- Dynamic Stats -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+      <div class="stat-card">
+        <div class="metric-label mb-1">TOTAL</div>
+        <div id="stat-total" class="text-[28px] font-semibold tracking-[-0.5px]">4</div>
+      </div>
+      <div class="stat-card">
+        <div class="metric-label mb-1">HIGH POTENTIAL</div>
+        <div id="stat-high" class="text-[28px] font-semibold tracking-[-0.5px] text-[#0071e3]">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="metric-label mb-1">AVG SEO</div>
+        <div id="stat-seo" class="text-[28px] font-semibold tracking-[-0.5px]">100</div>
+      </div>
+      <div class="stat-card">
+        <div class="metric-label mb-1">MULTI-OPP</div>
+        <div id="stat-multi" class="text-[28px] font-semibold tracking-[-0.5px]">0</div>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="mb-5">
+      <div class="relative">
+        <i class="fa-solid fa-search absolute left-4 top-3 text-[#8e8e93]"></i>
+        <input id="search-input" 
+               type="text" 
+               placeholder="Search by name or category" 
+               onkeyup="filterLeads()"
+               class="w-full bg-white border border-[#d2d2d7] rounded-3xl pl-11 pr-4 py-3 text-[15px] placeholder:text-[#8e8e93] focus:outline-none focus:border-[#0071e3]">
+      </div>
+    </div>
+
+    <!-- Leads Grid -->
+    <div id="leads-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <!-- Populated by JS -->
+    </div>
+
+    <div class="mt-8 text-center">
+      <p class="text-[11px] text-[#8e8e93]">Phase 2 • Segmented navigation • Dynamic hierarchy • Apple HIG</p>
+    </div>
   </div>
+
+  <!-- Detail Modal -->
+  <div id="modal" onclick="if (event.target.id === 'modal') closeModal()" 
+       class="hidden fixed inset-0 bg-black/50 z-[100] flex items-end sm:items-center justify-center">
+    <div onclick="event.stopImmediatePropagation()" 
+         class="bg-white w-full sm:max-w-[420px] sm:rounded-3xl sm:m-4 rounded-t-3xl ios-modal overflow-hidden">
+      
+      <!-- Modal Header -->
+      <div class="px-5 pt-5 pb-3 flex items-center justify-between border-b border-[#d2d2d7]">
+        <div class="flex-1 min-w-0">
+          <div id="modal-name" class="font-semibold text-[19px] tracking-[-0.3px] truncate"></div>
+          <div id="modal-category" class="text-[13px] text-[#8e8e93]"></div>
+        </div>
+        <button onclick="closeModal()" class="text-[32px] leading-none text-[#8e8e93] px-1 active:text-black">×</button>
+      </div>
+
+      <div class="p-5 space-y-5">
+        
+        <!-- Scores -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-[#f5f5f7] rounded-2xl p-4">
+            <div class="metric-label">SEO HEALTH</div>
+            <div id="modal-seo" class="score-large mt-1"></div>
+          </div>
+          <div class="bg-[#f5f5f7] rounded-2xl p-4">
+            <div class="metric-label">OVERALL HELP</div>
+            <div id="modal-overall" class="score-large mt-1"></div>
+          </div>
+        </div>
+
+        <!-- Recommended -->
+        <div>
+          <div class="metric-label mb-1.5">RECOMMENDED SERVICE</div>
+          <div id="modal-recommended" class="inline-block px-4 py-1 text-sm font-semibold bg-[#1d1d1f] text-white rounded-2xl"></div>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <div class="metric-label mb-1.5">CONTACT</div>
+          <div id="modal-contact" class="space-y-1 text-[15px]"></div>
+        </div>
+
+        <!-- Outreach -->
+        <div>
+          <div class="metric-label mb-2">OUTREACH</div>
+          
+          <!-- SMS -->
+          <div class="mb-3 border border-[#d2d2d7] rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="flex items-center gap-x-2 text-sm font-semibold">
+                <i class="fa-solid fa-comment-dots text-[#0071e3]"></i>
+                <span>SMS</span>
+              </div>
+              <button onclick="copySMS()" class="text-xs px-3 py-1 bg-[#f5f5f7] active:bg-[#e5e5e7] rounded-2xl flex items-center gap-x-1">
+                <i class="fa-regular fa-copy text-xs"></i>
+                <span>Copy</span>
+              </button>
+            </div>
+            <div id="modal-sms" class="text-sm leading-snug text-[#1d1d1f]"></div>
+          </div>
+
+          <!-- Email - hidden behind icon -->
+          <div class="flex items-center gap-x-2 mb-1">
+            <div class="text-sm font-semibold">Email</div>
+            <button onclick="toggleEmailPopover(event)" 
+                    class="w-8 h-8 flex items-center justify-center text-[#0071e3] hover:bg-[#f0f7ff] active:bg-[#e0f0ff] rounded-full">
+              <i class="fa-solid fa-envelope"></i>
+            </button>
+            <span class="text-xs text-[#8e8e93]">tap to view</span>
+          </div>
+
+          <div id="email-popover" class="hidden border border-[#d2d2d7] rounded-2xl p-4 bg-[#f8fafc] text-sm popover">
+            <div class="flex justify-between mb-1">
+              <div class="text-xs font-medium text-[#8e8e93]">SUBJECT</div>
+              <button onclick="copyEmailDraft()" class="text-xs px-2 py-0.5 bg-white border border-[#d2d2d7] rounded-xl">Copy</button>
+            </div>
+            <div id="modal-email-subject" class="font-medium text-[#1d1d1f] mb-3"></div>
+            
+            <div class="text-xs font-medium text-[#8e8e93] mb-1">BODY</div>
+            <div id="modal-email-body" class="text-[#1d1d1f] whitespace-pre-line text-sm leading-relaxed"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="border-t p-4 flex gap-3 bg-[#f5f5f7]">
+        <button onclick="openWebsite()" class="flex-1 py-3 bg-white border border-[#d2d2d7] active:bg-[#f2f2f7] rounded-2xl text-sm font-semibold flex items-center justify-center gap-x-2">
+          <i class="fa-solid fa-external-link-alt"></i>
+          <span>Website</span>
+        </button>
+        <button onclick="copyFullEmail()" class="flex-1 py-3 bg-white border border-[#d2d2d7] active:bg-[#f2f2f7] rounded-2xl text-sm font-semibold flex items-center justify-center gap-x-2">
+          <i class="fa-solid fa-envelope"></i>
+          <span>Email</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let leads = [
+      {
+        id: 1,
+        name: "Lapeau Medi Spa",
+        category: "med spa",
+        location: "Melbourne, VIC",
+        website: "https://www.lapeaumedispa.com.au/",
+        seo: 100,
+        overall: 11,
+        recommended: "AI Voice",
+        priority: "low",
+        multi: false,
+        phone: "+61 405 851 919",
+        email: "reception@lapeaumedispa.com.au",
+        sms: "Hi Lapeau, I help med spas in Melbourne get more bookings with a natural 24/7 AI receptionist. Open to a quick 10-min chat?",
+        email_subject: "More bookings + better website for Lapeau Medi Spa in Melbourne",
+        email_body: "Hi Lapeau,\n\nI came across Lapeau Medi Spa while looking at strong med spas in Melbourne.\n\nA lot of places like yours are losing enquiries because calls go unanswered after hours and the website/SEO isn't converting well.\n\nWe’ve built a simple system that combines AI voice receptionist + website optimization + reputation management.\n\nWould you be open to a short 10-15 min call this week?\n\nBest,\nMarvelus"
+      },
+      {
+        id: 2,
+        name: "Chuan Spa",
+        category: "med spa",
+        location: "Southbank, VIC",
+        website: "https://www.langhamhotels.com/en/the-langham/melbourne/wellness/chuan-spa/",
+        seo: 100,
+        overall: 13,
+        recommended: "AI Voice",
+        priority: "low",
+        multi: false,
+        phone: "+61 3 8696 8111",
+        email: "",
+        sms: "Hi Chuan Spa, natural AI receptionist that books clients 24/7 for spas like yours in Melbourne. 10-min chat?",
+        email_subject: "AI receptionist for Chuan Spa in Melbourne (24/7 booking)",
+        email_body: "Hi Chuan Spa,\n\nI help med spas in Melbourne get more bookings with a natural Australian AI receptionist that answers 24/7 and books clients straight into your calendar.\n\nWould you be open to a quick 10-min chat this week?\n\nBest,\nMarvelus"
+      },
+      {
+        id: 3,
+        name: "Body Catalyst",
+        category: "med spa",
+        location: "Melbourne CBD, VIC",
+        website: "https://www.bodycatalyst.com.au/locations/melbourne-central/",
+        seo: 100,
+        overall: 6,
+        recommended: "AI Voice",
+        priority: "low",
+        multi: false,
+        phone: "+61 3 9988 1251",
+        email: "",
+        sms: "Hi Body Catalyst, I help med spas in Melbourne stop missing calls with a natural-sounding AI receptionist. Quick chat?",
+        email_subject: "AI receptionist for Body Catalyst in Melbourne (24/7 booking)",
+        email_body: "Hi Body Catalyst,\n\nI help med spas in Melbourne get more bookings with a natural Australian AI receptionist that answers 24/7 and books clients straight into your calendar.\n\nWould you be open to a quick 10-min chat this week?\n\nBest,\nMarvelus"
+      },
+      {
+        id: 4,
+        name: "IZUMI Japanese Massage and Day Spa",
+        category: "med spa",
+        location: "Melbourne CBD, VIC",
+        website: "https://www.izumimassage.com.au/",
+        seo: 100,
+        overall: 8,
+        recommended: "AI Voice",
+        priority: "low",
+        multi: false,
+        phone: "+61 3 9044 9230",
+        email: "info@izumimassage.com.au",
+        sms: "Hi IZUMI, I help day spas in Melbourne with a 24/7 AI receptionist that answers and books automatically. 10-min look?",
+        email_subject: "AI receptionist for IZUMI Japanese Massage and Day Spa in Melbourne (24/7 booking)",
+        email_body: "Hi IZUMI,\n\nI help day spas in Melbourne get more bookings with a natural Australian AI receptionist that answers 24/7 and books clients straight into your calendar.\n\nWould you be open to a quick 10-min chat this week?\n\nBest,\nMarvelus"
+      }
+    ];
+
+    let currentSegment = 'all';
+    let currentSearch = '';
+
+    function updateStats(filteredLeads) {
+      const total = filteredLeads.length;
+      const high = filteredLeads.filter(l => l.priority === 'high').length;
+      const avgSeo = total > 0 ? Math.round(filteredLeads.reduce((s, l) => s + l.seo, 0) / total) : 0;
+      const multi = filteredLeads.filter(l => l.multi).length;
+
+      document.getElementById('stat-total').textContent = total;
+      document.getElementById('stat-high').textContent = high;
+      document.getElementById('stat-seo').textContent = avgSeo;
+      document.getElementById('stat-multi').textContent = multi;
+    }
+
+    function renderLeads(filteredLeads) {
+      const grid = document.getElementById('leads-grid');
+      grid.innerHTML = '';
+
+      if (filteredLeads.length === 0) {
+        grid.innerHTML = `<div class="col-span-full py-12 text-center text-[#8e8e93]">No leads match your current view.</div>`;
+        return;
+      }
+
+      filteredLeads.forEach(lead => {
+        const card = document.createElement('div');
+        card.className = `lead-card p-5 cursor-pointer`;
+        
+        card.innerHTML = `
+          <div class="flex justify-between items-start mb-3">
+            <div class="min-w-0 flex-1">
+              <div class="lead-name truncate">${lead.name}</div>
+              <div class="meta-text mt-0.5">${lead.category} • ${lead.location}</div>
+            </div>
+            <div class="recommended-pill text-xs ml-3 flex-shrink-0">${lead.recommended}</div>
+          </div>
+
+          <div class="flex gap-5 mb-4">
+            <div>
+              <div class="score-large ${lead.seo >= 70 ? 'text-[#30d158]' : 'text-[#ff9500]'}">${lead.seo}</div>
+              <div class="metric-label">SEO</div>
+            </div>
+            <div>
+              <div class="score-large text-[#1d1d1f]">${lead.overall}</div>
+              <div class="metric-label">HELP</div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 border-t border-[#f2f2f7]">
+            <div class="flex items-center gap-x-2">
+              <span class="px-2 py-px text-[10px] font-semibold rounded-full ${lead.priority === 'high' ? 'bg-[#ff3b30] text-white' : 'bg-[#8e8e93] text-white'}">${lead.priority.toUpperCase()}</span>
+              ${lead.multi ? `<span class="px-2 py-px text-[10px] font-semibold bg-[#0071e3] text-white rounded-full">MULTI</span>` : ''}
+            </div>
+
+            <div class="flex gap-x-1">
+              <button onclick="event.stopImmediatePropagation(); copyLeadSMS(${lead.id});" class="px-2 py-1 text-xs active:bg-[#f2f2f7] rounded-xl"><i class="fa-regular fa-copy"></i></button>
+              <button onclick="event.stopImmediatePropagation(); window.open('${lead.website}', '_blank');" class="px-2 py-1 text-xs active:bg-[#f2f2f7] rounded-xl"><i class="fa-solid fa-external-link-alt"></i></button>
+            </div>
+          </div>
+        `;
+        
+        card.onclick = () => showLeadDetail(lead);
+        grid.appendChild(card);
+      });
+    }
+
+    function filterLeads() {
+      currentSearch = document.getElementById('search-input').value.toLowerCase().trim();
+      
+      let filtered = leads.filter(lead => {
+        const matchesSearch = !currentSearch || lead.name.toLowerCase().includes(currentSearch) || lead.category.toLowerCase().includes(currentSearch);
+        
+        let matchesSegment = true;
+        if (currentSegment === 'high') matchesSegment = lead.priority === 'high';
+        else if (currentSegment === 'multi') matchesSegment = lead.multi;
+        else if (currentSegment === 'ai-voice') matchesSegment = lead.recommended.toLowerCase().includes('voice');
+        
+        return matchesSearch && matchesSegment;
+      });
+
+      renderLeads(filtered);
+      updateStats(filtered);
+    }
+
+    function setSegment(element, segment) {
+      document.querySelectorAll('.segment').forEach(el => el.classList.remove('active'));
+      element.classList.add('active');
+      
+      currentSegment = segment;
+      filterLeads();
+    }
+
+    function showLeadDetail(lead) {
+      const modal = document.getElementById('modal');
+      
+      document.getElementById('modal-name').textContent = lead.name;
+      document.getElementById('modal-category').textContent = `${lead.category} • ${lead.location}`;
+      document.getElementById('modal-seo').textContent = lead.seo;
+      document.getElementById('modal-overall').textContent = lead.overall;
+      document.getElementById('modal-recommended').textContent = lead.recommended;
+
+      const contactEl = document.getElementById('modal-contact');
+      contactEl.innerHTML = `
+        ${lead.phone ? `<div class="flex items-center gap-x-2"><i class="fa-solid fa-phone w-4 text-[#8e8e93]"></i><span>${lead.phone}</span></div>` : ''}
+        ${lead.email ? `<div class="flex items-center gap-x-2"><i class="fa-solid fa-envelope w-4 text-[#8e8e93]"></i><span>${lead.email}</span></div>` : ''}
+      `;
+
+      document.getElementById('modal-sms').textContent = lead.sms || "No SMS draft.";
+      
+      // Store email data
+      modal.dataset.currentLeadId = lead.id;
+      modal.dataset.emailSubject = lead.email_subject || '';
+      modal.dataset.emailBody = lead.email_body || '';
+
+      const popover = document.getElementById('email-popover');
+      popover.classList.add('hidden');
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function toggleEmailPopover(event) {
+      event.stopImmediatePropagation();
+      const popover = document.getElementById('email-popover');
+      const modal = document.getElementById('modal');
+      
+      if (!modal.dataset.emailSubject && !modal.dataset.emailBody) {
+        showToast("No email draft available");
+        return;
+      }
+
+      document.getElementById('modal-email-subject').textContent = modal.dataset.emailSubject;
+      document.getElementById('modal-email-body').textContent = modal.dataset.emailBody;
+
+      popover.classList.toggle('hidden');
+    }
+
+    function copySMS() {
+      const modal = document.getElementById('modal');
+      const leadId = parseInt(modal.dataset.currentLeadId);
+      const lead = leads.find(l => l.id === leadId);
+      if (lead?.sms) {
+        navigator.clipboard.writeText(lead.sms).then(() => showToast("SMS copied"));
+      }
+    }
+
+    function copyEmailDraft() {
+      const modal = document.getElementById('modal');
+      const subject = modal.dataset.emailSubject || '';
+      const body = modal.dataset.emailBody || '';
+      navigator.clipboard.writeText(`Subject: ${subject}\n\n${body}`).then(() => {
+        showToast("Email draft copied");
+        document.getElementById('email-popover').classList.add('hidden');
+      });
+    }
+
+    function copyFullEmail() {
+      const modal = document.getElementById('modal');
+      const leadId = parseInt(modal.dataset.currentLeadId);
+      const lead = leads.find(l => l.id === leadId);
+      if (!lead) return;
+
+      const subject = modal.dataset.emailSubject || `Quick question for ${lead.name}`;
+      const body = modal.dataset.emailBody || `Hi ${lead.name.split(' ')[0]},\n\nI help ${lead.category} businesses in Melbourne.\n\nBest,\nMarvelus`;
+      
+      window.location.href = `mailto:${lead.email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
+    function openWebsite() {
+      const modal = document.getElementById('modal');
+      const leadId = parseInt(modal.dataset.currentLeadId);
+      const lead = leads.find(l => l.id === leadId);
+      if (lead?.website) window.open(lead.website, '_blank');
+    }
+
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.className = `fixed bottom-5 left-1/2 -translate-x-1/2 bg-black text-white text-sm px-4 py-2 rounded-3xl shadow-xl`;
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => {
+        t.style.transition = 'opacity 0.2s';
+        t.style.opacity = '0';
+        setTimeout(() => t.remove(), 120);
+      }, 1400);
+    }
+
+    function filterLeadsBySegment() {
+      // handled in setSegment
+    }
+
+    function refreshData() {
+      const grid = document.getElementById('leads-grid');
+      grid.style.opacity = '0.4';
+      setTimeout(() => {
+        renderLeads(leads);
+        updateStats(leads);
+        grid.style.opacity = '1';
+      }, 180);
+    }
+
+    function init() {
+      // Initial render
+      renderLeads(leads);
+      updateStats(leads);
+
+      // Search
+      document.getElementById('search-input').addEventListener('input', filterLeads);
+
+      // Keyboard
+      document.addEventListener('keydown', e => {
+        if (e.key === '/' && document.activeElement.tagName === 'BODY') {
+          e.preventDefault();
+          document.getElementById('search-input').focus();
+        }
+      });
+
+      console.log('%c[Phase 2] Refined Apple HIG dashboard', 'color:#8e8e93');
+    }
+
+    window.onload = init;
+  </script>
 </body>
 </html>
