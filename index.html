@@ -331,13 +331,65 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Streak flame */
-    .streak-flame {
-      animation: flamePulse 2s ease-in-out infinite;
+    /* Shimmering gold button */
+    .btn-gold-shimmer {
+      background: linear-gradient(135deg, #d4a574, #f0c987, #e8b96a, #d4a574);
+      background-size: 300% 300%;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      animation: shimmerGold 3s ease infinite;
+      box-shadow: 0 2px 12px rgba(212,165,116,0.3);
     }
-    @keyframes flamePulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.15); }
+    .btn-gold-shimmer:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(212,165,116,0.5);
+    }
+    @keyframes shimmerGold {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Real progress bar */
+    .progress-track {
+      background: var(--border-subtle);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-fill-live {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .progress-fill-live::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: progressShimmer 2s ease-in-out infinite;
+    }
+    @keyframes progressShimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* Streak hidden by default */
+    .streak-hidden {
+      display: none !important;
     }
 
     /* Metric block in modal */
@@ -381,12 +433,9 @@
     <!-- Header -->
     <div class="flex items-center justify-between mb-8">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0055ff] to-[#00a86b] flex items-center justify-center shadow-lg shadow-blue-500/20">
-          <i class="fa-solid fa-bolt text-white text-sm"></i>
-        </div>
         <div>
-          <h1 class="text-xl font-bold tracking-tight text-[#1a1a1a]">Pipeline</h1>
-          <p class="text-sm text-[#a0a0a0]">Marvelus Lead Engine</p>
+          <h1 class="text-xl font-bold tracking-tight text-[#1a1a1a]">Lead Engine</h1>
+          <p class="text-sm text-[#a0a0a0]">Marvelus</p>
         </div>
       </div>
       <div class="flex items-center gap-3">
@@ -398,9 +447,9 @@
           </div>
           <span class="text-xs text-[#a0a0a0] font-mono">65%</span>
         </div>
-        <!-- Streak -->
-        <div class="flex items-center gap-1.5 bg-white border border-[#e8e8e6] rounded-xl px-3 py-2">
-          <i class="fa-solid fa-fire text-[#f5a623] streak-flame text-sm"></i>
+        <!-- Streak (hidden until achieved) -->
+        <div id="streak-badge" class="streak-hidden flex items-center gap-1.5 bg-white border border-[#e8e8e6] rounded-xl px-3 py-2">
+          <i class="fa-solid fa-fire text-[#f5a623] text-sm"></i>
           <span class="text-sm font-bold text-[#1a1a1a]">5</span>
           <span class="text-xs text-[#a0a0a0]">day streak</span>
         </div>
@@ -417,14 +466,14 @@
           <i class="fa-solid fa-chart-line text-[#0055ff] text-sm"></i>
           <span class="text-sm font-semibold text-[#1a1a1a]">Progress to Level 4</span>
         </div>
-        <span class="text-xs text-[#a0a0a0] font-mono">12 / 20 deals</span>
+        <span id="progress-text" class="text-xs text-[#a0a0a0] font-mono">0 / 20 deals</span>
       </div>
-      <div class="progress-mercury">
-        <div class="progress-fill-mercury bg-gradient-to-r from-[#0055ff] to-[#00a86b]" style="width: 60%"></div>
+      <div class="progress-track h-2">
+        <div id="progress-bar" class="progress-fill-live" style="width: 0%"></div>
       </div>
-      <div class="flex justify-between mt-2 text-xs text-[#a0a0a0]">
-        <span>Contact 3 more leads</span>
-        <span>Close 2 more deals</span>
+      <div id="progress-hint" class="flex justify-between mt-2 text-xs text-[#a0a0a0]">
+        <span>Close your first deal to start progress</span>
+        <span>20 deals to Level 4</span>
       </div>
     </div>
 
@@ -763,7 +812,7 @@
             <i class="fa-solid fa-phone"></i>
             <span>Mark Contacted</span>
           </button>
-          <button onclick="markClosed()" id="btn-closed" class="btn-primary flex-1 py-3 text-sm font-semibold flex items-center justify-center gap-2">
+          <button onclick="markClosed()" id="btn-closed" class="btn-gold-shimmer flex-1 py-3 text-sm font-semibold flex items-center justify-center gap-2">
             <i class="fa-solid fa-trophy"></i>
             <span>Mark Closed</span>
           </button>
@@ -802,6 +851,35 @@
       const elClosed = document.getElementById('stat-closed');
       if (elContacted) elContacted.textContent = contactedCount;
       if (elClosed) elClosed.textContent = closedCount;
+      
+      // Update progress bar
+      const progressBar = document.getElementById('progress-bar');
+      const progressText = document.getElementById('progress-text');
+      const progressHint = document.getElementById('progress-hint');
+      const streakBadge = document.getElementById('streak-badge');
+      
+      if (progressBar) {
+        const pct = Math.min((closedCount / 20) * 100, 100);
+        progressBar.style.width = pct + '%';
+      }
+      if (progressText) {
+        progressText.textContent = closedCount + ' / 20 deals';
+      }
+      if (progressHint) {
+        const remaining = Math.max(20 - closedCount, 0);
+        if (remaining === 0) {
+          progressHint.innerHTML = '<span>Level 4 achieved!</span><span>Keep closing</span>';
+        } else if (closedCount === 0) {
+          progressHint.innerHTML = '<span>Close your first deal to start</span><span>20 to Level 4</span>';
+        } else {
+          progressHint.innerHTML = '<span>' + remaining + ' more to Level 4</span><span>Keep going</span>';
+        }
+      }
+      
+      // Show streak only when contacted > 0
+      if (streakBadge && contactedCount > 0) {
+        streakBadge.classList.remove('streak-hidden');
+      }
     }
 
     function updateStats(filtered) {
@@ -858,7 +936,10 @@
                 <div class="text-sm text-[#a0a0a0]">${lead.category || 'business'} • ${lead.location || 'Unknown'}</div>
               </div>
               <div class="flex items-center gap-2 ml-2 flex-shrink-0">
-                <span class="px-2.5 py-1 text-[10px] font-bold rounded-lg ${badgeClass}">${badgeText}</span>
+                <span class="px-2 py-1 text-[10px] font-semibold ${badgeClass} rounded-lg flex items-center gap-1">
+                ${badgeText === 'HOT' ? '<i class="fa-solid fa-fire text-[10px]"></i>' : ''}
+                ${badgeText}
+              </span>
               </div>
             </div>
 
