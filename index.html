@@ -798,8 +798,10 @@
     }
 
     function updateGamificationStats() {
-      document.getElementById('stat-contacted').textContent = contactedCount;
-      document.getElementById('stat-closed').textContent = closedCount;
+      const elContacted = document.getElementById('stat-contacted');
+      const elClosed = document.getElementById('stat-closed');
+      if (elContacted) elContacted.textContent = contactedCount;
+      if (elClosed) elClosed.textContent = closedCount;
     }
 
     function updateStats(filtered) {
