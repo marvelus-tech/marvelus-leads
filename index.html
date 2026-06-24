@@ -1,101 +1,695 @@
-
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset='utf-8'/>
-  <title>Leadgen Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Leads • Marvelus</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
-    body { font-family: Arial, sans-serif; margin: 24px; }
-    .kpi { display:inline-block; margin-right: 24px; padding:12px; background:#f5f5f5; border-radius:8px; }
-    .multi { background:#e6f7ff; padding:2px 6px; border-radius:4px; }
-    table { border-collapse: collapse; width:100%; margin-top:16px; }
-    th, td { border:1px solid #ddd; padding:8px; text-align:left; font-size:13px; }
-    th { background:#222; color:#fff; }
-    .score { font-weight: bold; }
-    .seo-low { color: #d32f2f; }
-    .seo-med { color: #f57c00; }
-    .seo-high { color: #388e3c; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=SF+Pro+Display:wght@400;500;600&display=swap');
+    
+    :root {
+      --apple-blue: #0071e3;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    .apple-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+      transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1), 
+                  box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+    
+    .apple-card:active {
+      transform: scale(0.985);
+    }
+    
+    .lead-card {
+      transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+    
+    .lead-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
+    }
+    
+    .section-header {
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+    
+    .score-value {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+    
+    .metric-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+    
+    .filter-chip {
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.1s ease;
+      white-space: nowrap;
+      border: 1px solid #e5e7eb;
+    }
+    
+    .filter-chip.active {
+      background-color: #000;
+      color: white;
+      border-color: #000;
+    }
+    
+    .lead-name {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      line-height: 1.25;
+    }
+    
+    .recommended-pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 9999px;
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+    
+    .stat-number {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    
+    .modal {
+      animation: modalEnter 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    
+    @keyframes modalEnter {
+      from { opacity: 0; transform: translateY(20px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    
+    .ios-toast {
+      animation: toastIn 0.2s ease forwards;
+    }
+    
+    .metric-box {
+      background: #f8fafc;
+      border-radius: 12px;
+    }
+    
+    .lead-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    
+    @media (min-width: 640px) {
+      .lead-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .lead-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    
+    .subtle-shadow {
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
   </style>
 </head>
-<body>
-  <h1>Lead Pipeline Dashboard</h1>
-  <div class='kpi'>Total Leads: <b>4</b></div>
-  <div class='kpi'>High Priority: <b>0</b></div>
-  <div class='kpi'>Due Follow-ups: <b>0</b></div>
+<body class="bg-[#f5f5f7] text-[#1d1d1f]">
+  <!-- Header -->
+  <div class="sticky top-0 z-50 bg-[#f5f5f7]/95 backdrop-blur-lg border-b border-[#d2d2d7]">
+    <div class="max-w-screen-xl mx-auto px-5 pt-5 pb-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-x-3">
+          <div class="w-9 h-9 bg-black rounded-2xl flex items-center justify-center">
+            <i class="fa-solid fa-rocket text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="font-semibold text-2xl tracking-[-0.5px]">Leads</div>
+            <div class="text-[#86868b] text-[13px] -mt-0.5">Marvelus • Phase 1</div>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-x-2">
+          <div class="px-3 py-1 bg-white border border-[#d2d2d7] rounded-3xl text-xs font-medium flex items-center gap-x-1.5">
+            <div class="w-2 h-2 bg-[#34c759] rounded-full animate-pulse"></div>
+            <span class="text-[#1d1d1f]">Live</span>
+          </div>
+          <button onclick="refreshData()" 
+                  class="px-3.5 py-2 text-sm font-medium bg-white border border-[#d2d2d7] hover:bg-[#f5f5f7] active:bg-[#e5e5e7] rounded-3xl flex items-center gap-x-2 transition-colors">
+            <i class="fa-solid fa-sync text-xs"></i>
+            <span class="hidden sm:inline text-sm">Refresh</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Meta -->
+      <div class="mt-3 flex items-center text-xs text-[#86868b]">
+        <div>Pipeline run • 24 Jun 2026</div>
+        <div class="mx-2">•</div>
+        <div id="lead-count">4 leads • 4 med spas</div>
+      </div>
+    </div>
+  </div>
 
-  <h2>Top Opportunities (Phase 1+2 Intelligence)</h2>
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Category</th>
-      <th>SEO Health</th>
-      <th>Overall Help</th>
-      <th>Multi?</th>
-      <th>Recommended</th>
-      <th>Priority</th>
-      <th>Stage</th>
-      <th>Website</th>
-    </tr>
+  <div class="max-w-screen-xl mx-auto px-5 py-6">
     
-    <tr>
-      <td>Chuan Spa</td>
-      <td>med spa</td>
-      <td class="seo-high">
-        100
-      </td>
-      <td class="score">13</td>
-      <td>No</td>
-      <td>AI Voice</td>
-      <td>low</td>
-      <td>cold</td>
-      <td><a href="https://www.langhamhotels.com/en/the-langham/melbourne/wellness/chuan-spa/">link</a></td>
-    </tr>
-    
-    <tr>
-      <td>Lapeau Medi Spa</td>
-      <td>med spa</td>
-      <td class="seo-high">
-        100
-      </td>
-      <td class="score">11</td>
-      <td>No</td>
-      <td>AI Voice</td>
-      <td>low</td>
-      <td>cold</td>
-      <td><a href="https://www.lapeaumedispa.com.au/">link</a></td>
-    </tr>
-    
-    <tr>
-      <td>IZUMI Japanese Massage and Day Spa</td>
-      <td>med spa</td>
-      <td class="seo-high">
-        100
-      </td>
-      <td class="score">8</td>
-      <td>No</td>
-      <td>AI Voice</td>
-      <td>low</td>
-      <td>cold</td>
-      <td><a href="https://www.izumimassage.com.au/">link</a></td>
-    </tr>
-    
-    <tr>
-      <td>Body Catalyst</td>
-      <td>med spa</td>
-      <td class="seo-high">
-        100
-      </td>
-      <td class="score">6</td>
-      <td>No</td>
-      <td>AI Voice</td>
-      <td>low</td>
-      <td>cold</td>
-      <td><a href="https://www.bodycatalyst.com.au/locations/melbourne-central/?utm_source=gmb&utm_medium=organic&utm_campaign=gmb-melb-central">link</a></td>
-    </tr>
-    
-  </table>
+    <!-- Stats -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-7">
+      <div class="bg-white rounded-3xl p-4 border border-[#d2d2d7]">
+        <div class="text-[#86868b] text-xs font-medium tracking-wider">TOTAL</div>
+        <div id="stat-total" class="stat-number mt-1">4</div>
+      </div>
+      <div class="bg-white rounded-3xl p-4 border border-[#d2d2d7]">
+        <div class="text-[#86868b] text-xs font-medium tracking-wider">HIGH POTENTIAL</div>
+        <div id="stat-high" class="stat-number mt-1 text-[#0071e3]">0</div>
+      </div>
+      <div class="bg-white rounded-3xl p-4 border border-[#d2d2d7]">
+        <div class="text-[#86868b] text-xs font-medium tracking-wider">AVG SEO HEALTH</div>
+        <div id="stat-seo" class="stat-number mt-1">100</div>
+      </div>
+      <div class="bg-white rounded-3xl p-4 border border-[#d2d2d7]">
+        <div class="text-[#86868b] text-xs font-medium tracking-wider">MULTI-OPP</div>
+        <div id="stat-multi" class="stat-number mt-1">0</div>
+      </div>
+    </div>
 
-  <p><small>Phase 1: SEO health from website analysis. Phase 2: Multi-dimensional scoring (AI Voice / Web-SEO / Reputation / Booking).</small></p>
+    <!-- Search + Filters -->
+    <div class="mb-5">
+      <!-- Search -->
+      <div class="relative mb-4">
+        <i class="fa-solid fa-search absolute left-4 top-3.5 text-[#86868b]"></i>
+        <input id="search-input" 
+               type="text" 
+               placeholder="Search leads..." 
+               onkeyup="filterLeads()"
+               class="w-full bg-white border border-[#d2d2d7] rounded-3xl pl-11 pr-4 py-[13px] text-[15px] placeholder:text-[#86868b] focus:outline-none focus:border-[#0071e3]">
+      </div>
+      
+      <!-- Filter chips -->
+      <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+        <div onclick="setFilter(this, 'all')" class="filter-chip active cursor-pointer px-4 py-1.5 text-sm" data-filter="all">All</div>
+        <div onclick="setFilter(this, 'high')" class="filter-chip cursor-pointer px-4 py-1.5 text-sm" data-filter="high">High</div>
+        <div onclick="setFilter(this, 'medium')" class="filter-chip cursor-pointer px-4 py-1.5 text-sm" data-filter="medium">Medium</div>
+        <div onclick="setFilter(this, 'multi')" class="filter-chip cursor-pointer px-4 py-1.5 text-sm" data-filter="multi">Multi-opportunity</div>
+        <div onclick="setFilter(this, 'ai-voice')" class="filter-chip cursor-pointer px-4 py-1.5 text-sm" data-filter="ai-voice">AI Voice</div>
+        <div onclick="setFilter(this, 'med-spa')" class="filter-chip cursor-pointer px-4 py-1.5 text-sm" data-filter="med-spa">Med Spa</div>
+      </div>
+    </div>
+
+    <!-- Leads Grid -->
+    <div id="leads-grid" class="lead-grid">
+      <!-- Populated by JS -->
+    </div>
+    
+    <div class="mt-6 text-center">
+      <div class="inline-flex items-center text-xs text-[#86868b]">
+        <i class="fa-solid fa-info-circle mr-1.5"></i>
+        <span>Phase 1 • Mobile-first cards • Tap any lead for details</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lead Detail Modal -->
+  <div id="modal" onclick="if (event.target.id === 'modal') closeModal()" class="hidden fixed inset-0 bg-black/40 z-[100] flex items-end sm:items-center justify-center">
+    <div onclick="event.stopImmediatePropagation()" 
+         class="bg-white w-full sm:w-[460px] sm:rounded-3xl sm:m-4 rounded-t-3xl max-h-[92vh] overflow-hidden modal">
+      
+      <!-- Modal Header -->
+      <div class="px-5 pt-5 pb-3 flex items-center justify-between border-b">
+        <div>
+          <div id="modal-name" class="font-semibold text-xl tracking-[-0.3px]"></div>
+          <div id="modal-category" class="text-sm text-[#86868b]"></div>
+        </div>
+        <button onclick="closeModal()" class="w-9 h-9 flex items-center justify-center text-2xl text-[#86868b] active:text-black">×</button>
+      </div>
+      
+      <div class="p-5 overflow-y-auto max-h-[calc(92vh-140px)]">
+        
+        <!-- Scores -->
+        <div class="grid grid-cols-2 gap-3 mb-6">
+          <div class="bg-[#f5f5f7] rounded-2xl p-4">
+            <div class="text-xs text-[#86868b] font-medium">SEO HEALTH</div>
+            <div id="modal-seo" class="text-5xl font-semibold mt-1 tracking-[-1.5px]"></div>
+          </div>
+          <div class="bg-[#f5f5f7] rounded-2xl p-4">
+            <div class="text-xs text-[#86868b] font-medium">OVERALL HELP</div>
+            <div id="modal-overall" class="text-5xl font-semibold mt-1 tracking-[-1.5px]"></div>
+          </div>
+        </div>
+
+        <!-- Recommended -->
+        <div class="mb-6">
+          <div class="text-xs font-medium text-[#86868b] mb-1.5">RECOMMENDED</div>
+          <div id="modal-recommended" 
+               class="inline-block px-4 py-1.5 text-sm font-semibold bg-[#000] text-white rounded-2xl"></div>
+        </div>
+
+        <!-- Contact -->
+        <div class="mb-6">
+          <div class="text-xs font-medium text-[#86868b] mb-2">CONTACT</div>
+          <div class="space-y-2 text-sm">
+            <div id="modal-phone-row" class="flex items-center gap-2">
+              <i class="fa-solid fa-phone text-[#86868b] w-4"></i>
+              <span id="modal-phone" class="font-medium"></span>
+            </div>
+            <div id="modal-email-row" class="flex items-center gap-2">
+              <i class="fa-solid fa-envelope text-[#86868b] w-4"></i>
+              <span id="modal-email" class="font-medium"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Outreach Drafts -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-xs font-medium text-[#86868b]">OUTREACH DRAFT</div>
+          </div>
+          
+          <div class="border border-[#e5e7eb] rounded-2xl p-4 bg-white">
+            <div class="flex items-center justify-between mb-2">
+              <div class="text-sm font-semibold">SMS</div>
+              <button onclick="copySMS()" 
+                      class="text-xs font-medium px-3 py-1 bg-[#f5f5f7] hover:bg-[#e5e5e7] active:bg-[#d2d2d7] rounded-2xl flex items-center gap-x-1.5">
+                <i class="fa-regular fa-copy text-xs"></i>
+                <span>Copy</span>
+              </button>
+            </div>
+            <div id="modal-sms" class="text-sm leading-snug text-[#1d1d1f] font-light"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Modal Actions -->
+      <div class="border-t p-4 flex gap-3 bg-[#f5f5f7]">
+        <button onclick="openWebsite()" 
+                class="flex-1 py-3 text-sm font-semibold bg-white border border-[#d2d2d7] active:bg-[#f1f1f3] rounded-2xl flex items-center justify-center gap-x-2">
+          <i class="fa-solid fa-external-link-alt"></i>
+          <span>Website</span>
+        </button>
+        <button onclick="copyEmail()" 
+                class="flex-1 py-3 text-sm font-semibold bg-white border border-[#d2d2d7] active:bg-[#f1f1f3] rounded-2xl flex items-center justify-center gap-x-2">
+          <i class="fa-solid fa-envelope"></i>
+          <span>Email</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind script
+    function initTailwind() {
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              'sf': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'sans-serif']
+            }
+          }
+        }
+      };
+    }
+
+    // Data - Phase 1 uses the latest pipeline flight (4 real med spa leads)
+    let leads = [
+      {
+        id: 1,
+        name: "Lapeau Medi Spa",
+        category: "med spa",
+        location: "Melbourne, VIC",
+        website: "https://www.lapeaumedispa.com.au/",
+        seo: 100,
+        overall: 11,
+        recommended: "AI Voice",
+        priority: "low",
+        multi: false,
+        phone: "+61 405 851 919",
+        email: "reception@lapeaumedispa.com.au",
+        sms: "Hi Lapeau, I help med spas in Melbourne get more bookings with a natural 24/7 AI receptionist. Open to a quick 10-min chat?"
+      },
+      {
+        id: 2,
+        name: "Chuan Spa",
+        category: "med spa",
+        location: "Southbank, VIC",
+        website: "https://www.langhamhotels.com/en/the-langham/melbourne/wellness/chuan-spa/",
+        seo: 100,
+        overall: 13,
+        recommended: "AI Voice",
+        priority: "low",
+        multi: false,
+        phone: "+61 3 8696 8111",
+        email: "",
+        sms: "Hi Chuan Spa, natural AI receptionist that books clients 24/7 for spas like yours in Melbourne. 10-min chat?"
+      },
+      {
+        id: 3,
+        name: "Body Catalyst",
+        category: "med spa",
+        location: "Melbourne CBD, VIC",
+        website: "https://www.bodycatalyst.com.au/locations/melbourne-central/",
+        seo: 100,
+        overall: 6,
+        recommended: "AI Voice",
+        priority: "low",
+        multi: false,
+        phone: "+61 3 9988 1251",
+        email: "",
+        sms: "Hi Body Catalyst, I help med spas in Melbourne stop missing calls with a natural-sounding AI receptionist. Quick chat?"
+      },
+      {
+        id: 4,
+        name: "IZUMI Japanese Massage and Day Spa",
+        category: "med spa",
+        location: "Melbourne CBD, VIC",
+        website: "https://www.izumimassage.com.au/",
+        seo: 100,
+        overall: 8,
+        recommended: "AI Voice",
+        priority: "low",
+        multi: false,
+        phone: "+61 3 9044 9230",
+        email: "info@izumimassage.com.au",
+        sms: "Hi IZUMI, I help day spas in Melbourne with a 24/7 AI receptionist that answers and books automatically. 10-min look?"
+      }
+    ];
+
+    let currentFilter = 'all';
+    let currentSearch = '';
+
+    function updateStats() {
+      const total = leads.length;
+      const high = leads.filter(l => l.priority === 'high').length;
+      const avgSeo = Math.round(leads.reduce((sum, l) => sum + l.seo, 0) / total);
+      const multi = leads.filter(l => l.multi).length;
+
+      document.getElementById('stat-total').textContent = total;
+      document.getElementById('stat-high').textContent = high;
+      document.getElementById('stat-seo').textContent = avgSeo;
+      document.getElementById('stat-multi').textContent = multi;
+      
+      document.getElementById('lead-count').textContent = `${total} leads • ${leads[0].category}s`;
+    }
+
+    function getPriorityClass(priority) {
+      if (priority === 'high') return 'bg-[#ff3b30] text-white';
+      if (priority === 'medium') return 'bg-[#ff9500] text-white';
+      return 'bg-[#86868b] text-white';
+    }
+
+    function renderLeads(filteredLeads) {
+      const grid = document.getElementById('leads-grid');
+      grid.innerHTML = '';
+
+      if (filteredLeads.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full text-center py-12 text-[#86868b]">
+            <i class="fa-solid fa-search text-2xl mb-3"></i>
+            <p>No leads match your filters.</p>
+          </div>
+        `;
+        return;
+      }
+
+      filteredLeads.forEach(lead => {
+        const card = document.createElement('div');
+        card.className = `apple-card lead-card border border-[#d2d2d7] p-5 cursor-pointer`;
+        card.innerHTML = `
+          <div class="flex justify-between items-start mb-3">
+            <div>
+              <div class="lead-name">${lead.name}</div>
+              <div class="text-xs text-[#86868b] mt-0.5">${lead.category} • ${lead.location}</div>
+            </div>
+            <div class="recommended-pill text-xs px-2.5 py-px">${lead.recommended}</div>
+          </div>
+          
+          <!-- Scores -->
+          <div class="flex gap-4 mb-4">
+            <div class="flex-1">
+              <div class="flex items-baseline">
+                <span class="score-value ${lead.seo > 70 ? 'text-[#34c759]' : 'text-[#ff9500]'}">${lead.seo}</span>
+              </div>
+              <div class="metric-label text-[#86868b]">SEO Health</div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-baseline">
+                <span class="score-value text-[#1d1d1f]">${lead.overall}</span>
+              </div>
+              <div class="metric-label text-[#86868b]">Overall Help</div>
+            </div>
+          </div>
+          
+          <!-- Badges -->
+          <div class="flex items-center gap-2 mb-4">
+            <span class="px-2.5 py-px text-[10px] font-semibold rounded-full ${getPriorityClass(lead.priority)}">
+              ${lead.priority.toUpperCase()}
+            </span>
+            
+            ${lead.multi ? `
+              <span class="px-2.5 py-px text-[10px] font-semibold bg-[#0071e3] text-white rounded-full">MULTI</span>
+            ` : ''}
+          </div>
+          
+          <!-- Actions -->
+          <div class="flex items-center gap-2 pt-3 border-t text-sm">
+            <button onclick="event.stopImmediatePropagation(); copyLeadSMS(${lead.id});" 
+                    class="flex-1 flex items-center justify-center gap-x-1.5 py-2 text-xs font-medium bg-[#f5f5f7] hover:bg-[#e5e5e7] active:bg-[#d2d2d7] rounded-2xl">
+              <i class="fa-regular fa-copy"></i>
+              <span>SMS</span>
+            </button>
+            <button onclick="event.stopImmediatePropagation(); copyLeadEmail(${lead.id});" 
+                    class="flex-1 flex items-center justify-center gap-x-1.5 py-2 text-xs font-medium bg-[#f5f5f7] hover:bg-[#e5e5e7] active:bg-[#d2d2d7] rounded-2xl">
+              <i class="fa-solid fa-envelope"></i>
+              <span>Email</span>
+            </button>
+            <button onclick="event.stopImmediatePropagation(); window.open('${lead.website}', '_blank');" 
+                    class="flex items-center justify-center px-3 py-2 text-xs font-medium bg-[#f5f5f7] hover:bg-[#e5e5e7] active:bg-[#d2d2d7] rounded-2xl">
+              <i class="fa-solid fa-external-link-alt"></i>
+            </button>
+          </div>
+        `;
+        
+        card.onclick = () => showLeadDetail(lead);
+        grid.appendChild(card);
+      });
+    }
+
+    function filterLeads() {
+      currentSearch = document.getElementById('search-input').value.toLowerCase().trim();
+      
+      const filtered = leads.filter(lead => {
+        const matchesSearch = !currentSearch || 
+          lead.name.toLowerCase().includes(currentSearch) || 
+          lead.category.toLowerCase().includes(currentSearch);
+        
+        let matchesFilter = true;
+        
+        if (currentFilter === 'high') matchesFilter = lead.priority === 'high';
+        else if (currentFilter === 'medium') matchesFilter = lead.priority === 'medium';
+        else if (currentFilter === 'multi') matchesFilter = lead.multi;
+        else if (currentFilter === 'ai-voice') matchesFilter = lead.recommended.toLowerCase().includes('voice');
+        else if (currentFilter === 'med-spa') matchesFilter = lead.category.toLowerCase().includes('med');
+        
+        return matchesSearch && matchesFilter;
+      });
+      
+      renderLeads(filtered);
+    }
+
+    function setFilter(element, filterType) {
+      // Deselect all
+      document.querySelectorAll('.filter-chip').forEach(el => el.classList.remove('active'));
+      element.classList.add('active');
+      
+      currentFilter = filterType;
+      filterLeads();
+    }
+
+    function showLeadDetail(lead) {
+      const modal = document.getElementById('modal');
+      
+      document.getElementById('modal-name').textContent = lead.name;
+      document.getElementById('modal-category').textContent = `${lead.category} • ${lead.location}`;
+      document.getElementById('modal-seo').textContent = lead.seo;
+      document.getElementById('modal-overall').textContent = lead.overall;
+      document.getElementById('modal-recommended').textContent = lead.recommended;
+      
+      // Contact
+      const phoneRow = document.getElementById('modal-phone-row');
+      const emailRow = document.getElementById('modal-email-row');
+      
+      if (lead.phone) {
+        document.getElementById('modal-phone').textContent = lead.phone;
+        phoneRow.style.display = 'flex';
+      } else {
+        phoneRow.style.display = 'none';
+      }
+      
+      if (lead.email) {
+        document.getElementById('modal-email').textContent = lead.email;
+        emailRow.style.display = 'flex';
+      } else {
+        emailRow.style.display = 'none';
+      }
+      
+      // SMS
+      document.getElementById('modal-sms').textContent = lead.sms || "No draft available.";
+      
+      // Store current lead for copy actions
+      modal.dataset.currentLeadId = lead.id;
+      
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('modal');
+      modal.classList.remove('flex');
+      modal.classList.add('hidden');
+    }
+
+    function copyLeadSMS(leadId) {
+      const lead = leads.find(l => l.id === leadId);
+      if (!lead || !lead.sms) return;
+      
+      navigator.clipboard.writeText(lead.sms).then(() => {
+        showToast("SMS copied");
+      });
+    }
+
+    function copySMS() {
+      const modal = document.getElementById('modal');
+      const leadId = parseInt(modal.dataset.currentLeadId);
+      const lead = leads.find(l => l.id === leadId);
+      if (lead && lead.sms) {
+        navigator.clipboard.writeText(lead.sms).then(() => showToast("SMS copied to clipboard"));
+      }
+    }
+
+    function copyEmail() {
+      const modal = document.getElementById('modal');
+      const leadId = parseInt(modal.dataset.currentLeadId);
+      const lead = leads.find(l => l.id === leadId);
+      if (!lead) return;
+      
+      const subject = `Quick question for ${lead.name}`;
+      const body = `Hi ${lead.name.split(' ')[0]},\n\nI help ${lead.category} businesses in Melbourne with AI voice + website/SEO.\n\nOpen to a short call this week?\n\nBest,\nMarvelus`;
+      
+      const mailto = `mailto:${lead.email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+    }
+
+    function copyLeadEmail(leadId) {
+      const lead = leads.find(l => l.id === leadId);
+      if (!lead) return;
+      
+      const subject = `Quick question for ${lead.name}`;
+      const body = `Hi ${lead.name.split(' ')[0]},\n\nI help ${lead.category} businesses in Melbourne with AI voice + website/SEO.\n\nOpen to a short call this week?\n\nBest,\nMarvelus`;
+      
+      const mailto = `mailto:${lead.email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+    }
+
+    function openWebsite() {
+      const modal = document.getElementById('modal');
+      const leadId = parseInt(modal.dataset.currentLeadId);
+      const lead = leads.find(l => l.id === leadId);
+      if (lead && lead.website) window.open(lead.website, '_blank');
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = `ios-toast fixed bottom-5 left-1/2 -translate-x-1/2 bg-black text-white text-sm px-5 py-2.5 rounded-3xl flex items-center shadow-xl`;
+      toast.innerHTML = `
+        <span>${message}</span>
+      `;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.transition = 'all 0.2s ease';
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 150);
+      }, 1600);
+    }
+
+    function filterLeadsByType(type) {
+      // Used by filter chips
+    }
+
+    function refreshData() {
+      const grid = document.getElementById('leads-grid');
+      grid.style.transition = 'opacity 0.15s';
+      grid.style.opacity = '0.3';
+      
+      setTimeout(() => {
+        renderLeads(leads);
+        updateStats();
+        grid.style.opacity = '1';
+        showToast("Data refreshed");
+      }, 280);
+    }
+
+    function initFilters() {
+      // Set "All" as active by default
+      const allChip = document.querySelector('[data-filter="all"]');
+      if (allChip) allChip.classList.add('active');
+      
+      // Search input clear on escape
+      document.getElementById('search-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          this.value = '';
+          filterLeads();
+        }
+      });
+    }
+
+    function init() {
+      initTailwind();
+      
+      // Initial render
+      renderLeads(leads);
+      updateStats();
+      initFilters();
+      
+      // Keyboard shortcut
+      document.addEventListener('keydown', function(e) {
+        if (e.key === '/' && document.activeElement.tagName === 'BODY') {
+          e.preventDefault();
+          document.getElementById('search-input').focus();
+        }
+      });
+      
+      // Demo note
+      console.log('%c[Phase 1] Apple-quality mobile-first lead dashboard ready. 4 leads from latest pipeline flight.', 'color:#86868b');
+    }
+
+    // Boot
+    window.onload = init;
+  </script>
 </body>
-</html><!-- SPACEX flight Wed Jun 24 15:03:49 AEST 2026 -->
-<!-- SPACEX flight dashboard deployed 2026-06-24T15:04:38 - 4 med spas -->
+</html>
