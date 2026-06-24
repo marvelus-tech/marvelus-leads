@@ -3,509 +3,486 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Marvelus Leads — Pipeline Command</title>
+  <title>Marvelus Leads — Pipeline</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --marvelus-navy: #0a0e27;
-      --marvelus-navy-light: #12183a;
-      --marvelus-navy-lighter: #1a2247;
-      --marvelus-accent: #6366f1;
-      --marvelus-accent-light: #818cf8;
-      --marvelus-success: #10b981;
-      --marvelus-warning: #f59e0b;
-      --marvelus-danger: #ef4444;
-      --marvelus-gold: #fbbf24;
-      --marvelus-text: #f8fafc;
-      --marvelus-text-muted: #94a3b8;
-      --marvelus-text-dim: #64748b;
-      --marvelus-card-bg: rgba(255,255,255,0.03);
-      --marvelus-card-border: rgba(255,255,255,0.08);
-      --marvelus-card-hover: rgba(255,255,255,0.06);
-      --marvelus-glow: rgba(99,102,241,0.15);
+      --bg: #f7f7f5;
+      --surface: #ffffff;
+      --surface-elevated: #ffffff;
+      --border: #e8e8e6;
+      --border-subtle: #f0f0ee;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b6b6b;
+      --text-tertiary: #a0a0a0;
+      --accent: #0055ff;
+      --accent-light: #e8f0ff;
+      --accent-glow: rgba(0,85,255,0.12);
+      --success: #00a86b;
+      --success-light: #e6f7f0;
+      --warning: #f5a623;
+      --warning-light: #fef5e6;
+      --danger: #ff4757;
+      --danger-light: #ffe8ea;
+      --gold: #d4a574;
+      --gold-light: #faf3ec;
+      --gradient-start: #0055ff;
+      --gradient-end: #00a86b;
     }
 
     * {
       -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--marvelus-navy);
-      color: var(--marvelus-text);
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       min-height: 100vh;
     }
 
-    /* Ambient background glow */
-    .ambient-glow {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-    .ambient-glow::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: 
-        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(99,102,241,0.08) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(16,185,129,0.05) 0%, transparent 50%);
-      animation: ambientShift 20s ease-in-out infinite;
-    }
-    @keyframes ambientShift {
-      0%, 100% { transform: translate(0, 0) rotate(0deg); }
-      33% { transform: translate(-2%, 1%) rotate(1deg); }
-      66% { transform: translate(1%, -2%) rotate(-1deg); }
-    }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-    /* Header styling */
-    .header-glow {
-      background: linear-gradient(135deg, rgba(99,102,241,0.2) 0%, rgba(16,185,129,0.1) 100%);
-      border: 1px solid rgba(99,102,241,0.2);
-      backdrop-filter: blur(20px);
-    }
-
-    /* Stats cards with glass effect */
-    .stat-glass {
-      background: var(--marvelus-card-bg);
-      border: 1px solid var(--marvelus-card-border);
-      backdrop-filter: blur(12px);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .stat-glass:hover {
-      background: var(--marvelus-card-hover);
-      border-color: rgba(99,102,241,0.3);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(99,102,241,0.1);
-    }
-
-    /* Lead cards */
-    .lead-card-v2 {
-      background: var(--marvelus-card-bg);
-      border: 1px solid var(--marvelus-card-border);
+    /* Mercury-style card with subtle shadow */
+    .card-mercury {
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 16px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .lead-card-v2::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--marvelus-accent), var(--marvelus-success), var(--marvelus-warning));
-      opacity: 0;
-      transition: opacity 0.3s ease;
+    .card-mercury:hover {
+      border-color: #d0d0ce;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+      transform: translateY(-1px);
     }
-    .lead-card-v2:hover::before {
-      opacity: 1;
-    }
-    .lead-card-v2:hover {
-      background: var(--marvelus-card-hover);
-      border-color: rgba(99,102,241,0.25);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(99,102,241,0.15);
-    }
-    .lead-card-v2:active {
-      transform: translateY(-1px) scale(0.995);
+    .card-mercury:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
 
-    /* Score ring animation */
-    .score-ring {
-      position: relative;
-      width: 56px;
-      height: 56px;
+    /* Gradient accent bar */
+    .accent-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+      border-radius: 999px;
     }
-    .score-ring svg {
+
+    /* Gamified score ring */
+    .score-ring-container {
+      position: relative;
+      width: 48px;
+      height: 48px;
+    }
+    .score-ring-container svg {
       transform: rotate(-90deg);
     }
     .score-ring-bg {
       fill: none;
-      stroke: rgba(255,255,255,0.08);
+      stroke: var(--border);
       stroke-width: 4;
     }
     .score-ring-fill {
       fill: none;
       stroke-width: 4;
       stroke-linecap: round;
-      transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .score-value {
+    .score-ring-value {
       position: absolute;
       inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 16px;
-      font-family: 'Space Grotesk', monospace;
+      font-weight: 600;
+      font-size: 14px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Priority badges */
-    .badge-high {
-      background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(239,68,68,0.1));
-      border: 1px solid rgba(239,68,68,0.3);
-      color: #fca5a5;
-    }
-    .badge-medium {
-      background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.1));
-      border: 1px solid rgba(245,158,11,0.3);
-      color: #fcd34d;
-    }
-    .badge-low {
-      background: linear-gradient(135deg, rgba(148,163,184,0.2), rgba(148,163,184,0.1));
-      border: 1px solid rgba(148,163,184,0.3);
-      color: #cbd5e1;
-    }
-
-    /* Segmented control v2 */
-    .segment-v2 {
-      background: var(--marvelus-card-bg);
-      border: 1px solid var(--marvelus-card-border);
+    /* Mercury-style segmented control */
+    .segment-mercury {
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 4px;
+      display: inline-flex;
     }
-    .segment-btn {
+    .segment-btn-mercury {
       padding: 8px 16px;
       border-radius: 8px;
       font-size: 13px;
-      font-weight: 600;
-      color: var(--marvelus-text-muted);
+      font-weight: 500;
+      color: var(--text-secondary);
       transition: all 0.2s ease;
       cursor: pointer;
       border: none;
       background: transparent;
+      font-family: 'DM Sans', sans-serif;
     }
-    .segment-btn:hover {
-      color: var(--marvelus-text);
+    .segment-btn-mercury:hover {
+      color: var(--text-primary);
+      background: var(--border-subtle);
     }
-    .segment-btn.active {
-      background: linear-gradient(135deg, var(--marvelus-accent), rgba(99,102,241,0.8));
+    .segment-btn-mercury.active {
+      background: var(--text-primary);
       color: white;
-      box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
     /* Search bar */
-    .search-glow {
-      background: var(--marvelus-card-bg);
-      border: 1px solid var(--marvelus-card-border);
+    .search-mercury {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       transition: all 0.2s ease;
     }
-    .search-glow:focus-within {
-      border-color: var(--marvelus-accent);
-      box-shadow: 0 0 0 3px rgba(99,102,241,0.1), 0 0 20px rgba(99,102,241,0.05);
+    .search-mercury:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
     }
 
-    /* Modal v2 */
-    .modal-backdrop {
-      background: rgba(10,14,39,0.8);
-      backdrop-filter: blur(8px);
-    }
-    .modal-sheet-v2 {
-      background: linear-gradient(180deg, var(--marvelus-navy-light) 0%, var(--marvelus-navy) 100%);
-      border: 1px solid var(--marvelus-card-border);
-      border-radius: 24px 24px 0 0;
-      animation: sheetSlideUp 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-    }
-    @media (min-width: 640px) {
-      .modal-sheet-v2 {
-        border-radius: 24px;
-        animation: sheetFadeIn 0.25s cubic-bezier(0.32, 0.72, 0, 1);
-      }
-    }
-    @keyframes sheetSlideUp {
-      from { transform: translateY(100%); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    @keyframes sheetFadeIn {
-      from { transform: scale(0.95); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    /* Metric blocks in modal */
-    .metric-block {
-      background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(99,102,241,0.05));
-      border: 1px solid rgba(99,102,241,0.15);
+    /* Stats with subtle backgrounds */
+    .stat-mercury {
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 16px;
+      padding: 16px;
       transition: all 0.2s ease;
     }
-    .metric-block:hover {
-      border-color: rgba(99,102,241,0.3);
-      background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(99,102,241,0.08));
+    .stat-mercury:hover {
+      border-color: #d0d0ce;
     }
 
-    /* Action buttons */
-    .action-btn-v2 {
-      background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(99,102,241,0.05));
-      border: 1px solid rgba(99,102,241,0.2);
-      color: var(--marvelus-accent-light);
-      transition: all 0.2s ease;
-    }
-    .action-btn-v2:hover {
-      background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(99,102,241,0.1));
-      border-color: rgba(99,102,241,0.4);
-      transform: translateY(-1px);
-    }
-    .action-btn-v2:active {
-      transform: translateY(0);
-    }
-
-    /* Progress bars */
-    .progress-track {
-      background: rgba(255,255,255,0.06);
+    /* Gamified progress bar */
+    .progress-mercury {
+      height: 6px;
+      background: var(--border-subtle);
       border-radius: 999px;
       overflow: hidden;
     }
-    .progress-fill {
+    .progress-fill-mercury {
       height: 100%;
       border-radius: 999px;
       transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Toast notification */
-    .toast-v2 {
-      background: linear-gradient(135deg, var(--marvelus-accent), rgba(99,102,241,0.8));
-      border: 1px solid rgba(99,102,241,0.3);
-      box-shadow: 0 8px 32px rgba(99,102,241,0.2);
-      animation: toastSlideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    /* Priority badges */
+    .badge-hot {
+      background: var(--danger-light);
+      color: var(--danger);
+      border: 1px solid rgba(255,71,87,0.15);
     }
-    @keyframes toastSlideUp {
-      from { transform: translate(-50%, 100%); opacity: 0; }
-      to { transform: translate(-50%, 0); opacity: 1; }
+    .badge-warm {
+      background: var(--warning-light);
+      color: #c77a00;
+      border: 1px solid rgba(245,166,35,0.15);
     }
-
-    /* Streak / gamification */
-    .streak-flame {
-      animation: flameFlicker 2s ease-in-out infinite;
-    }
-    @keyframes flameFlicker {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.1); opacity: 0.8; }
+    .badge-cool {
+      background: var(--border-subtle);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
     }
 
-    /* Scrollbar styling */
-    ::-webkit-scrollbar {
-      width: 6px;
+    /* Modal */
+    .modal-backdrop-mercury {
+      background: rgba(26,26,26,0.4);
+      backdrop-filter: blur(8px);
     }
-    ::-webkit-scrollbar-track {
-      background: transparent;
+    .modal-sheet-mercury {
+      background: var(--surface);
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 -8px 32px rgba(0,0,0,0.12);
+      animation: sheetUp 0.35s cubic-bezier(0.32, 0.72, 0, 1);
     }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.1);
-      border-radius: 3px;
+    @media (min-width: 640px) {
+      .modal-sheet-mercury {
+        border-radius: 24px;
+        animation: modalIn 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+      }
     }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255,255,255,0.2);
+    @keyframes sheetUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes modalIn {
+      from { transform: scale(0.96); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
 
     /* Deal stage tracker */
-    .stage-dot {
-      width: 12px;
-      height: 12px;
+    .stage-dot-mercury {
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
-      border: 2px solid var(--marvelus-card-border);
-      background: transparent;
+      border: 2px solid var(--border);
+      background: var(--surface);
       transition: all 0.3s ease;
+      cursor: pointer;
     }
-    .stage-dot.active {
-      background: var(--marvelus-accent);
-      border-color: var(--marvelus-accent);
-      box-shadow: 0 0 8px rgba(99,102,241,0.5);
+    .stage-dot-mercury.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-glow);
     }
-    .stage-dot.completed {
-      background: var(--marvelus-success);
-      border-color: var(--marvelus-success);
+    .stage-dot-mercury.completed {
+      border-color: var(--success);
+      background: var(--success);
     }
-    .stage-line {
+    .stage-line-mercury {
       height: 2px;
-      background: var(--marvelus-card-border);
+      background: var(--border);
       flex: 1;
       transition: background 0.3s ease;
     }
-    .stage-line.completed {
-      background: linear-gradient(90deg, var(--marvelus-success), var(--marvelus-accent));
+    .stage-line-mercury.completed {
+      background: linear-gradient(90deg, var(--success), var(--accent));
     }
 
-    /* XP / Level badge */
-    .level-badge {
-      background: linear-gradient(135deg, var(--marvelus-gold), #f59e0b);
-      color: var(--marvelus-navy);
-      font-weight: 800;
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 6px;
-      font-family: 'Space Grotesk', monospace;
-    }
-
-    /* Contacted toggle */
-    .contact-toggle {
-      appearance: none;
-      width: 44px;
-      height: 24px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 12px;
-      position: relative;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .contact-toggle::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: white;
-      border-radius: 50%;
-      top: 2px;
-      left: 2px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    .contact-toggle:checked {
-      background: var(--marvelus-success);
-    }
-    .contact-toggle:checked::after {
-      left: 22px;
-    }
-
-    /* Confetti animation for closed deals */
+    /* Confetti */
     @keyframes confettiFall {
       0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
       100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
     }
     .confetti-piece {
       position: fixed;
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       top: -10px;
       z-index: 9999;
       animation: confettiFall 3s ease-out forwards;
+      border-radius: 2px;
+    }
+
+    /* Toast */
+    .toast-mercury {
+      background: var(--text-primary);
+      color: white;
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      animation: toastUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    @keyframes toastUp {
+      from { transform: translate(-50%, 20px); opacity: 0; }
+      to { transform: translate(-50%, 0); opacity: 1; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #d0d0ce; }
+
+    /* Action buttons */
+    .btn-primary {
+      background: var(--text-primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-primary:hover {
+      background: #333;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover {
+      background: var(--border-subtle);
+      border-color: #d0d0ce;
+    }
+
+    /* Level badge */
+    .level-badge-mercury {
+      background: linear-gradient(135deg, var(--gold), #c9956b);
+      color: white;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Streak flame */
+    .streak-flame {
+      animation: flamePulse 2s ease-in-out infinite;
+    }
+    @keyframes flamePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    /* Metric block in modal */
+    .metric-block-mercury {
+      background: var(--border-subtle);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      transition: all 0.2s ease;
+    }
+    .metric-block-mercury:hover {
+      border-color: #d0d0ce;
+      background: var(--surface);
+    }
+
+    /* Script cards */
+    .script-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      transition: all 0.2s ease;
+    }
+    .script-card:hover {
+      border-color: #d0d0ce;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
   </style>
 </head>
 <body>
-  <div class="ambient-glow"></div>
-  
-  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-20">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-20">
     
     <!-- Header -->
     <div class="flex items-center justify-between mb-8">
-      <div>
-        <div class="flex items-center gap-3 mb-1">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-            <i class="fa-solid fa-bolt text-white text-lg"></i>
-          </div>
-          <div>
-            <h1 class="text-2xl font-bold tracking-tight text-white">Pipeline Command</h1>
-            <p class="text-sm text-slate-400">Marvelus Lead Engine</p>
-          </div>
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0055ff] to-[#00a86b] flex items-center justify-center shadow-lg shadow-blue-500/20">
+          <i class="fa-solid fa-bolt text-white text-sm"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight text-[#1a1a1a]">Pipeline</h1>
+          <p class="text-sm text-[#a0a0a0]">Marvelus Lead Engine</p>
         </div>
       </div>
       <div class="flex items-center gap-3">
-        <!-- Gamification: Level badge -->
-        <div class="hidden sm:flex items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-3 py-2">
-          <span class="level-badge">LVL 3</span>
-          <div class="w-20 h-2 bg-white/10 rounded-full overflow-hidden">
-            <div class="h-full bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full" style="width: 65%"></div>
+        <!-- Level Badge -->
+        <div class="hidden sm:flex items-center gap-2 bg-white border border-[#e8e8e6] rounded-xl px-3 py-2">
+          <span class="level-badge-mercury">LVL 3</span>
+          <div class="w-16 h-2 bg-[#f0f0ee] rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-[#0055ff] to-[#00a86b] rounded-full" style="width: 65%"></div>
           </div>
-          <span class="text-xs text-slate-400 font-mono">65%</span>
+          <span class="text-xs text-[#a0a0a0] font-mono">65%</span>
         </div>
         <!-- Streak -->
-        <div class="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-xl px-3 py-2">
-          <i class="fa-solid fa-fire text-orange-500 streak-flame"></i>
-          <span class="text-sm font-bold text-white">5</span>
-          <span class="text-xs text-slate-400">day streak</span>
+        <div class="flex items-center gap-1.5 bg-white border border-[#e8e8e6] rounded-xl px-3 py-2">
+          <i class="fa-solid fa-fire text-[#f5a623] streak-flame text-sm"></i>
+          <span class="text-sm font-bold text-[#1a1a1a]">5</span>
+          <span class="text-xs text-[#a0a0a0]">day streak</span>
         </div>
-        <button onclick="refreshData()" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all active:scale-95">
-          <i class="fa-solid fa-rotate"></i>
+        <button onclick="refreshData()" class="w-10 h-10 rounded-xl bg-white border border-[#e8e8e6] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:border-[#d0d0ce] transition-all active:scale-95">
+          <i class="fa-solid fa-rotate text-sm"></i>
         </button>
       </div>
     </div>
 
-    <!-- Stats Row -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-      <div class="stat-glass rounded-2xl p-4">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pipeline</span>
-          <i class="fa-solid fa-layer-group text-indigo-400/60 text-sm"></i>
-        </div>
-        <div id="stat-total" class="text-3xl font-bold text-white font-mono">0</div>
-        <div class="text-xs text-slate-500 mt-1">Total leads</div>
-      </div>
-      <div class="stat-glass rounded-2xl p-4">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Hot Leads</span>
-          <i class="fa-solid fa-fire text-red-400/60 text-sm"></i>
-        </div>
-        <div id="stat-high" class="text-3xl font-bold text-red-400 font-mono">0</div>
-        <div class="text-xs text-slate-500 mt-1">High priority</div>
-      </div>
-      <div class="stat-glass rounded-2xl p-4">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Contacted</span>
-          <i class="fa-solid fa-phone text-emerald-400/60 text-sm"></i>
-        </div>
-        <div id="stat-contacted" class="text-3xl font-bold text-emerald-400 font-mono">0</div>
-        <div class="text-xs text-slate-500 mt-1">This week</div>
-      </div>
-      <div class="stat-glass rounded-2xl p-4">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Closed</span>
-          <i class="fa-solid fa-trophy text-amber-400/60 text-sm"></i>
-        </div>
-        <div id="stat-closed" class="text-3xl font-bold text-amber-400 font-mono">0</div>
-        <div class="text-xs text-slate-500 mt-1">Deals won</div>
-      </div>
-    </div>
-
     <!-- Progress to Next Level -->
-    <div class="mb-6 bg-white/5 border border-white/10 rounded-2xl p-4">
+    <div class="mb-6 bg-white border border-[#e8e8e6] rounded-2xl p-4">
       <div class="flex items-center justify-between mb-2">
         <div class="flex items-center gap-2">
-          <i class="fa-solid fa-chart-line text-indigo-400"></i>
-          <span class="text-sm font-semibold text-white">Progress to Level 4</span>
+          <i class="fa-solid fa-chart-line text-[#0055ff] text-sm"></i>
+          <span class="text-sm font-semibold text-[#1a1a1a]">Progress to Level 4</span>
         </div>
-        <span class="text-xs text-slate-400">12 / 20 deals</span>
+        <span class="text-xs text-[#a0a0a0] font-mono">12 / 20 deals</span>
       </div>
-      <div class="progress-track h-3">
-        <div class="progress-fill bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" style="width: 60%"></div>
+      <div class="progress-mercury">
+        <div class="progress-fill-mercury bg-gradient-to-r from-[#0055ff] to-[#00a86b]" style="width: 60%"></div>
       </div>
-      <div class="flex justify-between mt-2 text-xs text-slate-500">
+      <div class="flex justify-between mt-2 text-xs text-[#a0a0a0]">
         <span>Contact 3 more leads</span>
         <span>Close 2 more deals</span>
       </div>
     </div>
 
+    <!-- Stats Row -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+      <div class="stat-mercury">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-medium text-[#a0a0a0] uppercase tracking-wider">Pipeline</span>
+          <i class="fa-solid fa-layer-group text-[#0055ff]/40 text-sm"></i>
+        </div>
+        <div id="stat-total" class="text-2xl font-bold text-[#1a1a1a] font-mono">0</div>
+        <div class="text-xs text-[#a0a0a0] mt-1">Total leads</div>
+      </div>
+      <div class="stat-mercury">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-medium text-[#a0a0a0] uppercase tracking-wider">Hot Leads</span>
+          <i class="fa-solid fa-fire text-[#ff4757]/40 text-sm"></i>
+        </div>
+        <div id="stat-high" class="text-2xl font-bold text-[#ff4757] font-mono">0</div>
+        <div class="text-xs text-[#a0a0a0] mt-1">High priority</div>
+      </div>
+      <div class="stat-mercury">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-medium text-[#a0a0a0] uppercase tracking-wider">Contacted</span>
+          <i class="fa-solid fa-phone text-[#00a86b]/40 text-sm"></i>
+        </div>
+        <div id="stat-contacted" class="text-2xl font-bold text-[#00a86b] font-mono">0</div>
+        <div class="text-xs text-[#a0a0a0] mt-1">This week</div>
+      </div>
+      <div class="stat-mercury">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-medium text-[#a0a0a0] uppercase tracking-wider">Closed</span>
+          <i class="fa-solid fa-trophy text-[#d4a574]/40 text-sm"></i>
+        </div>
+        <div id="stat-closed" class="text-2xl font-bold text-[#d4a574] font-mono">0</div>
+        <div class="text-xs text-[#a0a0a0] mt-1">Deals won</div>
+      </div>
+    </div>
+
     <!-- Controls -->
     <div class="flex flex-col sm:flex-row gap-3 mb-6">
-      <div class="segment-v2 flex flex-wrap">
-        <button onclick="setSegment(this, 'all')" class="segment-btn active" data-segment="all">All</button>
-        <button onclick="setSegment(this, 'high')" class="segment-btn" data-segment="high">🔥 Hot</button>
-        <button onclick="setSegment(this, 'contacted')" class="segment-btn" data-segment="contacted">📞 Contacted</button>
-        <button onclick="setSegment(this, 'closed')" class="segment-btn" data-segment="closed">🏆 Closed</button>
+      <div class="segment-mercury">
+        <button onclick="setSegment(this, 'all')" class="segment-btn-mercury active" data-segment="all">All</button>
+        <button onclick="setSegment(this, 'high')" class="segment-btn-mercury" data-segment="high">🔥 Hot</button>
+        <button onclick="setSegment(this, 'contacted')" class="segment-btn-mercury" data-segment="contacted">📞 Contacted</button>
+        <button onclick="setSegment(this, 'closed')" class="segment-btn-mercury" data-segment="closed">🏆 Closed</button>
       </div>
       <div class="flex-1 flex gap-2">
-        <div class="search-glow flex-1 flex items-center rounded-xl px-4 py-2.5">
-          <i class="fa-solid fa-magnifying-glass text-slate-500 mr-3"></i>
+        <div class="search-mercury flex-1 flex items-center rounded-xl px-4 py-2.5">
+          <i class="fa-solid fa-magnifying-glass text-[#a0a0a0] mr-3 text-sm"></i>
           <input id="search-input" type="text" placeholder="Search leads..." 
                  onkeyup="filterLeads()"
-                 class="bg-transparent border-none outline-none text-sm text-white placeholder-slate-500 w-full">
-          <kbd class="hidden sm:inline-block text-xs text-slate-600 bg-white/5 px-2 py-0.5 rounded font-mono">/</kbd>
+                 class="bg-transparent border-none outline-none text-sm text-[#1a1a1a] placeholder-[#a0a0a0] w-full font-medium">
+          <kbd class="hidden sm:inline-block text-xs text-[#a0a0a0] bg-[#f0f0ee] px-2 py-0.5 rounded font-mono">/</kbd>
         </div>
-        <button onclick="toggleSort()" class="search-glow rounded-xl px-4 py-2.5 text-sm font-medium text-slate-300 hover:text-white flex items-center gap-2 whitespace-nowrap">
+        <button onclick="toggleSort()" class="search-mercury rounded-xl px-4 py-2.5 text-sm font-medium text-[#6b6b6b] hover:text-[#1a1a1a] flex items-center gap-2 whitespace-nowrap">
           <span id="sort-label">Score</span>
-          <i class="fa-solid fa-chevron-down text-xs text-slate-500"></i>
+          <i class="fa-solid fa-chevron-down text-xs text-[#a0a0a0]"></i>
         </button>
       </div>
     </div>
@@ -515,120 +492,121 @@
       <!-- JS populated -->
     </div>
 
-    <!-- Scripts Panel -->
+    <!-- Sales Playbook -->
     <div class="mt-8">
-      <button onclick="toggleScripts()" class="w-full flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all group">
+      <button onclick="toggleScripts()" class="w-full flex items-center justify-between p-4 bg-white border border-[#e8e8e6] rounded-2xl hover:border-[#d0d0ce] transition-all group">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-600/20 border border-indigo-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-            <i class="fa-solid fa-book-open text-indigo-400"></i>
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0055ff]/10 to-[#00a86b]/10 border border-[#0055ff]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-book-open text-[#0055ff]"></i>
           </div>
           <div class="text-left">
-            <div class="font-semibold text-white text-sm">Sales Playbook</div>
-            <div class="text-xs text-slate-400">Cold call scripts, objection handling, closing tactics</div>
+            <div class="font-semibold text-[#1a1a1a] text-sm">Sales Playbook</div>
+            <div class="text-xs text-[#a0a0a0]">Cold call scripts, objection handling, closing tactics</div>
           </div>
         </div>
-        <i id="scripts-chevron" class="fa-solid fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+        <i id="scripts-chevron" class="fa-solid fa-chevron-down text-[#a0a0a0] transition-transform duration-300"></i>
       </button>
       
       <div id="scripts-panel" class="hidden mt-3 space-y-3">
+        
         <!-- Script 1 -->
-        <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:border-indigo-500/30 transition-all">
+        <div class="script-card">
           <div class="flex items-center gap-2 mb-3">
-            <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">1</span>
-            <span class="font-semibold text-white">The "Only Script You Need"</span>
-            <span class="text-xs text-slate-500 ml-auto">Problem → Agitate → Present → Close</span>
+            <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0055ff] to-[#00a86b] flex items-center justify-center text-white text-xs font-bold">1</span>
+            <span class="font-semibold text-[#1a1a1a]">The "Only Script You Need"</span>
+            <span class="text-xs text-[#a0a0a0] ml-auto">Problem → Agitate → Present → Close</span>
           </div>
-          <div class="text-sm text-slate-300 space-y-2 leading-relaxed">
-            <p><span class="text-indigo-400 font-medium">Opener:</span> "Hi [Name], quick question — are you currently getting leads from Google for [service] in [City]?"</p>
-            <p><span class="text-indigo-400 font-medium">Problem:</span> "Most [industry] businesses I talk to in [City] tell me the same thing: they rely on word-of-mouth or paid ads, but when someone searches '[service] near me' on their phone, they're not showing up."</p>
-            <p><span class="text-indigo-400 font-medium">Agitate:</span> "Those people searching on Google are actively looking to buy. If you're not there, your competitor is. And they're getting that call."</p>
-            <p><span class="text-indigo-400 font-medium">Close:</span> "I'm not asking for a commitment today. What I'd love to do is send you a free video audit of your site — shows exactly why you're not ranking. What's the best email?"</p>
+          <div class="text-sm text-[#6b6b6b] space-y-2 leading-relaxed">
+            <p><span class="text-[#0055ff] font-medium">Opener:</span> "Hi [Name], quick question — are you currently getting leads from Google for [service] in [City]?"</p>
+            <p><span class="text-[#0055ff] font-medium">Problem:</span> "Most [industry] businesses I talk to in [City] tell me the same thing: they rely on word-of-mouth or paid ads, but when someone searches '[service] near me' on their phone, they're not showing up."</p>
+            <p><span class="text-[#0055ff] font-medium">Agitate:</span> "Those people searching on Google are actively looking to buy. If you're not there, your competitor is. And they're getting that call."</p>
+            <p><span class="text-[#0055ff] font-medium">Close:</span> "I'm not asking for a commitment today. What I'd love to do is send you a free video audit of your site — shows exactly why you're not ranking. What's the best email?"</p>
           </div>
         </div>
 
         <!-- Script 2 -->
-        <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:border-amber-500/30 transition-all">
+        <div class="script-card">
           <div class="flex items-center gap-2 mb-3">
-            <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white text-xs font-bold">2</span>
-            <span class="font-semibold text-white">Pain-First Script</span>
-            <span class="text-xs text-slate-500 ml-auto">Let them pick their pain</span>
+            <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#f5a623] to-[#ff4757] flex items-center justify-center text-white text-xs font-bold">2</span>
+            <span class="font-semibold text-[#1a1a1a]">Pain-First Script</span>
+            <span class="text-xs text-[#a0a0a0] ml-auto">Let them pick their pain</span>
           </div>
-          <div class="text-sm text-slate-300 space-y-2 leading-relaxed">
+          <div class="text-sm text-[#6b6b6b] space-y-2 leading-relaxed">
             <p>"I work with [industry] businesses in [City] to solve three common problems:</p>
-            <ol class="list-decimal list-inside space-y-1 ml-2 text-slate-400">
+            <ol class="list-decimal list-inside space-y-1 ml-2 text-[#6b6b6b]">
               <li>Not showing up when people search '[service] near me'</li>
               <li>Website doesn't convert visitors into calls</li>
               <li>Paying too much for leads that go to 3-4 competitors</li>
             </ol>
-            <p class="text-slate-300">Which of those, if any, is something you're dealing with right now?"</p>
+            <p class="text-[#6b6b6b]">Which of those, if any, is something you're dealing with right now?"</p>
           </div>
         </div>
 
         <!-- Objection Handling -->
-        <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:border-red-500/30 transition-all">
+        <div class="script-card">
           <div class="flex items-center gap-2 mb-3">
-            <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-red-500 to-pink-600 flex items-center justify-center text-white text-xs font-bold">
+            <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#ff4757] to-[#ff6b81] flex items-center justify-center text-white text-xs font-bold">
               <i class="fa-solid fa-shield text-xs"></i>
             </span>
-            <span class="font-semibold text-white">Objection Handling</span>
+            <span class="font-semibold text-[#1a1a1a]">Objection Handling</span>
           </div>
           <div class="grid sm:grid-cols-2 gap-3 text-sm">
             <div class="space-y-1">
-              <p class="text-red-400 font-medium text-xs uppercase tracking-wider">"I already have SEO"</p>
-              <p class="text-slate-400">"Good — most of our best clients had someone before us. Are you getting 10+ calls/month from that relationship?"</p>
+              <p class="text-[#ff4757] font-medium text-xs uppercase tracking-wider">"I already have SEO"</p>
+              <p class="text-[#6b6b6b]">"Good — most of our best clients had someone before us. Are you getting 10+ calls/month from that relationship?"</p>
             </div>
             <div class="space-y-1">
-              <p class="text-red-400 font-medium text-xs uppercase tracking-wider">"How much does it cost?"</p>
-              <p class="text-slate-400">"It depends on where you're starting. What I do first is a free audit — shows exactly what needs work. Worth doing the audit?"</p>
+              <p class="text-[#ff4757] font-medium text-xs uppercase tracking-wider">"How much does it cost?"</p>
+              <p class="text-[#6b6b6b]">"It depends on where you're starting. What I do first is a free audit — shows exactly what needs work. Worth doing the audit?"</p>
             </div>
             <div class="space-y-1">
-              <p class="text-red-400 font-medium text-xs uppercase tracking-wider">"No budget"</p>
-              <p class="text-slate-400">"Totally get it. I'll send you the free audit anyway — shows what's costing you leads. What's the best email?"</p>
+              <p class="text-[#ff4757] font-medium text-xs uppercase tracking-wider">"No budget"</p>
+              <p class="text-[#6b6b6b]">"Totally get it. I'll send you the free audit anyway — shows what's costing you leads. What's the best email?"</p>
             </div>
             <div class="space-y-1">
-              <p class="text-red-400 font-medium text-xs uppercase tracking-wider">"Send me an email"</p>
-              <p class="text-slate-400">"Happy to. Quick question — are you getting leads from Google, or mostly referrals? I'll tailor the audit around that."</p>
+              <p class="text-[#ff4757] font-medium text-xs uppercase tracking-wider">"Send me an email"</p>
+              <p class="text-[#6b6b6b]">"Happy to. Quick question — are you getting leads from Google, or mostly referrals? I'll tailor the audit around that."</p>
             </div>
           </div>
         </div>
 
         <!-- Key Tips -->
-        <div class="bg-gradient-to-br from-indigo-500/10 to-purple-600/10 border border-indigo-500/20 rounded-2xl p-5">
-          <div class="font-semibold text-white mb-3 flex items-center gap-2">
-            <i class="fa-solid fa-lightbulb text-yellow-400"></i>
+        <div class="bg-gradient-to-br from-[#e8f0ff] to-[#e6f7f0] border border-[#0055ff]/10 rounded-2xl p-5">
+          <div class="font-semibold text-[#1a1a1a] mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-[#f5a623]"></i>
             Key Tips from Reddit Pros
           </div>
-          <div class="grid sm:grid-cols-2 gap-2 text-sm text-slate-300">
+          <div class="grid sm:grid-cols-2 gap-2 text-sm text-[#6b6b6b]">
             <div class="flex items-start gap-2">
-              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
               <span>Never say "SEO" in opener — say "get found on Google"</span>
             </div>
             <div class="flex items-start gap-2">
-              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
               <span>Lead with specific pain — "3-4 leads a week"</span>
             </div>
             <div class="flex items-start gap-2">
-              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
               <span>Offer value first — free audit, video walkthrough</span>
             </div>
             <div class="flex items-start gap-2">
-              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
               <span>Use numbers — "60-90 days", "8-12 calls"</span>
             </div>
             <div class="flex items-start gap-2">
-              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
               <span>Remove risk — "no contracts", "month-to-month"</span>
             </div>
             <div class="flex items-start gap-2">
-              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
               <span>Ask for easy yes — email is easier than meeting</span>
             </div>
             <div class="flex items-start gap-2">
-              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
               <span>Follow up — 80% of sales happen after 5+ touches</span>
             </div>
             <div class="flex items-start gap-2">
-              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
               <span>Speak slowly — "almost uncomfortably slow"</span>
             </div>
           </div>
@@ -638,24 +616,24 @@
 
     <!-- Footer -->
     <div class="mt-8 text-center">
-      <p class="text-xs text-slate-600">Marvelus Lead Engine • Phase 7 • 110 Leads</p>
+      <p class="text-xs text-[#a0a0a0]">Marvelus Lead Engine • Phase 7 • 110 Leads</p>
     </div>
   </div>
 
   <!-- Detail Modal -->
   <div id="modal" onclick="if (event.target.id === 'modal') closeModal()" 
-       class="hidden fixed inset-0 z-[100] modal-backdrop flex items-end sm:items-center justify-center">
+       class="hidden fixed inset-0 z-[100] modal-backdrop-mercury flex items-end sm:items-center justify-center">
     <div onclick="event.stopImmediatePropagation()" 
-         class="modal-sheet-v2 w-full sm:max-w-[480px] sm:m-4 overflow-hidden max-h-[90vh] overflow-y-auto">
+         class="modal-sheet-mercury w-full sm:max-w-[480px] sm:m-4 overflow-hidden max-h-[90vh] overflow-y-auto bg-white">
       
       <!-- Modal Header -->
-      <div class="sticky top-0 z-10 px-6 pt-6 pb-4 bg-gradient-to-b from-[#12183a] to-[#12183a]/95 backdrop-blur-xl border-b border-white/10">
+      <div class="sticky top-0 z-10 px-6 pt-6 pb-4 bg-white border-b border-[#e8e8e6]">
         <div class="flex items-center justify-between">
           <div class="min-w-0 flex-1">
-            <div id="modal-name" class="font-bold text-xl text-white tracking-tight truncate"></div>
-            <div id="modal-meta" class="text-sm text-slate-400 mt-0.5"></div>
+            <div id="modal-name" class="font-bold text-lg text-[#1a1a1a] tracking-tight truncate"></div>
+            <div id="modal-meta" class="text-sm text-[#a0a0a0] mt-0.5"></div>
           </div>
-          <button onclick="closeModal()" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all ml-3 flex-shrink-0">
+          <button onclick="closeModal()" class="w-9 h-9 rounded-xl bg-[#f0f0ee] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:bg-[#e8e8e6] transition-all ml-3 flex-shrink-0">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
@@ -664,17 +642,17 @@
       <div class="p-6 space-y-6">
         <!-- Deal Stage Tracker -->
         <div>
-          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Deal Stage</div>
+          <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-3">Deal Stage</div>
           <div class="flex items-center gap-2">
-            <div class="stage-dot active" data-stage="new" onclick="setStage('new')"></div>
-            <div class="stage-line completed"></div>
-            <div class="stage-dot" data-stage="contacted" onclick="setStage('contacted')"></div>
-            <div class="stage-line"></div>
-            <div class="stage-dot" data-stage="pitched" onclick="setStage('pitched')"></div>
-            <div class="stage-line"></div>
-            <div class="stage-dot" data-stage="closed" onclick="setStage('closed')"></div>
+            <div class="stage-dot-mercury active" data-stage="new" onclick="setStage('new')"></div>
+            <div class="stage-line-mercury completed"></div>
+            <div class="stage-dot-mercury" data-stage="contacted" onclick="setStage('contacted')"></div>
+            <div class="stage-line-mercury"></div>
+            <div class="stage-dot-mercury" data-stage="pitched" onclick="setStage('pitched')"></div>
+            <div class="stage-line-mercury"></div>
+            <div class="stage-dot-mercury" data-stage="closed" onclick="setStage('closed')"></div>
           </div>
-          <div class="flex justify-between mt-2 text-xs text-slate-500">
+          <div class="flex justify-between mt-2 text-xs text-[#a0a0a0]">
             <span>New</span>
             <span>Contacted</span>
             <span>Pitched</span>
@@ -684,108 +662,108 @@
 
         <!-- Score Rings -->
         <div class="grid grid-cols-2 gap-4">
-          <div class="metric-block p-4">
+          <div class="metric-block-mercury">
             <div class="flex items-center gap-3">
-              <div class="score-ring">
-                <svg width="56" height="56" viewBox="0 0 56 56">
-                  <circle class="score-ring-bg" cx="28" cy="28" r="24"/>
-                  <circle id="modal-seo-ring" class="score-ring-fill" cx="28" cy="28" r="24" 
-                          stroke-dasharray="150.8" stroke-dashoffset="150.8" stroke="#6366f1"/>
+              <div class="score-ring-container">
+                <svg width="48" height="48" viewBox="0 0 48 48">
+                  <circle class="score-ring-bg" cx="24" cy="24" r="20"/>
+                  <circle id="modal-seo-ring" class="score-ring-fill" cx="24" cy="24" r="20" 
+                          stroke-dasharray="125.7" stroke-dashoffset="125.7" stroke="#0055ff"/>
                 </svg>
-                <div id="modal-seo" class="score-value text-indigo-400"></div>
+                <div id="modal-seo" class="score-ring-value text-[#0055ff]"></div>
               </div>
               <div>
-                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tech Score</div>
-                <div id="modal-seo-desc" class="text-xs text-slate-500 mt-0.5"></div>
+                <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider">Tech Score</div>
+                <div id="modal-seo-desc" class="text-xs text-[#a0a0a0] mt-0.5"></div>
               </div>
             </div>
           </div>
-          <div class="metric-block p-4">
+          <div class="metric-block-mercury">
             <div class="flex items-center gap-3">
-              <div class="score-ring">
-                <svg width="56" height="56" viewBox="0 0 56 56">
-                  <circle class="score-ring-bg" cx="28" cy="28" r="24"/>
-                  <circle id="modal-overall-ring" class="score-ring-fill" cx="28" cy="28" r="24" 
-                          stroke-dasharray="150.8" stroke-dashoffset="150.8" stroke="#10b981"/>
+              <div class="score-ring-container">
+                <svg width="48" height="48" viewBox="0 0 48 48">
+                  <circle class="score-ring-bg" cx="24" cy="24" r="20"/>
+                  <circle id="modal-overall-ring" class="score-ring-fill" cx="24" cy="24" r="20" 
+                          stroke-dasharray="125.7" stroke-dashoffset="125.7" stroke="#00a86b"/>
                 </svg>
-                <div id="modal-overall" class="score-value text-emerald-400"></div>
+                <div id="modal-overall" class="score-ring-value text-[#00a86b]"></div>
               </div>
               <div>
-                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Lead Score</div>
-                <div id="modal-overall-desc" class="text-xs text-slate-500 mt-0.5"></div>
+                <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider">Lead Score</div>
+                <div id="modal-overall-desc" class="text-xs text-[#a0a0a0] mt-0.5"></div>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Score Breakdown -->
-        <div id="modal-score-breakdown" class="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Score Breakdown</div>
+        <div id="modal-score-breakdown" class="bg-[#f7f7f5] border border-[#e8e8e6] rounded-2xl p-4">
+          <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-3">Score Breakdown</div>
           <div id="modal-score-reasons" class="space-y-2"></div>
         </div>
 
         <!-- Recommended Service -->
         <div>
-          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Recommended</div>
-          <div id="modal-recommended" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-500/20 to-purple-600/20 border border-indigo-500/30 rounded-xl text-sm font-semibold text-indigo-300"></div>
+          <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-2">Recommended</div>
+          <div id="modal-recommended" class="inline-flex items-center gap-2 px-4 py-2 bg-[#e8f0ff] border border-[#0055ff]/20 rounded-xl text-sm font-semibold text-[#0055ff]"></div>
         </div>
 
         <!-- Contact Info -->
         <div>
-          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Contact</div>
+          <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-2">Contact</div>
           <div id="modal-contact" class="space-y-2"></div>
         </div>
 
         <!-- Outreach -->
         <div>
-          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Outreach</div>
+          <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-3">Outreach</div>
           
-          <div class="bg-white/5 border border-white/10 rounded-2xl p-4 mb-3">
+          <div class="bg-[#f7f7f5] border border-[#e8e8e6] rounded-2xl p-4 mb-3">
             <div class="flex items-center justify-between mb-2">
-              <div class="flex items-center gap-2 text-sm font-semibold text-white">
-                <i class="fa-solid fa-comment-dots text-indigo-400"></i>
+              <div class="flex items-center gap-2 text-sm font-semibold text-[#1a1a1a]">
+                <i class="fa-solid fa-comment-dots text-[#0055ff]"></i>
                 <span>SMS</span>
               </div>
-              <button onclick="copySMS()" class="action-btn-v2 rounded-lg px-3 py-1.5 text-xs font-medium">
+              <button onclick="copySMS()" class="btn-secondary text-xs py-1.5 px-3">
                 <i class="fa-regular fa-copy mr-1"></i>Copy
               </button>
             </div>
-            <div id="modal-sms" class="text-sm text-slate-300 leading-relaxed"></div>
+            <div id="modal-sms" class="text-sm text-[#6b6b6b] leading-relaxed"></div>
           </div>
 
           <div class="flex items-center gap-3">
-            <button onclick="toggleEmail(event)" class="action-btn-v2 flex-1 rounded-xl py-3 text-sm font-semibold flex items-center justify-center gap-2">
+            <button onclick="toggleEmail(event)" class="btn-secondary flex-1 py-3 text-sm font-semibold flex items-center justify-center gap-2">
               <i class="fa-solid fa-envelope"></i>
               <span>Email Draft</span>
             </button>
-            <button onclick="openWebsite()" class="action-btn-v2 flex-1 rounded-xl py-3 text-sm font-semibold flex items-center justify-center gap-2">
+            <button onclick="openWebsite()" class="btn-secondary flex-1 py-3 text-sm font-semibold flex items-center justify-center gap-2">
               <i class="fa-solid fa-globe"></i>
               <span>Website</span>
             </button>
           </div>
 
-          <div id="email-popover" class="hidden mt-3 bg-white/5 border border-white/10 rounded-2xl p-4">
+          <div id="email-popover" class="hidden mt-3 bg-[#f7f7f5] border border-[#e8e8e6] rounded-2xl p-4">
             <div class="flex justify-between items-center mb-2">
-              <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Subject</div>
-              <button onclick="copyEmailDraft()" class="action-btn-v2 rounded-lg px-3 py-1 text-xs">
+              <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider">Subject</div>
+              <button onclick="copyEmailDraft()" class="btn-secondary text-xs py-1.5 px-3">
                 <i class="fa-regular fa-copy mr-1"></i>Copy
               </button>
             </div>
-            <div id="modal-email-subject" class="text-sm font-medium text-white mb-4"></div>
-            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Body</div>
-            <div id="modal-email-body" class="text-sm text-slate-300 leading-relaxed whitespace-pre-line"></div>
+            <div id="modal-email-subject" class="text-sm font-medium text-[#1a1a1a] mb-4"></div>
+            <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-2">Body</div>
+            <div id="modal-email-body" class="text-sm text-[#6b6b6b] leading-relaxed whitespace-pre-line"></div>
           </div>
         </div>
       </div>
 
       <!-- Modal Footer Actions -->
-      <div class="sticky bottom-0 border-t border-white/10 p-4 bg-gradient-to-t from-[#0a0e27] to-[#0a0e27]/95 backdrop-blur-xl">
+      <div class="sticky bottom-0 border-t border-[#e8e8e6] p-4 bg-white">
         <div class="flex gap-3">
-          <button onclick="markContacted()" id="btn-contacted" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500/20 to-emerald-600/20 border border-emerald-500/30 text-emerald-400 font-semibold text-sm hover:from-emerald-500/30 hover:to-emerald-600/30 transition-all flex items-center justify-center gap-2">
+          <button onclick="markContacted()" id="btn-contacted" class="btn-secondary flex-1 py-3 text-sm font-semibold flex items-center justify-center gap-2">
             <i class="fa-solid fa-phone"></i>
             <span>Mark Contacted</span>
           </button>
-          <button onclick="markClosed()" id="btn-closed" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500/20 to-orange-600/20 border border-amber-500/30 text-amber-400 font-semibold text-sm hover:from-amber-500/30 hover:to-orange-600/30 transition-all flex items-center justify-center gap-2">
+          <button onclick="markClosed()" id="btn-closed" class="btn-primary flex-1 py-3 text-sm font-semibold flex items-center justify-center gap-2">
             <i class="fa-solid fa-trophy"></i>
             <span>Mark Closed</span>
           </button>
@@ -815,7 +793,7 @@
       } catch (err) {
         console.error('Error loading leads:', err);
         document.getElementById('leads-grid').innerHTML = 
-          '<div class="col-span-full py-12 text-center text-slate-500">Error loading leads. Please refresh.</div>';
+          '<div class="col-span-full py-12 text-center text-[#a0a0a0]">Error loading leads. Please refresh.</div>';
       }
     }
 
@@ -839,7 +817,7 @@
       grid.innerHTML = '';
 
       if (!filtered.length) {
-        grid.innerHTML = '<div class="col-span-full py-12 text-center text-slate-500">No leads match the current view.</div>';
+        grid.innerHTML = '<div class="col-span-full py-12 text-center text-[#a0a0a0]">No leads match the current view.</div>';
         return;
       }
 
@@ -849,28 +827,28 @@
         const delay = Math.min(index * 0.05, 0.5);
         
         const div = document.createElement('div');
-        div.className = 'lead-card-v2 p-5 cursor-pointer';
-        div.style.animation = `sheetFadeIn 0.4s cubic-bezier(0.32, 0.72, 0, 1) ${delay}s both`;
+        div.className = 'card-mercury p-5 cursor-pointer';
+        div.style.animation = `modalIn 0.4s cubic-bezier(0.32, 0.72, 0, 1) ${delay}s both`;
         
         // Score color logic
-        const techColor = lead.seo <= 30 ? 'text-red-400' : lead.seo <= 60 ? 'text-amber-400' : 'text-emerald-400';
-        const scoreColor = lead.overall >= 80 ? 'text-emerald-400' : lead.overall >= 60 ? 'text-amber-400' : 'text-slate-400';
+        const techColor = lead.seo <= 30 ? 'text-[#ff4757]' : lead.seo <= 60 ? 'text-[#f5a623]' : 'text-[#00a86b]';
+        const scoreColor = lead.overall >= 80 ? 'text-[#00a86b]' : lead.overall >= 60 ? 'text-[#f5a623]' : 'text-[#a0a0a0]';
         
         // Priority badge
-        let badgeClass = 'badge-low';
-        let badgeText = 'LOW';
-        if (lead.priority === 'high') { badgeClass = 'badge-high'; badgeText = 'HOT'; }
-        else if (lead.priority === 'medium') { badgeClass = 'badge-medium'; badgeText = 'WARM'; }
+        let badgeClass = 'badge-cool';
+        let badgeText = 'COOL';
+        if (lead.priority === 'high') { badgeClass = 'badge-hot'; badgeText = 'HOT'; }
+        else if (lead.priority === 'medium') { badgeClass = 'badge-warm'; badgeText = 'WARM'; }
         
         div.innerHTML = `
           <div class="flex justify-between items-start mb-4">
             <div class="min-w-0 flex-1">
               <div class="flex items-center gap-2 mb-1">
-                <div class="lead-name text-white font-semibold text-base truncate">${lead.name}</div>
-                ${isClosed ? '<i class="fa-solid fa-trophy text-amber-400 flex-shrink-0" title="Deal closed!"></i>' : ''}
-                ${isContacted && !isClosed ? '<i class="fa-solid fa-phone text-emerald-400 flex-shrink-0" title="Contacted"></i>' : ''}
+                <div class="font-semibold text-[#1a1a1a] text-base truncate">${lead.name}</div>
+                ${isClosed ? '<i class="fa-solid fa-trophy text-[#d4a574] flex-shrink-0" title="Deal closed!"></i>' : ''}
+                ${isContacted && !isClosed ? '<i class="fa-solid fa-phone text-[#00a86b] flex-shrink-0" title="Contacted"></i>' : ''}
               </div>
-              <div class="meta text-slate-400 text-sm">${lead.category} • ${lead.location}</div>
+              <div class="text-sm text-[#a0a0a0]">${lead.category} • ${lead.location}</div>
             </div>
             <div class="flex items-center gap-2 ml-2 flex-shrink-0">
               <span class="px-2.5 py-1 text-[10px] font-bold rounded-lg ${badgeClass}">${badgeText}</span>
@@ -879,35 +857,35 @@
 
           <div class="flex items-center gap-6 mb-4">
             <div class="flex items-center gap-2">
-              <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+              <div class="w-10 h-10 rounded-xl bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center">
                 <span class="text-lg font-bold ${techColor} font-mono">${lead.seo}</span>
               </div>
               <div>
-                <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Tech</div>
-                <div class="text-xs text-slate-400">${lead.seo <= 30 ? 'High opp' : lead.seo <= 60 ? 'Moderate' : 'Low opp'}</div>
+                <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">Tech</div>
+                <div class="text-xs text-[#a0a0a0]">${lead.seo <= 30 ? 'High opp' : lead.seo <= 60 ? 'Moderate' : 'Low opp'}</div>
               </div>
             </div>
             <div class="flex items-center gap-2">
-              <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+              <div class="w-10 h-10 rounded-xl bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center">
                 <span class="text-lg font-bold ${scoreColor} font-mono">${lead.overall}</span>
               </div>
               <div>
-                <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Score</div>
-                <div class="text-xs text-slate-400">${lead.overall >= 80 ? 'Excellent' : lead.overall >= 60 ? 'Good' : 'Fair'}</div>
+                <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">Score</div>
+                <div class="text-xs text-[#a0a0a0]">${lead.overall >= 80 ? 'Excellent' : lead.overall >= 60 ? 'Good' : 'Fair'}</div>
               </div>
             </div>
           </div>
 
-          <div class="flex items-center justify-between pt-3 border-t border-white/10">
+          <div class="flex items-center justify-between pt-3 border-t border-[#e8e8e6]">
             <div class="flex items-center gap-2">
-              <span class="px-2 py-1 text-[10px] font-semibold bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">${lead.recommended}</span>
-              ${lead.multi ? '<span class="px-2 py-1 text-[10px] font-semibold bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded-lg">MULTI</span>' : ''}
+              <span class="px-2 py-1 text-[10px] font-semibold bg-[#e8f0ff] border border-[#0055ff]/20 text-[#0055ff] rounded-lg">${lead.recommended}</span>
+              ${lead.multi ? '<span class="px-2 py-1 text-[10px] font-semibold bg-[#f0f0ee] border border-[#e8e8e6] text-[#6b6b6b] rounded-lg">MULTI</span>' : ''}
             </div>
             <div class="flex gap-1">
-              <button onclick="event.stopImmediatePropagation(); copyLeadSMS(${lead.id})" class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all">
+              <button onclick="event.stopImmediatePropagation(); copyLeadSMS(${lead.id})" class="w-8 h-8 rounded-lg bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:bg-[#e8e8e6] transition-all">
                 <i class="fa-regular fa-copy text-xs"></i>
               </button>
-              <button onclick="event.stopImmediatePropagation(); window.open('${lead.website}', '_blank')" class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all">
+              <button onclick="event.stopImmediatePropagation(); window.open('${lead.website}', '_blank')" class="w-8 h-8 rounded-lg bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:bg-[#e8e8e6] transition-all">
                 <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
               </button>
             </div>
@@ -934,7 +912,7 @@
 
       filtered.sort((a, b) => {
         if (currentSort === 'overall') return b.overall - a.overall;
-        if (currentSort === 'seo') return a.seo - b.seo; // Lower tech = higher opportunity
+        if (currentSort === 'seo') return a.seo - b.seo;
         if (currentSort === 'name') return a.name.localeCompare(b.name);
         return 0;
       });
@@ -944,7 +922,7 @@
     }
 
     function setSegment(el, seg) {
-      document.querySelectorAll('.segment-btn').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.segment-btn-mercury').forEach(s => s.classList.remove('active'));
       el.classList.add('active');
       currentSegment = seg;
       filterLeads();
@@ -966,11 +944,11 @@
       
       // Tech score ring
       const seoValue = lead.seo;
-      const seoCircumference = 2 * Math.PI * 24;
+      const seoCircumference = 2 * Math.PI * 20;
       const seoOffset = seoCircumference - (seoValue / 100) * seoCircumference;
       document.getElementById('modal-seo').textContent = seoValue;
       document.getElementById('modal-seo-ring').style.strokeDashoffset = seoOffset;
-      document.getElementById('modal-seo-ring').style.stroke = seoValue <= 30 ? '#ef4444' : seoValue <= 60 ? '#f59e0b' : '#10b981';
+      document.getElementById('modal-seo-ring').style.stroke = seoValue <= 30 ? '#ff4757' : seoValue <= 60 ? '#f5a623' : '#00a86b';
       
       const seoDesc = document.getElementById('modal-seo-desc');
       if (lead.seo <= 20) seoDesc.textContent = 'Very basic site — high opportunity';
@@ -984,7 +962,7 @@
       const overallOffset = seoCircumference - (overallValue / 100) * seoCircumference;
       document.getElementById('modal-overall').textContent = overallValue;
       document.getElementById('modal-overall-ring').style.strokeDashoffset = overallOffset;
-      document.getElementById('modal-overall-ring').style.stroke = overallValue >= 80 ? '#10b981' : overallValue >= 60 ? '#f59e0b' : '#64748b';
+      document.getElementById('modal-overall-ring').style.stroke = overallValue >= 80 ? '#00a86b' : overallValue >= 60 ? '#f5a623' : '#a0a0a0';
       
       const overallDesc = document.getElementById('modal-overall-desc');
       if (lead.overall >= 80) overallDesc.textContent = 'Excellent opportunity';
@@ -999,21 +977,21 @@
         const reasons = lead.score_reasons.split(' | ');
         scoreReasons.innerHTML = reasons.map(r => {
           const isPositive = r.includes('+');
-          const color = isPositive ? 'text-emerald-400' : 'text-red-400';
-          const bg = isPositive ? 'bg-emerald-500/10' : 'bg-red-500/10';
-          return `<div class="flex items-center gap-2 text-sm ${bg} rounded-lg px-3 py-2"><span class="${color} font-bold">${isPositive ? '✓' : '✗'}</span> <span class="text-slate-300">${r}</span></div>`;
+          const color = isPositive ? 'text-[#00a86b]' : 'text-[#ff4757]';
+          const bg = isPositive ? 'bg-[#e6f7f0]' : 'bg-[#ffe8ea]';
+          return `<div class="flex items-center gap-2 text-sm ${bg} rounded-lg px-3 py-2"><span class="${color} font-bold">${isPositive ? '✓' : '✗'}</span> <span class="text-[#6b6b6b]">${r}</span></div>`;
         }).join('');
       } else {
-        scoreReasons.innerHTML = '<div class="text-sm text-slate-500">No detailed breakdown available</div>';
+        scoreReasons.innerHTML = '<div class="text-sm text-[#a0a0a0]">No detailed breakdown available</div>';
       }
       
       document.getElementById('modal-recommended').textContent = lead.recommended;
 
       const contact = document.getElementById('modal-contact');
       contact.innerHTML = `
-        ${lead.phone ? `<div class="flex items-center gap-3 text-sm"><div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center"><i class="fa-solid fa-phone text-slate-400 text-xs"></i></div><span class="text-slate-300">${lead.phone}</span></div>` : ''}
-        ${lead.email ? `<div class="flex items-center gap-3 text-sm"><div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center"><i class="fa-solid fa-envelope text-slate-400 text-xs"></i></div><span class="text-slate-300">${lead.email}</span></div>` : ''}
-        ${lead.website ? `<div class="flex items-center gap-3 text-sm"><div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center"><i class="fa-solid fa-globe text-slate-400 text-xs"></i></div><a href="${lead.website}" target="_blank" class="text-indigo-400 hover:text-indigo-300 transition-colors">${lead.website.replace(/^https?:\/\//, '')}</a></div>` : ''}
+        ${lead.phone ? `<div class="flex items-center gap-3 text-sm"><div class="w-8 h-8 rounded-lg bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center"><i class="fa-solid fa-phone text-[#a0a0a0] text-xs"></i></div><span class="text-[#6b6b6b]">${lead.phone}</span></div>` : ''}
+        ${lead.email ? `<div class="flex items-center gap-3 text-sm"><div class="w-8 h-8 rounded-lg bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center"><i class="fa-solid fa-envelope text-[#a0a0a0] text-xs"></i></div><span class="text-[#6b6b6b]">${lead.email}</span></div>` : ''}
+        ${lead.website ? `<div class="flex items-center gap-3 text-sm"><div class="w-8 h-8 rounded-lg bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center"><i class="fa-solid fa-globe text-[#a0a0a0] text-xs"></i></div><a href="${lead.website}" target="_blank" class="text-[#0055ff] hover:text-[#0044cc] transition-colors">${lead.website.replace(/^https?:\/\//, '')}</a></div>` : ''}
       `;
 
       document.getElementById('modal-sms').textContent = lead.sms;
@@ -1024,10 +1002,10 @@
       // Update stage dots
       const isContacted = contactedLeads.includes(lead.id);
       const isClosed = closedLeads.includes(lead.id);
-      document.querySelectorAll('.stage-dot').forEach(dot => {
+      document.querySelectorAll('.stage-dot-mercury').forEach(dot => {
         dot.classList.remove('active', 'completed');
       });
-      document.querySelectorAll('.stage-line').forEach(line => {
+      document.querySelectorAll('.stage-line-mercury').forEach(line => {
         line.classList.remove('completed');
       });
       
@@ -1036,7 +1014,7 @@
         document.querySelector('[data-stage="contacted"]').classList.add('completed');
         document.querySelector('[data-stage="pitched"]').classList.add('completed');
         document.querySelector('[data-stage="closed"]').classList.add('completed');
-        document.querySelectorAll('.stage-line').forEach(l => l.classList.add('completed'));
+        document.querySelectorAll('.stage-line-mercury').forEach(l => l.classList.add('completed'));
       } else if (isContacted) {
         document.querySelector('[data-stage="new"]').classList.add('completed');
         document.querySelector('[data-stage="contacted"]').classList.add('active');
@@ -1050,18 +1028,18 @@
       
       if (isContacted) {
         btnContacted.innerHTML = '<i class="fa-solid fa-check"></i><span>Contacted</span>';
-        btnContacted.classList.add('from-emerald-500/30', 'to-emerald-600/30');
+        btnContacted.classList.add('bg-[#e6f7f0]', 'text-[#00a86b]', 'border-[#00a86b]');
       } else {
         btnContacted.innerHTML = '<i class="fa-solid fa-phone"></i><span>Mark Contacted</span>';
-        btnContacted.classList.remove('from-emerald-500/30', 'to-emerald-600/30');
+        btnContacted.classList.remove('bg-[#e6f7f0]', 'text-[#00a86b]', 'border-[#00a86b]');
       }
       
       if (isClosed) {
         btnClosed.innerHTML = '<i class="fa-solid fa-check"></i><span>Closed!</span>';
-        btnClosed.classList.add('from-amber-500/30', 'to-orange-600/30');
+        btnClosed.classList.add('bg-[#faf3ec]', 'text-[#d4a574]');
       } else {
         btnClosed.innerHTML = '<i class="fa-solid fa-trophy"></i><span>Mark Closed</span>';
-        btnClosed.classList.remove('from-amber-500/30', 'to-orange-600/30');
+        btnClosed.classList.remove('bg-[#faf3ec]', 'text-[#d4a574]');
       }
 
       document.getElementById('email-popover').classList.add('hidden');
@@ -1117,7 +1095,7 @@
     }
 
     function triggerConfetti() {
-      const colors = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#fbbf24', '#8b5cf6'];
+      const colors = ['#0055ff', '#00a86b', '#f5a623', '#ff4757', '#d4a574', '#6366f1'];
       for (let i = 0; i < 50; i++) {
         const piece = document.createElement('div');
         piece.className = 'confetti-piece';
@@ -1180,7 +1158,7 @@
 
     function showToast(msg) {
       const t = document.createElement('div');
-      t.className = 'toast-v2 fixed bottom-6 left-1/2 -translate-x-1/2 text-white text-sm px-5 py-3 rounded-2xl font-medium z-[200]';
+      t.className = 'toast-mercury fixed bottom-6 left-1/2 -translate-x-1/2 z-[200]';
       t.textContent = msg;
       document.body.appendChild(t);
       setTimeout(() => {
