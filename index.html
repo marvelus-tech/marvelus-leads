@@ -3,458 +3,793 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Leads • Marvelus</title>
+  <title>Marvelus Leads — Pipeline Command</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=SF+Pro+Display:wght@400;500;600&display=swap');
-
     :root {
-      --system-blue: #0071e3;
-      --system-green: #30d158;
-      --system-orange: #ff9500;
-      --system-red: #ff3b30;
-      --system-gray: #8e8e93;
-      --system-bg: #f5f5f7;
-      --system-card: #ffffff;
-      --system-line: #d2d2d7;
+      --marvelus-navy: #0a0e27;
+      --marvelus-navy-light: #12183a;
+      --marvelus-navy-lighter: #1a2247;
+      --marvelus-accent: #6366f1;
+      --marvelus-accent-light: #818cf8;
+      --marvelus-success: #10b981;
+      --marvelus-warning: #f59e0b;
+      --marvelus-danger: #ef4444;
+      --marvelus-gold: #fbbf24;
+      --marvelus-text: #f8fafc;
+      --marvelus-text-muted: #94a3b8;
+      --marvelus-text-dim: #64748b;
+      --marvelus-card-bg: rgba(255,255,255,0.03);
+      --marvelus-card-border: rgba(255,255,255,0.08);
+      --marvelus-card-hover: rgba(255,255,255,0.06);
+      --marvelus-glow: rgba(99,102,241,0.15);
+    }
+
+    * {
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--marvelus-navy);
+      color: var(--marvelus-text);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      background: var(--system-bg);
-      color: #1d1d1f;
+      min-height: 100vh;
     }
 
-    .apple-container {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding-left: 20px;
-      padding-right: 20px;
+    /* Ambient background glow */
+    .ambient-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .ambient-glow::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: 
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(99,102,241,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(16,185,129,0.05) 0%, transparent 50%);
+      animation: ambientShift 20s ease-in-out infinite;
+    }
+    @keyframes ambientShift {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(-2%, 1%) rotate(1deg); }
+      66% { transform: translate(1%, -2%) rotate(-1deg); }
     }
 
-    .section-title {
-      font-size: 34px;
-      font-weight: 700;
-      letter-spacing: -0.8px;
-      line-height: 1.05;
+    /* Header styling */
+    .header-glow {
+      background: linear-gradient(135deg, rgba(99,102,241,0.2) 0%, rgba(16,185,129,0.1) 100%);
+      border: 1px solid rgba(99,102,241,0.2);
+      backdrop-filter: blur(20px);
     }
 
-    .lead-card {
-      background: var(--system-card);
-      border: 1px solid var(--system-line);
-      border-radius: 18px;
-      transition: box-shadow 0.15s cubic-bezier(0.4, 0.0, 0.2, 1),
-                  transform 0.1s cubic-bezier(0.4, 0.0, 0.2, 1);
+    /* Stats cards with glass effect */
+    .stat-glass {
+      background: var(--marvelus-card-bg);
+      border: 1px solid var(--marvelus-card-border);
+      backdrop-filter: blur(12px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stat-glass:hover {
+      background: var(--marvelus-card-hover);
+      border-color: rgba(99,102,241,0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(99,102,241,0.1);
     }
 
-    .lead-card:hover {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    /* Lead cards */
+    .lead-card-v2 {
+      background: var(--marvelus-card-bg);
+      border: 1px solid var(--marvelus-card-border);
+      border-radius: 16px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .lead-card-v2::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--marvelus-accent), var(--marvelus-success), var(--marvelus-warning));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .lead-card-v2:hover::before {
+      opacity: 1;
+    }
+    .lead-card-v2:hover {
+      background: var(--marvelus-card-hover);
+      border-color: rgba(99,102,241,0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(99,102,241,0.15);
+    }
+    .lead-card-v2:active {
+      transform: translateY(-1px) scale(0.995);
     }
 
-    .lead-card:active {
-      transform: scale(0.985);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    /* Score ring animation */
+    .score-ring {
+      position: relative;
+      width: 56px;
+      height: 56px;
     }
-
-    .lead-name {
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: -0.25px;
-      line-height: 1.25;
+    .score-ring svg {
+      transform: rotate(-90deg);
     }
-
-    .meta {
-      font-size: 13px;
-      color: var(--system-gray);
-      font-weight: 400;
-      letter-spacing: -0.1px;
+    .score-ring-bg {
+      fill: none;
+      stroke: rgba(255,255,255,0.08);
+      stroke-width: 4;
     }
-
-    .metric {
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: -0.6px;
-      line-height: 1;
+    .score-ring-fill {
+      fill: none;
+      stroke-width: 4;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
-    .metric-label {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      color: var(--system-gray);
-    }
-
-    .pill {
-      font-size: 12px;
-      font-weight: 600;
-      padding: 2px 9px;
-      border-radius: 9999px;
-      background: #f1f5f9;
-      color: #1d1d1f;
-      letter-spacing: -0.1px;
-    }
-
-    .segmented {
-      display: inline-flex;
-      background: #e5e5ea;
-      border-radius: 9999px;
-      padding: 2px;
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
-    }
-
-    .segment {
-      padding: 7px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      border-radius: 9999px;
-      transition: all 0.1s ease;
-      white-space: nowrap;
-    }
-
-    .segment.active {
-      background: #ffffff;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-      color: #1d1d1f;
-    }
-
-    .stat {
-      background: var(--system-card);
-      border: 1px solid var(--system-line);
-      border-radius: 14px;
-      padding: 10px 12px;
-    }
-
-    .modal-sheet {
-      animation: sheetEnter 0.2s cubic-bezier(0.32, 0.72, 0, 1);
-    }
-
-    .hierarchy-primary { color: #1d1d1f; font-weight: 600; }
-    .hierarchy-secondary { color: #8e8e93; }
-
-    .action-btn {
-      min-height: 44px;
-      min-width: 44px;
+    .score-value {
+      position: absolute;
+      inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      font-family: 'Space Grotesk', monospace;
+    }
+
+    /* Priority badges */
+    .badge-high {
+      background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(239,68,68,0.1));
+      border: 1px solid rgba(239,68,68,0.3);
+      color: #fca5a5;
+    }
+    .badge-medium {
+      background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.1));
+      border: 1px solid rgba(245,158,11,0.3);
+      color: #fcd34d;
+    }
+    .badge-low {
+      background: linear-gradient(135deg, rgba(148,163,184,0.2), rgba(148,163,184,0.1));
+      border: 1px solid rgba(148,163,184,0.3);
+      color: #cbd5e1;
+    }
+
+    /* Segmented control v2 */
+    .segment-v2 {
+      background: var(--marvelus-card-bg);
+      border: 1px solid var(--marvelus-card-border);
       border-radius: 12px;
-      transition: background-color 0.1s ease;
+      padding: 4px;
     }
-
-    .action-btn:active {
-      background: #f2f2f7;
-    }
-
-    .sort-btn {
+    .segment-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
       font-size: 13px;
-      font-weight: 500;
-      padding: 6px 12px;
-      background: #ffffff;
-      border: 1px solid var(--system-line);
-      border-radius: 9999px;
+      font-weight: 600;
+      color: var(--marvelus-text-muted);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+    }
+    .segment-btn:hover {
+      color: var(--marvelus-text);
+    }
+    .segment-btn.active {
+      background: linear-gradient(135deg, var(--marvelus-accent), rgba(99,102,241,0.8));
+      color: white;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.3);
     }
 
-    @keyframes sheetEnter {
+    /* Search bar */
+    .search-glow {
+      background: var(--marvelus-card-bg);
+      border: 1px solid var(--marvelus-card-border);
+      transition: all 0.2s ease;
+    }
+    .search-glow:focus-within {
+      border-color: var(--marvelus-accent);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.1), 0 0 20px rgba(99,102,241,0.05);
+    }
+
+    /* Modal v2 */
+    .modal-backdrop {
+      background: rgba(10,14,39,0.8);
+      backdrop-filter: blur(8px);
+    }
+    .modal-sheet-v2 {
+      background: linear-gradient(180deg, var(--marvelus-navy-light) 0%, var(--marvelus-navy) 100%);
+      border: 1px solid var(--marvelus-card-border);
+      border-radius: 24px 24px 0 0;
+      animation: sheetSlideUp 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    @media (min-width: 640px) {
+      .modal-sheet-v2 {
+        border-radius: 24px;
+        animation: sheetFadeIn 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+      }
+    }
+    @keyframes sheetSlideUp {
       from { transform: translateY(100%); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes sheetFadeIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Metric blocks in modal */
+    .metric-block {
+      background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(99,102,241,0.05));
+      border: 1px solid rgba(99,102,241,0.15);
+      border-radius: 16px;
+      transition: all 0.2s ease;
+    }
+    .metric-block:hover {
+      border-color: rgba(99,102,241,0.3);
+      background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(99,102,241,0.08));
+    }
+
+    /* Action buttons */
+    .action-btn-v2 {
+      background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(99,102,241,0.05));
+      border: 1px solid rgba(99,102,241,0.2);
+      color: var(--marvelus-accent-light);
+      transition: all 0.2s ease;
+    }
+    .action-btn-v2:hover {
+      background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(99,102,241,0.1));
+      border-color: rgba(99,102,241,0.4);
+      transform: translateY(-1px);
+    }
+    .action-btn-v2:active {
+      transform: translateY(0);
+    }
+
+    /* Progress bars */
+    .progress-track {
+      background: rgba(255,255,255,0.06);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Toast notification */
+    .toast-v2 {
+      background: linear-gradient(135deg, var(--marvelus-accent), rgba(99,102,241,0.8));
+      border: 1px solid rgba(99,102,241,0.3);
+      box-shadow: 0 8px 32px rgba(99,102,241,0.2);
+      animation: toastSlideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    @keyframes toastSlideUp {
+      from { transform: translate(-50%, 100%); opacity: 0; }
+      to { transform: translate(-50%, 0); opacity: 1; }
+    }
+
+    /* Streak / gamification */
+    .streak-flame {
+      animation: flameFlicker 2s ease-in-out infinite;
+    }
+    @keyframes flameFlicker {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* Deal stage tracker */
+    .stage-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid var(--marvelus-card-border);
+      background: transparent;
+      transition: all 0.3s ease;
+    }
+    .stage-dot.active {
+      background: var(--marvelus-accent);
+      border-color: var(--marvelus-accent);
+      box-shadow: 0 0 8px rgba(99,102,241,0.5);
+    }
+    .stage-dot.completed {
+      background: var(--marvelus-success);
+      border-color: var(--marvelus-success);
+    }
+    .stage-line {
+      height: 2px;
+      background: var(--marvelus-card-border);
+      flex: 1;
+      transition: background 0.3s ease;
+    }
+    .stage-line.completed {
+      background: linear-gradient(90deg, var(--marvelus-success), var(--marvelus-accent));
+    }
+
+    /* XP / Level badge */
+    .level-badge {
+      background: linear-gradient(135deg, var(--marvelus-gold), #f59e0b);
+      color: var(--marvelus-navy);
+      font-weight: 800;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-family: 'Space Grotesk', monospace;
+    }
+
+    /* Contacted toggle */
+    .contact-toggle {
+      appearance: none;
+      width: 44px;
+      height: 24px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .contact-toggle::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .contact-toggle:checked {
+      background: var(--marvelus-success);
+    }
+    .contact-toggle:checked::after {
+      left: 22px;
+    }
+
+    /* Confetti animation for closed deals */
+    @keyframes confettiFall {
+      0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    .confetti-piece {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      top: -10px;
+      z-index: 9999;
+      animation: confettiFall 3s ease-out forwards;
     }
   </style>
 </head>
 <body>
-  <div class="apple-container pt-8 pb-12">
+  <div class="ambient-glow"></div>
+  
+  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-20">
     
     <!-- Header -->
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center justify-between mb-8">
       <div>
-        <div class="section-title tracking-[-1px]">Leads</div>
-        <div class="text-[#8e8e93] text-[13px] mt-0.5">Marvelus • Today</div>
-      </div>
-      <div class="flex items-center gap-x-2">
-        <div class="px-3 py-1.5 bg-white border border-[#d2d2d7] rounded-3xl text-xs font-medium flex items-center gap-x-1.5">
-          <div class="w-2 h-2 bg-[#30d158] rounded-full"></div>
-          <span>Live</span>
+        <div class="flex items-center gap-3 mb-1">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+            <i class="fa-solid fa-bolt text-white text-lg"></i>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold tracking-tight text-white">Pipeline Command</h1>
+            <p class="text-sm text-slate-400">Marvelus Lead Engine</p>
+          </div>
         </div>
-        <button onclick="refreshData()" class="w-10 h-10 flex items-center justify-center bg-white border border-[#d2d2d7] rounded-2xl active:bg-[#f2f2f7]">
-          <i class="fa-solid fa-sync text-[#8e8e93]"></i>
+      </div>
+      <div class="flex items-center gap-3">
+        <!-- Gamification: Level badge -->
+        <div class="hidden sm:flex items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-3 py-2">
+          <span class="level-badge">LVL 3</span>
+          <div class="w-20 h-2 bg-white/10 rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full" style="width: 65%"></div>
+          </div>
+          <span class="text-xs text-slate-400 font-mono">65%</span>
+        </div>
+        <!-- Streak -->
+        <div class="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-xl px-3 py-2">
+          <i class="fa-solid fa-fire text-orange-500 streak-flame"></i>
+          <span class="text-sm font-bold text-white">5</span>
+          <span class="text-xs text-slate-400">day streak</span>
+        </div>
+        <button onclick="refreshData()" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all active:scale-95">
+          <i class="fa-solid fa-rotate"></i>
         </button>
       </div>
     </div>
 
-    <!-- Segmented Control -->
-    <div class="mb-5">
-      <div class="segmented">
-        <div onclick="setSegment(this, 'all')" class="segment active cursor-pointer" data-segment="all">All</div>
-        <div onclick="setSegment(this, 'high')" class="segment cursor-pointer" data-segment="high">High</div>
-        <div onclick="setSegment(this, 'multi')" class="segment cursor-pointer" data-segment="multi">Multi</div>
-        <div onclick="setSegment(this, 'ai')" class="segment cursor-pointer" data-segment="ai">AI Voice</div>
-      </div>
-    </div>
-
-    <!-- Stats -->
+    <!-- Stats Row -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-      <div class="stat" title="Total leads in the database">
-        <div class="metric-label">Total</div>
-        <div id="stat-total" class="metric mt-0.5">0</div>
+      <div class="stat-glass rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pipeline</span>
+          <i class="fa-solid fa-layer-group text-indigo-400/60 text-sm"></i>
+        </div>
+        <div id="stat-total" class="text-3xl font-bold text-white font-mono">0</div>
+        <div class="text-xs text-slate-500 mt-1">Total leads</div>
       </div>
-      <div class="stat" title="High priority leads (best opportunities)">
-        <div class="metric-label">High Potential</div>
-        <div id="stat-high" class="metric mt-0.5 text-[#0071e3]">0</div>
+      <div class="stat-glass rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Hot Leads</span>
+          <i class="fa-solid fa-fire text-red-400/60 text-sm"></i>
+        </div>
+        <div id="stat-high" class="text-3xl font-bold text-red-400 font-mono">0</div>
+        <div class="text-xs text-slate-500 mt-1">High priority</div>
       </div>
-      <div class="stat" title="Average tech sophistication score (lower = more opportunity)">
-        <div class="metric-label">Avg Tech Score</div>
-        <div id="stat-seo" class="metric mt-0.5">0</div>
+      <div class="stat-glass rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Contacted</span>
+          <i class="fa-solid fa-phone text-emerald-400/60 text-sm"></i>
+        </div>
+        <div id="stat-contacted" class="text-3xl font-bold text-emerald-400 font-mono">0</div>
+        <div class="text-xs text-slate-500 mt-1">This week</div>
       </div>
-      <div class="stat" title="Businesses with multiple service opportunities">
-        <div class="metric-label">Multi-opportunity</div>
-        <div id="stat-multi" class="metric mt-0.5">0</div>
+      <div class="stat-glass rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Closed</span>
+          <i class="fa-solid fa-trophy text-amber-400/60 text-sm"></i>
+        </div>
+        <div id="stat-closed" class="text-3xl font-bold text-amber-400 font-mono">0</div>
+        <div class="text-xs text-slate-500 mt-1">Deals won</div>
       </div>
     </div>
 
-    <!-- Search + Sort -->
-    <div class="flex gap-3 mb-5">
-      <div class="flex-1 relative">
-        <i class="fa-solid fa-search absolute left-4 top-3.5 text-[#8e8e93]"></i>
-        <input id="search-input" type="text" placeholder="Search leads" 
-               onkeyup="filterLeads()"
-               class="w-full bg-white border border-[#d2d2d7] rounded-3xl pl-11 pr-4 py-3 text-[15px] placeholder:text-[#8e8e93] focus:outline-none">
+    <!-- Progress to Next Level -->
+    <div class="mb-6 bg-white/5 border border-white/10 rounded-2xl p-4">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-chart-line text-indigo-400"></i>
+          <span class="text-sm font-semibold text-white">Progress to Level 4</span>
+        </div>
+        <span class="text-xs text-slate-400">12 / 20 deals</span>
       </div>
-      <div class="relative">
-        <button onclick="toggleSort()" class="sort-btn flex items-center gap-x-1.5 h-full px-4 text-sm font-medium">
+      <div class="progress-track h-3">
+        <div class="progress-fill bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" style="width: 60%"></div>
+      </div>
+      <div class="flex justify-between mt-2 text-xs text-slate-500">
+        <span>Contact 3 more leads</span>
+        <span>Close 2 more deals</span>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="flex flex-col sm:flex-row gap-3 mb-6">
+      <div class="segment-v2 flex flex-wrap">
+        <button onclick="setSegment(this, 'all')" class="segment-btn active" data-segment="all">All</button>
+        <button onclick="setSegment(this, 'high')" class="segment-btn" data-segment="high">🔥 Hot</button>
+        <button onclick="setSegment(this, 'contacted')" class="segment-btn" data-segment="contacted">📞 Contacted</button>
+        <button onclick="setSegment(this, 'closed')" class="segment-btn" data-segment="closed">🏆 Closed</button>
+      </div>
+      <div class="flex-1 flex gap-2">
+        <div class="search-glow flex-1 flex items-center rounded-xl px-4 py-2.5">
+          <i class="fa-solid fa-magnifying-glass text-slate-500 mr-3"></i>
+          <input id="search-input" type="text" placeholder="Search leads..." 
+                 onkeyup="filterLeads()"
+                 class="bg-transparent border-none outline-none text-sm text-white placeholder-slate-500 w-full">
+          <kbd class="hidden sm:inline-block text-xs text-slate-600 bg-white/5 px-2 py-0.5 rounded font-mono">/</kbd>
+        </div>
+        <button onclick="toggleSort()" class="search-glow rounded-xl px-4 py-2.5 text-sm font-medium text-slate-300 hover:text-white flex items-center gap-2 whitespace-nowrap">
           <span id="sort-label">Score</span>
-          <i class="fa-solid fa-chevron-down text-xs"></i>
+          <i class="fa-solid fa-chevron-down text-xs text-slate-500"></i>
         </button>
       </div>
     </div>
 
     <!-- Leads Grid -->
-    <div id="leads-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+    <div id="leads-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <!-- JS populated -->
     </div>
 
-    <div class="mt-8 text-center">
-      <p class="text-[11px] text-[#8e8e93]">Phase 7 • Full Pipeline • 110 Leads</p>
-    </div>
-
-    <!-- Scripts Reference -->
-    <div class="mt-8 mb-12">
-      <button onclick="toggleScripts()" class="w-full flex items-center justify-between p-4 bg-white border border-[#d2d2d7] rounded-2xl hover:bg-[#f5f5f7] transition-colors">
+    <!-- Scripts Panel -->
+    <div class="mt-8">
+      <button onclick="toggleScripts()" class="w-full flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all group">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-[#0071e3] bg-opacity-10 rounded-xl flex items-center justify-center">
-            <i class="fa-solid fa-book text-[#0071e3]"></i>
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-600/20 border border-indigo-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-book-open text-indigo-400"></i>
           </div>
           <div class="text-left">
-            <div class="font-semibold text-[15px]">Sales Scripts</div>
-            <div class="text-[13px] text-[#8e8e93]">SEO cold call scripts & objection handling</div>
+            <div class="font-semibold text-white text-sm">Sales Playbook</div>
+            <div class="text-xs text-slate-400">Cold call scripts, objection handling, closing tactics</div>
           </div>
         </div>
-        <i id="scripts-chevron" class="fa-solid fa-chevron-down text-[#8e8e93] transition-transform"></i>
+        <i id="scripts-chevron" class="fa-solid fa-chevron-down text-slate-500 transition-transform duration-300"></i>
       </button>
       
-      <div id="scripts-panel" class="hidden mt-3 bg-white border border-[#d2d2d7] rounded-2xl overflow-hidden">
-        <div class="p-4 space-y-4 max-h-[600px] overflow-y-auto">
-          
-          <!-- Script 1: Problem → Agitate → Present → Close -->
-          <div class="border border-[#d2d2d7] rounded-xl p-4">
-            <div class="flex items-center gap-2 mb-2">
-              <span class="px-2 py-1 bg-[#0071e3] text-white text-[10px] font-bold rounded-lg">#1</span>
-              <span class="font-semibold text-[14px]">The "Only Script You Need"</span>
+      <div id="scripts-panel" class="hidden mt-3 space-y-3">
+        <!-- Script 1 -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:border-indigo-500/30 transition-all">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">1</span>
+            <span class="font-semibold text-white">The "Only Script You Need"</span>
+            <span class="text-xs text-slate-500 ml-auto">Problem → Agitate → Present → Close</span>
+          </div>
+          <div class="text-sm text-slate-300 space-y-2 leading-relaxed">
+            <p><span class="text-indigo-400 font-medium">Opener:</span> "Hi [Name], quick question — are you currently getting leads from Google for [service] in [City]?"</p>
+            <p><span class="text-indigo-400 font-medium">Problem:</span> "Most [industry] businesses I talk to in [City] tell me the same thing: they rely on word-of-mouth or paid ads, but when someone searches '[service] near me' on their phone, they're not showing up."</p>
+            <p><span class="text-indigo-400 font-medium">Agitate:</span> "Those people searching on Google are actively looking to buy. If you're not there, your competitor is. And they're getting that call."</p>
+            <p><span class="text-indigo-400 font-medium">Close:</span> "I'm not asking for a commitment today. What I'd love to do is send you a free video audit of your site — shows exactly why you're not ranking. What's the best email?"</p>
+          </div>
+        </div>
+
+        <!-- Script 2 -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:border-amber-500/30 transition-all">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white text-xs font-bold">2</span>
+            <span class="font-semibold text-white">Pain-First Script</span>
+            <span class="text-xs text-slate-500 ml-auto">Let them pick their pain</span>
+          </div>
+          <div class="text-sm text-slate-300 space-y-2 leading-relaxed">
+            <p>"I work with [industry] businesses in [City] to solve three common problems:</p>
+            <ol class="list-decimal list-inside space-y-1 ml-2 text-slate-400">
+              <li>Not showing up when people search '[service] near me'</li>
+              <li>Website doesn't convert visitors into calls</li>
+              <li>Paying too much for leads that go to 3-4 competitors</li>
+            </ol>
+            <p class="text-slate-300">Which of those, if any, is something you're dealing with right now?"</p>
+          </div>
+        </div>
+
+        <!-- Objection Handling -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:border-red-500/30 transition-all">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-red-500 to-pink-600 flex items-center justify-center text-white text-xs font-bold">
+              <i class="fa-solid fa-shield text-xs"></i>
+            </span>
+            <span class="font-semibold text-white">Objection Handling</span>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-3 text-sm">
+            <div class="space-y-1">
+              <p class="text-red-400 font-medium text-xs uppercase tracking-wider">"I already have SEO"</p>
+              <p class="text-slate-400">"Good — most of our best clients had someone before us. Are you getting 10+ calls/month from that relationship?"</p>
             </div>
-            <div class="text-[12px] text-[#8e8e93] mb-2">Problem → Agitate → Present → Close</div>
-            <div class="text-[13px] text-[#1d1d1f] space-y-2 leading-relaxed">
-              <p><strong>Opener:</strong> "Hi [Name], quick question — are you currently getting leads from Google for [service] in [City]?"</p>
-              <p><strong>Problem:</strong> "Most [industry] businesses I talk to in [City] tell me the same thing: they rely on word-of-mouth or paid ads, but when someone searches '[service] near me' on their phone, they're not showing up."</p>
-              <p><strong>Agitate:</strong> "Those people searching on Google are actively looking to buy. If you're not there, your competitor is. And they're getting that call."</p>
-              <p><strong>Present:</strong> "What we do is get [industry] businesses to show up when people search for exactly what you offer. Not ads — organic Google results. People trust those more, and you don't pay per click."</p>
-              <p><strong>Close:</strong> "I'm not asking for a commitment today. What I'd love to do is send you a free video audit of your site — shows exactly why you're not ranking and what it would take to fix it. What's the best email?"</p>
+            <div class="space-y-1">
+              <p class="text-red-400 font-medium text-xs uppercase tracking-wider">"How much does it cost?"</p>
+              <p class="text-slate-400">"It depends on where you're starting. What I do first is a free audit — shows exactly what needs work. Worth doing the audit?"</p>
+            </div>
+            <div class="space-y-1">
+              <p class="text-red-400 font-medium text-xs uppercase tracking-wider">"No budget"</p>
+              <p class="text-slate-400">"Totally get it. I'll send you the free audit anyway — shows what's costing you leads. What's the best email?"</p>
+            </div>
+            <div class="space-y-1">
+              <p class="text-red-400 font-medium text-xs uppercase tracking-wider">"Send me an email"</p>
+              <p class="text-slate-400">"Happy to. Quick question — are you getting leads from Google, or mostly referrals? I'll tailor the audit around that."</p>
             </div>
           </div>
+        </div>
 
-          <!-- Script 2: Pain-First -->
-          <div class="border border-[#d2d2d7] rounded-xl p-4">
-            <div class="flex items-center gap-2 mb-2">
-              <span class="px-2 py-1 bg-[#ff9500] text-white text-[10px] font-bold rounded-lg">#2</span>
-              <span class="font-semibold text-[14px]">Pain-First Script</span>
+        <!-- Key Tips -->
+        <div class="bg-gradient-to-br from-indigo-500/10 to-purple-600/10 border border-indigo-500/20 rounded-2xl p-5">
+          <div class="font-semibold text-white mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-yellow-400"></i>
+            Key Tips from Reddit Pros
+          </div>
+          <div class="grid sm:grid-cols-2 gap-2 text-sm text-slate-300">
+            <div class="flex items-start gap-2">
+              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span>Never say "SEO" in opener — say "get found on Google"</span>
             </div>
-            <div class="text-[12px] text-[#8e8e93] mb-2">Let them pick their pain</div>
-            <div class="text-[13px] text-[#1d1d1f] space-y-2 leading-relaxed">
-              <p>"I work with [industry] businesses in [City] to solve three common problems:</p>
-              <ol class="list-decimal list-inside space-y-1 ml-2">
-                <li>Not showing up when people search '[service] near me'</li>
-                <li>Website doesn't convert visitors into calls</li>
-                <li>Paying too much for leads that go to 3-4 competitors</li>
-              </ol>
-              <p>Which of those, if any, is something you're dealing with right now?"</p>
+            <div class="flex items-start gap-2">
+              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span>Lead with specific pain — "3-4 leads a week"</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span>Offer value first — free audit, video walkthrough</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span>Use numbers — "60-90 days", "8-12 calls"</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span>Remove risk — "no contracts", "month-to-month"</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span>Ask for easy yes — email is easier than meeting</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span>Follow up — 80% of sales happen after 5+ touches</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span>Speak slowly — "almost uncomfortably slow"</span>
             </div>
           </div>
-
-          <!-- Script 3: Permission + Value -->
-          <div class="border border-[#d2d2d7] rounded-xl p-4">
-            <div class="flex items-center gap-2 mb-2">
-              <span class="px-2 py-1 bg-[#30d158] text-white text-[10px] font-bold rounded-lg">#3</span>
-              <span class="font-semibold text-[14px]">Permission + Value Opener</span>
-            </div>
-            <div class="text-[12px] text-[#8e8e93] mb-2">r/sales top post — 27 upvotes</div>
-            <div class="text-[13px] text-[#1d1d1f] space-y-2 leading-relaxed">
-              <p>"Hi [Name], this is [Your Name] from [Company]. Appreciate I caught you out of the blue — you got a minute?"</p>
-              <p>[Wait for yes]</p>
-              <p>"Great. I'm calling because I was looking at your website and I noticed a few things that are probably costing you leads from Google. Nothing major, but quick wins that most competitors aren't doing."</p>
-              <p>"Worth a 10-minute call to walk through it? I'm not selling anything today, just want to show you what I found."</p>
-            </div>
-          </div>
-
-          <!-- Objection Handling -->
-          <div class="border border-[#d2d2d7] rounded-xl p-4">
-            <div class="flex items-center gap-2 mb-2">
-              <span class="px-2 py-1 bg-[#ff3b30] text-white text-[10px] font-bold rounded-lg">OBJ</span>
-              <span class="font-semibold text-[14px]">Objection Handling</span>
-            </div>
-            <div class="text-[13px] text-[#1d1d1f] space-y-3 leading-relaxed">
-              <div>
-                <p class="font-semibold text-[12px] text-[#8e8e93] uppercase tracking-wider mb-1">"I already have SEO"</p>
-                <p>"Good — most of our best clients had someone before us. Quick question: are you getting 10+ calls/month from that relationship? [If no] Most owners don't know if their SEO is actually working because no one shows them the numbers."</p>
-              </div>
-              <div>
-                <p class="font-semibold text-[12px] text-[#8e8e93] uppercase tracking-wider mb-1">"How much does it cost?"</p>
-                <p>"It depends on where you're starting. What I do first is a free audit — shows exactly what needs work. Then I can give you a real number, not a guess. Worth doing the audit?"</p>
-              </div>
-              <div>
-                <p class="font-semibold text-[12px] text-[#8e8e93] uppercase tracking-wider mb-1">"I don't have budget"</p>
-                <p>"Totally get it. I'll send you the free audit anyway — shows you exactly what's costing you leads. Even if we don't work together, you'll know what to fix when budget opens up. What's the best email?"</p>
-              </div>
-              <div>
-                <p class="font-semibold text-[12px] text-[#8e8e93] uppercase tracking-wider mb-1">"Send me an email"</p>
-                <p>"Happy to. Quick question so I send something useful — are you currently getting leads from Google, or is it mostly referrals? [Wait] Perfect. I'll tailor the audit around that."</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Key Tips -->
-          <div class="bg-[#f5f5f7] rounded-xl p-4">
-            <div class="font-semibold text-[14px] mb-2">Key Tips from Reddit Pros</div>
-            <div class="text-[12px] text-[#1d1d1f] space-y-1.5">
-              <p>• <strong>Never say "SEO" in opener</strong> — say "get found on Google"</p>
-              <p>• <strong>Lead with specific pain</strong> — "3-4 leads a week"</p>
-              <p>• <strong>Offer value first</strong> — free audit, video walkthrough</p>
-              <p>• <strong>Use numbers</strong> — "60-90 days", "8-12 calls"</p>
-              <p>• <strong>Remove risk</strong> — "no contracts", "month-to-month"</p>
-              <p>• <strong>Ask for easy yes</strong> — email is easier than meeting</p>
-              <p>• <strong>Follow up</strong> — 80% of sales happen after 5+ touchpoints</p>
-              <p>• <strong>Speak slowly</strong> — "almost uncomfortably slow"</p>
-              <p>• <strong>Stand up</strong> — use a standing desk for energy</p>
-              <p>• <strong>Record calls</strong> — listen and improve</p>
-            </div>
-          </div>
-
-          <!-- Marketing Tactics -->
-          <div class="bg-[#f5f5f7] rounded-xl p-4">
-            <div class="font-semibold text-[14px] mb-2">Marketing Tactics That Work</div>
-            <div class="text-[12px] text-[#1d1d1f] space-y-1.5">
-              <p>• <strong>Free Video Audits</strong> (Loom) — 30-40% response rate</p>
-              <p>• <strong>Google Business Profile Optimization</strong> — free trial, 50%+ convert</p>
-              <p>• <strong>Review Generation Campaign</strong> — "10 new Google reviews this month — free"</p>
-              <p>• <strong>Local SEO Workshops</strong> — free 30-min Zoom, 10-15% convert</p>
-              <p>• <strong>Case Study Content</strong> — "How [Business] Got 12 More Calls/Month"</p>
-            </div>
-          </div>
-
         </div>
       </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-8 text-center">
+      <p class="text-xs text-slate-600">Marvelus Lead Engine • Phase 7 • 110 Leads</p>
     </div>
   </div>
 
   <!-- Detail Modal -->
   <div id="modal" onclick="if (event.target.id === 'modal') closeModal()" 
-       class="hidden fixed inset-0 bg-black/60 z-[100] flex items-end sm:items-center justify-center">
+       class="hidden fixed inset-0 z-[100] modal-backdrop flex items-end sm:items-center justify-center">
     <div onclick="event.stopImmediatePropagation()" 
-         class="bg-white w-full sm:max-w-[440px] sm:rounded-3xl sm:m-4 rounded-t-3xl modal-sheet overflow-hidden">
+         class="modal-sheet-v2 w-full sm:max-w-[480px] sm:m-4 overflow-hidden max-h-[90vh] overflow-y-auto">
       
-      <div class="px-5 pt-5 pb-3 flex items-center justify-between border-b">
-        <div class="min-w-0 flex-1">
-          <div id="modal-name" class="font-semibold text-[19px] tracking-[-0.3px] truncate"></div>
-          <div id="modal-meta" class="text-[13px] text-[#8e8e93]"></div>
+      <!-- Modal Header -->
+      <div class="sticky top-0 z-10 px-6 pt-6 pb-4 bg-gradient-to-b from-[#12183a] to-[#12183a]/95 backdrop-blur-xl border-b border-white/10">
+        <div class="flex items-center justify-between">
+          <div class="min-w-0 flex-1">
+            <div id="modal-name" class="font-bold text-xl text-white tracking-tight truncate"></div>
+            <div id="modal-meta" class="text-sm text-slate-400 mt-0.5"></div>
+          </div>
+          <button onclick="closeModal()" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all ml-3 flex-shrink-0">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
         </div>
-        <button onclick="closeModal()" class="text-[30px] leading-none px-1 text-[#8e8e93] active:text-black">×</button>
       </div>
 
-      <div class="p-5 space-y-6">
-        <!-- Metrics -->
-        <div class="grid grid-cols-2 gap-3">
-          <div class="bg-[#f5f5f7] rounded-2xl p-4" title="How modern their website is. 0=very basic (high opportunity), 100=high-tech (less opportunity)">
-            <div class="text-xs text-[#8e8e93] font-medium tracking-wider">TECH SOPHISTICATION</div>
-            <div id="modal-seo" class="text-[42px] font-semibold tracking-[-1.5px] mt-1"></div>
-            <div id="modal-seo-desc" class="text-xs text-[#8e8e93] mt-1"></div>
+      <div class="p-6 space-y-6">
+        <!-- Deal Stage Tracker -->
+        <div>
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Deal Stage</div>
+          <div class="flex items-center gap-2">
+            <div class="stage-dot active" data-stage="new" onclick="setStage('new')"></div>
+            <div class="stage-line completed"></div>
+            <div class="stage-dot" data-stage="contacted" onclick="setStage('contacted')"></div>
+            <div class="stage-line"></div>
+            <div class="stage-dot" data-stage="pitched" onclick="setStage('pitched')"></div>
+            <div class="stage-line"></div>
+            <div class="stage-dot" data-stage="closed" onclick="setStage('closed')"></div>
           </div>
-          <div class="bg-[#f5f5f7] rounded-2xl p-4" title="Overall opportunity score based on missing features, contact info, and tech gaps">
-            <div class="text-xs text-[#8e8e93] font-medium tracking-wider">LEAD SCORE</div>
-            <div id="modal-overall" class="text-[42px] font-semibold tracking-[-1.5px] mt-1"></div>
-            <div id="modal-overall-desc" class="text-xs text-[#8e8e93] mt-1"></div>
+          <div class="flex justify-between mt-2 text-xs text-slate-500">
+            <span>New</span>
+            <span>Contacted</span>
+            <span>Pitched</span>
+            <span>Closed</span>
+          </div>
+        </div>
+
+        <!-- Score Rings -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="metric-block p-4">
+            <div class="flex items-center gap-3">
+              <div class="score-ring">
+                <svg width="56" height="56" viewBox="0 0 56 56">
+                  <circle class="score-ring-bg" cx="28" cy="28" r="24"/>
+                  <circle id="modal-seo-ring" class="score-ring-fill" cx="28" cy="28" r="24" 
+                          stroke-dasharray="150.8" stroke-dashoffset="150.8" stroke="#6366f1"/>
+                </svg>
+                <div id="modal-seo" class="score-value text-indigo-400"></div>
+              </div>
+              <div>
+                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tech Score</div>
+                <div id="modal-seo-desc" class="text-xs text-slate-500 mt-0.5"></div>
+              </div>
+            </div>
+          </div>
+          <div class="metric-block p-4">
+            <div class="flex items-center gap-3">
+              <div class="score-ring">
+                <svg width="56" height="56" viewBox="0 0 56 56">
+                  <circle class="score-ring-bg" cx="28" cy="28" r="24"/>
+                  <circle id="modal-overall-ring" class="score-ring-fill" cx="28" cy="28" r="24" 
+                          stroke-dasharray="150.8" stroke-dashoffset="150.8" stroke="#10b981"/>
+                </svg>
+                <div id="modal-overall" class="score-value text-emerald-400"></div>
+              </div>
+              <div>
+                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Lead Score</div>
+                <div id="modal-overall-desc" class="text-xs text-slate-500 mt-0.5"></div>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Score Breakdown -->
-        <div id="modal-score-breakdown" class="bg-[#f5f5f7] rounded-2xl p-4">
-          <div class="text-xs text-[#8e8e93] font-medium tracking-wider mb-2">SCORE BREAKDOWN</div>
-          <div id="modal-score-reasons" class="text-sm text-[#1d1d1f] space-y-1"></div>
+        <div id="modal-score-breakdown" class="bg-white/5 border border-white/10 rounded-2xl p-4">
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Score Breakdown</div>
+          <div id="modal-score-reasons" class="space-y-2"></div>
         </div>
 
+        <!-- Recommended Service -->
         <div>
-          <div class="text-xs text-[#8e8e93] font-medium tracking-wider mb-1.5">RECOMMENDED</div>
-          <div id="modal-recommended" class="inline-block px-4 py-1 text-sm font-semibold bg-[#1d1d1f] text-white rounded-2xl"></div>
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Recommended</div>
+          <div id="modal-recommended" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-500/20 to-purple-600/20 border border-indigo-500/30 rounded-xl text-sm font-semibold text-indigo-300"></div>
         </div>
 
+        <!-- Contact Info -->
         <div>
-          <div class="text-xs text-[#8e8e93] font-medium tracking-wider mb-2">CONTACT</div>
-          <div id="modal-contact" class="space-y-2 text-[15px]"></div>
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Contact</div>
+          <div id="modal-contact" class="space-y-2"></div>
         </div>
 
         <!-- Outreach -->
         <div>
-          <div class="text-xs text-[#8e8e93] font-medium tracking-wider mb-2">OUTREACH</div>
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Outreach</div>
           
-          <div class="border border-[#d2d2d7] rounded-2xl p-4 mb-3">
-            <div class="flex items-center justify-between mb-1">
-              <div class="flex items-center gap-x-2 text-sm font-semibold">
-                <i class="fa-solid fa-comment-dots text-[#0071e3]"></i>
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-4 mb-3">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2 text-sm font-semibold text-white">
+                <i class="fa-solid fa-comment-dots text-indigo-400"></i>
                 <span>SMS</span>
               </div>
-              <button onclick="copySMS()" class="text-xs px-3 py-1 bg-[#f5f5f7] active:bg-[#e5e5e7] rounded-2xl">Copy</button>
+              <button onclick="copySMS()" class="action-btn-v2 rounded-lg px-3 py-1.5 text-xs font-medium">
+                <i class="fa-regular fa-copy mr-1"></i>Copy
+              </button>
             </div>
-            <div id="modal-sms" class="text-sm leading-snug text-[#1d1d1f]"></div>
+            <div id="modal-sms" class="text-sm text-slate-300 leading-relaxed"></div>
           </div>
 
-          <div class="flex items-center gap-x-2">
-            <div class="text-sm font-semibold">Email</div>
-            <button onclick="toggleEmail(event)" class="w-8 h-8 flex items-center justify-center text-[#0071e3] hover:bg-[#f0f7ff] active:bg-[#e0f0ff] rounded-full">
+          <div class="flex items-center gap-3">
+            <button onclick="toggleEmail(event)" class="action-btn-v2 flex-1 rounded-xl py-3 text-sm font-semibold flex items-center justify-center gap-2">
               <i class="fa-solid fa-envelope"></i>
+              <span>Email Draft</span>
             </button>
-            <span class="text-xs text-[#8e8e93]">tap icon</span>
+            <button onclick="openWebsite()" class="action-btn-v2 flex-1 rounded-xl py-3 text-sm font-semibold flex items-center justify-center gap-2">
+              <i class="fa-solid fa-globe"></i>
+              <span>Website</span>
+            </button>
           </div>
 
-          <div id="email-popover" class="hidden mt-2 border border-[#d2d2d7] rounded-2xl p-4 bg-[#f8fafc]">
-            <div class="flex justify-between mb-1">
-              <div class="text-xs font-medium text-[#8e8e93]">SUBJECT</div>
-              <button onclick="copyEmailDraft()" class="text-xs px-2 py-px bg-white border border-[#d2d2d7] rounded-xl">Copy</button>
+          <div id="email-popover" class="hidden mt-3 bg-white/5 border border-white/10 rounded-2xl p-4">
+            <div class="flex justify-between items-center mb-2">
+              <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Subject</div>
+              <button onclick="copyEmailDraft()" class="action-btn-v2 rounded-lg px-3 py-1 text-xs">
+                <i class="fa-regular fa-copy mr-1"></i>Copy
+              </button>
             </div>
-            <div id="modal-email-subject" class="font-medium text-sm mb-3"></div>
-            <div class="text-xs font-medium text-[#8e8e93] mb-1">BODY</div>
-            <div id="modal-email-body" class="text-sm leading-relaxed whitespace-pre-line"></div>
+            <div id="modal-email-subject" class="text-sm font-medium text-white mb-4"></div>
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Body</div>
+            <div id="modal-email-body" class="text-sm text-slate-300 leading-relaxed whitespace-pre-line"></div>
           </div>
         </div>
       </div>
 
-      <div class="border-t p-4 flex gap-3 bg-[#f5f5f7]">
-        <button onclick="openWebsite()" class="flex-1 py-3 bg-white border border-[#d2d2d7] active:bg-[#f2f2f7] rounded-2xl text-sm font-semibold flex items-center justify-center gap-x-2">
-          <i class="fa-solid fa-external-link-alt"></i>
-          <span>Website</span>
-        </button>
-        <button onclick="copyFullEmail()" class="flex-1 py-3 bg-white border border-[#d2d2d7] active:bg-[#f2f2f7] rounded-2xl text-sm font-semibold flex items-center justify-center gap-x-2">
-          <i class="fa-solid fa-envelope"></i>
-          <span>Email</span>
-        </button>
+      <!-- Modal Footer Actions -->
+      <div class="sticky bottom-0 border-t border-white/10 p-4 bg-gradient-to-t from-[#0a0e27] to-[#0a0e27]/95 backdrop-blur-xl">
+        <div class="flex gap-3">
+          <button onclick="markContacted()" id="btn-contacted" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500/20 to-emerald-600/20 border border-emerald-500/30 text-emerald-400 font-semibold text-sm hover:from-emerald-500/30 hover:to-emerald-600/30 transition-all flex items-center justify-center gap-2">
+            <i class="fa-solid fa-phone"></i>
+            <span>Mark Contacted</span>
+          </button>
+          <button onclick="markClosed()" id="btn-closed" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500/20 to-orange-600/20 border border-amber-500/30 text-amber-400 font-semibold text-sm hover:from-amber-500/30 hover:to-orange-600/30 transition-all flex items-center justify-center gap-2">
+            <i class="fa-solid fa-trophy"></i>
+            <span>Mark Closed</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -464,31 +799,38 @@
     let currentSegment = 'all';
     let currentSearch = '';
     let currentSort = 'overall';
+    let contactedCount = parseInt(localStorage.getItem('contactedCount') || '0');
+    let closedCount = parseInt(localStorage.getItem('closedCount') || '0');
+    let contactedLeads = JSON.parse(localStorage.getItem('contactedLeads') || '[]');
+    let closedLeads = JSON.parse(localStorage.getItem('closedLeads') || '[]');
 
-    // Load leads from dashboard_data.json
     async function loadLeads() {
       try {
         const response = await fetch('dashboard_data.json');
         if (!response.ok) throw new Error('Failed to load leads');
         leads = await response.json();
         console.log(`Loaded ${leads.length} leads`);
+        updateGamificationStats();
         filterLeads();
       } catch (err) {
         console.error('Error loading leads:', err);
         document.getElementById('leads-grid').innerHTML = 
-          '<div class="col-span-full py-12 text-center text-[#8e8e93]">Error loading leads. Please refresh.</div>';
+          '<div class="col-span-full py-12 text-center text-slate-500">Error loading leads. Please refresh.</div>';
       }
+    }
+
+    function updateGamificationStats() {
+      document.getElementById('stat-contacted').textContent = contactedCount;
+      document.getElementById('stat-closed').textContent = closedCount;
     }
 
     function updateStats(filtered) {
       const total = filtered.length;
       const high = filtered.filter(l => l.priority === 'high').length;
-      const avgSeo = total ? Math.round(filtered.reduce((a, b) => a + b.seo, 0) / total) : 0;
       const multi = filtered.filter(l => l.multi).length;
 
       document.getElementById('stat-total').textContent = total;
       document.getElementById('stat-high').textContent = high;
-      document.getElementById('stat-seo').textContent = avgSeo;
       document.getElementById('stat-multi').textContent = multi;
     }
 
@@ -497,41 +839,77 @@
       grid.innerHTML = '';
 
       if (!filtered.length) {
-        grid.innerHTML = '<div class="col-span-full py-12 text-center text-[#8e8e93]">No leads match the current view.</div>';
+        grid.innerHTML = '<div class="col-span-full py-12 text-center text-slate-500">No leads match the current view.</div>';
         return;
       }
 
-      filtered.forEach(lead => {
+      filtered.forEach((lead, index) => {
+        const isContacted = contactedLeads.includes(lead.id);
+        const isClosed = closedLeads.includes(lead.id);
+        const delay = Math.min(index * 0.05, 0.5);
+        
         const div = document.createElement('div');
-        div.className = 'lead-card p-5 cursor-pointer';
+        div.className = 'lead-card-v2 p-5 cursor-pointer';
+        div.style.animation = `sheetFadeIn 0.4s cubic-bezier(0.32, 0.72, 0, 1) ${delay}s both`;
+        
+        // Score color logic
+        const techColor = lead.seo <= 30 ? 'text-red-400' : lead.seo <= 60 ? 'text-amber-400' : 'text-emerald-400';
+        const scoreColor = lead.overall >= 80 ? 'text-emerald-400' : lead.overall >= 60 ? 'text-amber-400' : 'text-slate-400';
+        
+        // Priority badge
+        let badgeClass = 'badge-low';
+        let badgeText = 'LOW';
+        if (lead.priority === 'high') { badgeClass = 'badge-high'; badgeText = 'HOT'; }
+        else if (lead.priority === 'medium') { badgeClass = 'badge-medium'; badgeText = 'WARM'; }
+        
         div.innerHTML = `
-          <div class="flex justify-between items-start mb-3">
+          <div class="flex justify-between items-start mb-4">
             <div class="min-w-0 flex-1">
-              <div class="lead-name truncate">${lead.name}</div>
-              <div class="meta mt-0.5">${lead.category} • ${lead.location}</div>
+              <div class="flex items-center gap-2 mb-1">
+                <div class="lead-name text-white font-semibold text-base truncate">${lead.name}</div>
+                ${isClosed ? '<i class="fa-solid fa-trophy text-amber-400 flex-shrink-0" title="Deal closed!"></i>' : ''}
+                ${isContacted && !isClosed ? '<i class="fa-solid fa-phone text-emerald-400 flex-shrink-0" title="Contacted"></i>' : ''}
+              </div>
+              <div class="meta text-slate-400 text-sm">${lead.category} • ${lead.location}</div>
             </div>
-            <div class="pill ml-3 flex-shrink-0">${lead.recommended}</div>
-          </div>
-
-          <div class="flex gap-6 mb-4">
-            <div title="Tech Sophistication: How modern their website is (0=very basic, 100=high-tech). Lower = more opportunity for you to help.">
-              <div class="metric ${lead.seo >= 70 ? 'text-[#30d158]' : lead.seo >= 40 ? 'text-[#ff9500]' : 'text-[#ff3b30]'}">${lead.seo}</div>
-              <div class="metric-label">TECH</div>
-            </div>
-            <div title="Lead Score: Overall opportunity (0-100). Higher = better prospect. Based on missing features, contact info, and tech gaps.">
-              <div class="metric">${lead.overall}</div>
-              <div class="metric-label">SCORE</div>
+            <div class="flex items-center gap-2 ml-2 flex-shrink-0">
+              <span class="px-2.5 py-1 text-[10px] font-bold rounded-lg ${badgeClass}">${badgeText}</span>
             </div>
           </div>
 
-          <div class="flex items-center justify-between pt-3 border-t border-[#f2f2f7]">
-            <div>
-              <span class="px-2 py-px text-[10px] font-semibold rounded-full ${lead.priority === 'high' ? 'bg-[#ff3b30] text-white' : lead.priority === 'medium' ? 'bg-[#ff9500] text-white' : 'bg-[#8e8e93] text-white'}">${lead.priority.toUpperCase()}</span>
-              ${lead.multi ? '<span class="ml-1.5 px-2 py-px text-[10px] font-semibold bg-[#0071e3] text-white rounded-full">MULTI</span>' : ''}
+          <div class="flex items-center gap-6 mb-4">
+            <div class="flex items-center gap-2">
+              <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                <span class="text-lg font-bold ${techColor} font-mono">${lead.seo}</span>
+              </div>
+              <div>
+                <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Tech</div>
+                <div class="text-xs text-slate-400">${lead.seo <= 30 ? 'High opp' : lead.seo <= 60 ? 'Moderate' : 'Low opp'}</div>
+              </div>
             </div>
-            <div class="flex gap-x-0.5">
-              <button onclick="event.stopImmediatePropagation(); copyLeadSMS(${lead.id})" class="action-btn text-sm w-9"><i class="fa-regular fa-copy"></i></button>
-              <button onclick="event.stopImmediatePropagation(); window.open('${lead.website}', '_blank')" class="action-btn text-sm w-9"><i class="fa-solid fa-external-link-alt"></i></button>
+            <div class="flex items-center gap-2">
+              <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                <span class="text-lg font-bold ${scoreColor} font-mono">${lead.overall}</span>
+              </div>
+              <div>
+                <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Score</div>
+                <div class="text-xs text-slate-400">${lead.overall >= 80 ? 'Excellent' : lead.overall >= 60 ? 'Good' : 'Fair'}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 border-t border-white/10">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 text-[10px] font-semibold bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">${lead.recommended}</span>
+              ${lead.multi ? '<span class="px-2 py-1 text-[10px] font-semibold bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded-lg">MULTI</span>' : ''}
+            </div>
+            <div class="flex gap-1">
+              <button onclick="event.stopImmediatePropagation(); copyLeadSMS(${lead.id})" class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all">
+                <i class="fa-regular fa-copy text-xs"></i>
+              </button>
+              <button onclick="event.stopImmediatePropagation(); window.open('${lead.website}', '_blank')" class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all">
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+              </button>
             </div>
           </div>
         `;
@@ -547,15 +925,16 @@
         const matchesSearch = !currentSearch || l.name.toLowerCase().includes(currentSearch) || l.category.toLowerCase().includes(currentSearch);
         let matchesSeg = true;
         if (currentSegment === 'high') matchesSeg = l.priority === 'high';
+        else if (currentSegment === 'contacted') matchesSeg = contactedLeads.includes(l.id);
+        else if (currentSegment === 'closed') matchesSeg = closedLeads.includes(l.id);
         else if (currentSegment === 'multi') matchesSeg = l.multi;
         else if (currentSegment === 'ai') matchesSeg = l.recommended.toLowerCase().includes('voice');
         return matchesSearch && matchesSeg;
       });
 
-      // Apply sort
       filtered.sort((a, b) => {
         if (currentSort === 'overall') return b.overall - a.overall;
-        if (currentSort === 'seo') return b.seo - a.seo;
+        if (currentSort === 'seo') return a.seo - b.seo; // Lower tech = higher opportunity
         if (currentSort === 'name') return a.name.localeCompare(b.name);
         return 0;
       });
@@ -565,7 +944,7 @@
     }
 
     function setSegment(el, seg) {
-      document.querySelectorAll('.segment').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.segment-btn').forEach(s => s.classList.remove('active'));
       el.classList.add('active');
       currentSegment = seg;
       filterLeads();
@@ -573,7 +952,7 @@
 
     function toggleSort() {
       const options = ['overall', 'seo', 'name'];
-      const labels = { overall: 'Score', seo: 'SEO Health', name: 'Name' };
+      const labels = { overall: 'Score', seo: 'Opportunity', name: 'Name' };
       let idx = options.indexOf(currentSort);
       currentSort = options[(idx + 1) % options.length];
       document.getElementById('sort-label').textContent = labels[currentSort];
@@ -585,17 +964,28 @@
       document.getElementById('modal-name').textContent = lead.name;
       document.getElementById('modal-meta').textContent = `${lead.category} • ${lead.location}`;
       
-      // Tech sophistication score with description
-      document.getElementById('modal-seo').textContent = lead.seo;
-      const seoDesc = document.getElementById('modal-seo-desc');
-      if (lead.seo <= 20) seoDesc.textContent = 'Very basic site - high opportunity';
-      else if (lead.seo <= 40) seoDesc.textContent = 'Simple site - good opportunity';
-      else if (lead.seo <= 60) seoDesc.textContent = 'Moderate tech - some opportunity';
-      else if (lead.seo <= 80) seoDesc.textContent = 'Modern site - limited opportunity';
-      else seoDesc.textContent = 'High-tech site - low opportunity';
+      // Tech score ring
+      const seoValue = lead.seo;
+      const seoCircumference = 2 * Math.PI * 24;
+      const seoOffset = seoCircumference - (seoValue / 100) * seoCircumference;
+      document.getElementById('modal-seo').textContent = seoValue;
+      document.getElementById('modal-seo-ring').style.strokeDashoffset = seoOffset;
+      document.getElementById('modal-seo-ring').style.stroke = seoValue <= 30 ? '#ef4444' : seoValue <= 60 ? '#f59e0b' : '#10b981';
       
-      // Lead score with description
-      document.getElementById('modal-overall').textContent = lead.overall;
+      const seoDesc = document.getElementById('modal-seo-desc');
+      if (lead.seo <= 20) seoDesc.textContent = 'Very basic site — high opportunity';
+      else if (lead.seo <= 40) seoDesc.textContent = 'Simple site — good opportunity';
+      else if (lead.seo <= 60) seoDesc.textContent = 'Moderate tech — some opportunity';
+      else if (lead.seo <= 80) seoDesc.textContent = 'Modern site — limited opportunity';
+      else seoDesc.textContent = 'High-tech site — low opportunity';
+      
+      // Overall score ring
+      const overallValue = lead.overall;
+      const overallOffset = seoCircumference - (overallValue / 100) * seoCircumference;
+      document.getElementById('modal-overall').textContent = overallValue;
+      document.getElementById('modal-overall-ring').style.strokeDashoffset = overallOffset;
+      document.getElementById('modal-overall-ring').style.stroke = overallValue >= 80 ? '#10b981' : overallValue >= 60 ? '#f59e0b' : '#64748b';
+      
       const overallDesc = document.getElementById('modal-overall-desc');
       if (lead.overall >= 80) overallDesc.textContent = 'Excellent opportunity';
       else if (lead.overall >= 60) overallDesc.textContent = 'Good opportunity';
@@ -603,31 +993,76 @@
       else if (lead.overall >= 20) overallDesc.textContent = 'Limited opportunity';
       else overallDesc.textContent = 'Low opportunity';
       
-      // Score breakdown (would need to be added to data)
+      // Score breakdown
       const scoreReasons = document.getElementById('modal-score-reasons');
       if (lead.score_reasons) {
         const reasons = lead.score_reasons.split(' | ');
         scoreReasons.innerHTML = reasons.map(r => {
           const isPositive = r.includes('+');
-          const color = isPositive ? 'text-[#30d158]' : 'text-[#ff3b30]';
-          return `<div class="flex items-center gap-2"><span class="${color}">${isPositive ? '✓' : '✗'}</span> ${r}</div>`;
+          const color = isPositive ? 'text-emerald-400' : 'text-red-400';
+          const bg = isPositive ? 'bg-emerald-500/10' : 'bg-red-500/10';
+          return `<div class="flex items-center gap-2 text-sm ${bg} rounded-lg px-3 py-2"><span class="${color} font-bold">${isPositive ? '✓' : '✗'}</span> <span class="text-slate-300">${r}</span></div>`;
         }).join('');
       } else {
-        scoreReasons.innerHTML = '<div class="text-[#8e8e93]">No detailed breakdown available</div>';
+        scoreReasons.innerHTML = '<div class="text-sm text-slate-500">No detailed breakdown available</div>';
       }
       
       document.getElementById('modal-recommended').textContent = lead.recommended;
 
       const contact = document.getElementById('modal-contact');
       contact.innerHTML = `
-        ${lead.phone ? `<div><i class="fa-solid fa-phone mr-2 text-[#8e8e93]"></i>${lead.phone}</div>` : ''}
-        ${lead.email ? `<div><i class="fa-solid fa-envelope mr-2 text-[#8e8e93]"></i>${lead.email}</div>` : ''}
+        ${lead.phone ? `<div class="flex items-center gap-3 text-sm"><div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center"><i class="fa-solid fa-phone text-slate-400 text-xs"></i></div><span class="text-slate-300">${lead.phone}</span></div>` : ''}
+        ${lead.email ? `<div class="flex items-center gap-3 text-sm"><div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center"><i class="fa-solid fa-envelope text-slate-400 text-xs"></i></div><span class="text-slate-300">${lead.email}</span></div>` : ''}
+        ${lead.website ? `<div class="flex items-center gap-3 text-sm"><div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center"><i class="fa-solid fa-globe text-slate-400 text-xs"></i></div><a href="${lead.website}" target="_blank" class="text-indigo-400 hover:text-indigo-300 transition-colors">${lead.website.replace(/^https?:\/\//, '')}</a></div>` : ''}
       `;
 
       document.getElementById('modal-sms').textContent = lead.sms;
       modal.dataset.currentId = lead.id;
       modal.dataset.emailSubject = lead.email_subject;
       modal.dataset.emailBody = lead.email_body;
+
+      // Update stage dots
+      const isContacted = contactedLeads.includes(lead.id);
+      const isClosed = closedLeads.includes(lead.id);
+      document.querySelectorAll('.stage-dot').forEach(dot => {
+        dot.classList.remove('active', 'completed');
+      });
+      document.querySelectorAll('.stage-line').forEach(line => {
+        line.classList.remove('completed');
+      });
+      
+      if (isClosed) {
+        document.querySelector('[data-stage="new"]').classList.add('completed');
+        document.querySelector('[data-stage="contacted"]').classList.add('completed');
+        document.querySelector('[data-stage="pitched"]').classList.add('completed');
+        document.querySelector('[data-stage="closed"]').classList.add('completed');
+        document.querySelectorAll('.stage-line').forEach(l => l.classList.add('completed'));
+      } else if (isContacted) {
+        document.querySelector('[data-stage="new"]').classList.add('completed');
+        document.querySelector('[data-stage="contacted"]').classList.add('active');
+      } else {
+        document.querySelector('[data-stage="new"]').classList.add('active');
+      }
+
+      // Update button states
+      const btnContacted = document.getElementById('btn-contacted');
+      const btnClosed = document.getElementById('btn-closed');
+      
+      if (isContacted) {
+        btnContacted.innerHTML = '<i class="fa-solid fa-check"></i><span>Contacted</span>';
+        btnContacted.classList.add('from-emerald-500/30', 'to-emerald-600/30');
+      } else {
+        btnContacted.innerHTML = '<i class="fa-solid fa-phone"></i><span>Mark Contacted</span>';
+        btnContacted.classList.remove('from-emerald-500/30', 'to-emerald-600/30');
+      }
+      
+      if (isClosed) {
+        btnClosed.innerHTML = '<i class="fa-solid fa-check"></i><span>Closed!</span>';
+        btnClosed.classList.add('from-amber-500/30', 'to-orange-600/30');
+      } else {
+        btnClosed.innerHTML = '<i class="fa-solid fa-trophy"></i><span>Mark Closed</span>';
+        btnClosed.classList.remove('from-amber-500/30', 'to-orange-600/30');
+      }
 
       document.getElementById('email-popover').classList.add('hidden');
       modal.classList.remove('hidden');
@@ -640,13 +1075,68 @@
       modal.classList.add('hidden');
     }
 
+    function setStage(stage) {
+      const id = parseInt(document.getElementById('modal').dataset.currentId);
+      if (stage === 'contacted') markContacted();
+      else if (stage === 'closed') markClosed();
+    }
+
+    function markContacted() {
+      const id = parseInt(document.getElementById('modal').dataset.currentId);
+      if (!contactedLeads.includes(id)) {
+        contactedLeads.push(id);
+        contactedCount++;
+        localStorage.setItem('contactedLeads', JSON.stringify(contactedLeads));
+        localStorage.setItem('contactedCount', contactedCount.toString());
+        updateGamificationStats();
+        showToast('Marked as contacted! 🔥');
+        showDetail(leads.find(l => l.id === id));
+        filterLeads();
+      }
+    }
+
+    function markClosed() {
+      const id = parseInt(document.getElementById('modal').dataset.currentId);
+      if (!closedLeads.includes(id)) {
+        closedLeads.push(id);
+        closedCount++;
+        if (!contactedLeads.includes(id)) {
+          contactedLeads.push(id);
+          contactedCount++;
+        }
+        localStorage.setItem('closedLeads', JSON.stringify(closedLeads));
+        localStorage.setItem('contactedLeads', JSON.stringify(contactedLeads));
+        localStorage.setItem('closedCount', closedCount.toString());
+        localStorage.setItem('contactedCount', contactedCount.toString());
+        updateGamificationStats();
+        triggerConfetti();
+        showToast('Deal closed! 🏆');
+        showDetail(leads.find(l => l.id === id));
+        filterLeads();
+      }
+    }
+
+    function triggerConfetti() {
+      const colors = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#fbbf24', '#8b5cf6'];
+      for (let i = 0; i < 50; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDelay = Math.random() * 2 + 's';
+        piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 4000);
+      }
+    }
+
     function toggleEmail(e) {
       e.stopImmediatePropagation();
       const pop = document.getElementById('email-popover');
       const modal = document.getElementById('modal');
 
       if (!modal.dataset.emailSubject) {
-        alert('No email draft available for this lead.');
+        showToast('No email draft available');
         return;
       }
 
@@ -658,29 +1148,27 @@
     function copySMS() {
       const id = parseInt(document.getElementById('modal').dataset.currentId);
       const lead = leads.find(l => l.id === id);
-      navigator.clipboard.writeText(lead.sms).then(() => showToast('SMS copied'));
+      navigator.clipboard.writeText(lead.sms).then(() => showToast('SMS copied! 📋'));
     }
 
     function copyLeadSMS(id) {
       const lead = leads.find(l => l.id === id);
-      navigator.clipboard.writeText(lead.sms).then(() => showToast('SMS copied'));
+      navigator.clipboard.writeText(lead.sms).then(() => showToast('SMS copied! 📋'));
     }
 
     function copyEmailDraft() {
       const modal = document.getElementById('modal');
       const text = `Subject: ${modal.dataset.emailSubject}\n\n${modal.dataset.emailBody}`;
       navigator.clipboard.writeText(text).then(() => {
-        showToast('Email draft copied');
+        showToast('Email copied! 📋');
         document.getElementById('email-popover').classList.add('hidden');
       });
     }
 
-    function copyFullEmail() {
+    function openWebsite() {
       const id = parseInt(document.getElementById('modal').dataset.currentId);
       const lead = leads.find(l => l.id === id);
-      const subject = document.getElementById('modal').dataset.emailSubject || `Quick question for ${lead.name}`;
-      const body = document.getElementById('modal').dataset.emailBody || `Hi ${lead.name.split(' ')[0]},\n\nI help ${lead.category} businesses in Melbourne.\n\nBest,\nMarvelus`;
-      window.location.href = `mailto:${lead.email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.open(lead.website, '_blank');
     }
 
     function toggleScripts() {
@@ -690,22 +1178,17 @@
       chevron.style.transform = panel.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
     }
 
-    function openWebsite() {
-      const id = parseInt(document.getElementById('modal').dataset.currentId);
-      const lead = leads.find(l => l.id === id);
-      window.open(lead.website, '_blank');
-    }
-
     function showToast(msg) {
       const t = document.createElement('div');
-      t.className = 'fixed bottom-5 left-1/2 -translate-x-1/2 bg-black text-white text-sm px-4 py-2 rounded-3xl shadow';
+      t.className = 'toast-v2 fixed bottom-6 left-1/2 -translate-x-1/2 text-white text-sm px-5 py-3 rounded-2xl font-medium z-[200]';
       t.textContent = msg;
       document.body.appendChild(t);
       setTimeout(() => {
-        t.style.transition = 'opacity .15s';
+        t.style.transition = 'opacity .3s, transform .3s';
         t.style.opacity = '0';
-        setTimeout(() => t.remove(), 100);
-      }, 1300);
+        t.style.transform = 'translate(-50%, 20px)';
+        setTimeout(() => t.remove(), 300);
+      }, 2000);
     }
 
     function refreshData() {
@@ -718,19 +1201,15 @@
     }
 
     function init() {
-      // Load leads from JSON
       loadLeads();
-
       document.getElementById('search-input').addEventListener('input', filterLeads);
-
       document.addEventListener('keydown', e => {
         if (e.key === '/' && document.activeElement.tagName === 'BODY') {
           e.preventDefault();
           document.getElementById('search-input').focus();
         }
+        if (e.key === 'Escape') closeModal();
       });
-
-      console.log('%c[Phase 7] Full Pipeline Dashboard • 110 Leads', 'color:#8e8e93');
     }
 
     window.onload = init;
