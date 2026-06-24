@@ -468,9 +468,9 @@
     <div class="flex flex-col sm:flex-row gap-3 mb-6">
       <div class="segment-mercury">
         <button onclick="setSegment(this, 'all')" class="segment-btn-mercury active" data-segment="all">All</button>
-        <button onclick="setSegment(this, 'high')" class="segment-btn-mercury" data-segment="high">🔥 Hot</button>
-        <button onclick="setSegment(this, 'contacted')" class="segment-btn-mercury" data-segment="contacted">📞 Contacted</button>
-        <button onclick="setSegment(this, 'closed')" class="segment-btn-mercury" data-segment="closed">🏆 Closed</button>
+        <button onclick="setSegment(this, 'high')" class="segment-btn-mercury" data-segment="high"><i class="fa-solid fa-fire mr-1 text-xs"></i> Hot</button>
+        <button onclick="setSegment(this, 'contacted')" class="segment-btn-mercury" data-segment="contacted"><i class="fa-solid fa-phone mr-1 text-xs"></i> Contacted</button>
+        <button onclick="setSegment(this, 'closed')" class="segment-btn-mercury" data-segment="closed"><i class="fa-solid fa-trophy mr-1 text-xs"></i> Closed</button>
       </div>
       <div class="flex-1 flex gap-2">
         <div class="search-mercury flex-1 flex items-center rounded-xl px-4 py-2.5">
@@ -578,35 +578,35 @@
           </div>
           <div class="grid sm:grid-cols-2 gap-2 text-sm text-[#6b6b6b]">
             <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
               <span>Never say "SEO" in opener — say "get found on Google"</span>
             </div>
             <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
               <span>Lead with specific pain — "3-4 leads a week"</span>
             </div>
             <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
               <span>Offer value first — free audit, video walkthrough</span>
             </div>
             <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
               <span>Use numbers — "60-90 days", "8-12 calls"</span>
             </div>
             <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
               <span>Remove risk — "no contracts", "month-to-month"</span>
             </div>
             <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
               <span>Ask for easy yes — email is easier than meeting</span>
             </div>
             <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
               <span>Follow up — 80% of sales happen after 5+ touches</span>
             </div>
             <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold">✓</span>
+              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
               <span>Speak slowly — "almost uncomfortably slow"</span>
             </div>
           </div>
@@ -979,7 +979,7 @@
           const isPositive = r.includes('+');
           const color = isPositive ? 'text-[#00a86b]' : 'text-[#ff4757]';
           const bg = isPositive ? 'bg-[#e6f7f0]' : 'bg-[#ffe8ea]';
-          return `<div class="flex items-center gap-2 text-sm ${bg} rounded-lg px-3 py-2"><span class="${color} font-bold">${isPositive ? '✓' : '✗'}</span> <span class="text-[#6b6b6b]">${r}</span></div>`;
+          return `<div class="flex items-center gap-2 text-sm ${bg} rounded-lg px-3 py-2"><span class="${color} font-bold">${isPositive ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-solid fa-xmark"></i>'}</span> <span class="text-[#6b6b6b]">${r}</span></div>`;
         }).join('');
       } else {
         scoreReasons.innerHTML = '<div class="text-sm text-[#a0a0a0]">No detailed breakdown available</div>';
@@ -1067,7 +1067,7 @@
         localStorage.setItem('contactedLeads', JSON.stringify(contactedLeads));
         localStorage.setItem('contactedCount', contactedCount.toString());
         updateGamificationStats();
-        showToast('Marked as contacted! 🔥');
+        showToast('Marked as contacted');
         showDetail(leads.find(l => l.id === id));
         filterLeads();
       }
@@ -1088,7 +1088,7 @@
         localStorage.setItem('contactedCount', contactedCount.toString());
         updateGamificationStats();
         triggerConfetti();
-        showToast('Deal closed! 🏆');
+        showToast('Deal closed');
         showDetail(leads.find(l => l.id === id));
         filterLeads();
       }
@@ -1126,19 +1126,19 @@
     function copySMS() {
       const id = parseInt(document.getElementById('modal').dataset.currentId);
       const lead = leads.find(l => l.id === id);
-      navigator.clipboard.writeText(lead.sms).then(() => showToast('SMS copied! 📋'));
+      navigator.clipboard.writeText(lead.sms).then(() => showToast('SMS copied'));
     }
 
     function copyLeadSMS(id) {
       const lead = leads.find(l => l.id === id);
-      navigator.clipboard.writeText(lead.sms).then(() => showToast('SMS copied! 📋'));
+      navigator.clipboard.writeText(lead.sms).then(() => showToast('SMS copied'));
     }
 
     function copyEmailDraft() {
       const modal = document.getElementById('modal');
       const text = `Subject: ${modal.dataset.emailSubject}\n\n${modal.dataset.emailBody}`;
       navigator.clipboard.writeText(text).then(() => {
-        showToast('Email copied! 📋');
+        showToast('Email copied');
         document.getElementById('email-popover').classList.add('hidden');
       });
     }
