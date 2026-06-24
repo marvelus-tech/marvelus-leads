@@ -196,19 +196,19 @@
 
     <!-- Stats -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-      <div class="stat">
+      <div class="stat" title="Total leads in the database">
         <div class="metric-label">Total</div>
         <div id="stat-total" class="metric mt-0.5">0</div>
       </div>
-      <div class="stat">
+      <div class="stat" title="High priority leads (best opportunities)">
         <div class="metric-label">High Potential</div>
         <div id="stat-high" class="metric mt-0.5 text-[#0071e3]">0</div>
       </div>
-      <div class="stat">
-        <div class="metric-label">Avg SEO</div>
+      <div class="stat" title="Average tech sophistication score (lower = more opportunity)">
+        <div class="metric-label">Avg Tech Score</div>
         <div id="stat-seo" class="metric mt-0.5">0</div>
       </div>
-      <div class="stat">
+      <div class="stat" title="Businesses with multiple service opportunities">
         <div class="metric-label">Multi-opportunity</div>
         <div id="stat-multi" class="metric mt-0.5">0</div>
       </div>
@@ -257,14 +257,22 @@
       <div class="p-5 space-y-6">
         <!-- Metrics -->
         <div class="grid grid-cols-2 gap-3">
-          <div class="bg-[#f5f5f7] rounded-2xl p-4">
-            <div class="text-xs text-[#8e8e93] font-medium tracking-wider">SEO HEALTH</div>
+          <div class="bg-[#f5f5f7] rounded-2xl p-4" title="How modern their website is. 0=very basic (high opportunity), 100=high-tech (less opportunity)">
+            <div class="text-xs text-[#8e8e93] font-medium tracking-wider">TECH SOPHISTICATION</div>
             <div id="modal-seo" class="text-[42px] font-semibold tracking-[-1.5px] mt-1"></div>
+            <div id="modal-seo-desc" class="text-xs text-[#8e8e93] mt-1"></div>
           </div>
-          <div class="bg-[#f5f5f7] rounded-2xl p-4">
-            <div class="text-xs text-[#8e8e93] font-medium tracking-wider">OVERALL HELP</div>
+          <div class="bg-[#f5f5f7] rounded-2xl p-4" title="Overall opportunity score based on missing features, contact info, and tech gaps">
+            <div class="text-xs text-[#8e8e93] font-medium tracking-wider">LEAD SCORE</div>
             <div id="modal-overall" class="text-[42px] font-semibold tracking-[-1.5px] mt-1"></div>
+            <div id="modal-overall-desc" class="text-xs text-[#8e8e93] mt-1"></div>
           </div>
+        </div>
+
+        <!-- Score Breakdown -->
+        <div id="modal-score-breakdown" class="bg-[#f5f5f7] rounded-2xl p-4">
+          <div class="text-xs text-[#8e8e93] font-medium tracking-wider mb-2">SCORE BREAKDOWN</div>
+          <div id="modal-score-reasons" class="text-sm text-[#1d1d1f] space-y-1"></div>
         </div>
 
         <div>
@@ -380,13 +388,13 @@
           </div>
 
           <div class="flex gap-6 mb-4">
-            <div>
-              <div class="metric ${lead.seo >= 70 ? 'text-[#30d158]' : 'text-[#ff9500]'}">${lead.seo}</div>
-              <div class="metric-label">SEO</div>
+            <div title="Tech Sophistication: How modern their website is (0=very basic, 100=high-tech). Lower = more opportunity for you to help.">
+              <div class="metric ${lead.seo >= 70 ? 'text-[#30d158]' : lead.seo >= 40 ? 'text-[#ff9500]' : 'text-[#ff3b30]'}">${lead.seo}</div>
+              <div class="metric-label">TECH</div>
             </div>
-            <div>
+            <div title="Lead Score: Overall opportunity (0-100). Higher = better prospect. Based on missing features, contact info, and tech gaps.">
               <div class="metric">${lead.overall}</div>
-              <div class="metric-label">HELP</div>
+              <div class="metric-label">SCORE</div>
             </div>
           </div>
 
@@ -450,8 +458,38 @@
       const modal = document.getElementById('modal');
       document.getElementById('modal-name').textContent = lead.name;
       document.getElementById('modal-meta').textContent = `${lead.category} • ${lead.location}`;
+      
+      // Tech sophistication score with description
       document.getElementById('modal-seo').textContent = lead.seo;
+      const seoDesc = document.getElementById('modal-seo-desc');
+      if (lead.seo <= 20) seoDesc.textContent = 'Very basic site - high opportunity';
+      else if (lead.seo <= 40) seoDesc.textContent = 'Simple site - good opportunity';
+      else if (lead.seo <= 60) seoDesc.textContent = 'Moderate tech - some opportunity';
+      else if (lead.seo <= 80) seoDesc.textContent = 'Modern site - limited opportunity';
+      else seoDesc.textContent = 'High-tech site - low opportunity';
+      
+      // Lead score with description
       document.getElementById('modal-overall').textContent = lead.overall;
+      const overallDesc = document.getElementById('modal-overall-desc');
+      if (lead.overall >= 80) overallDesc.textContent = 'Excellent opportunity';
+      else if (lead.overall >= 60) overallDesc.textContent = 'Good opportunity';
+      else if (lead.overall >= 40) overallDesc.textContent = 'Moderate opportunity';
+      else if (lead.overall >= 20) overallDesc.textContent = 'Limited opportunity';
+      else overallDesc.textContent = 'Low opportunity';
+      
+      // Score breakdown (would need to be added to data)
+      const scoreReasons = document.getElementById('modal-score-reasons');
+      if (lead.score_reasons) {
+        const reasons = lead.score_reasons.split(' | ');
+        scoreReasons.innerHTML = reasons.map(r => {
+          const isPositive = r.includes('+');
+          const color = isPositive ? 'text-[#30d158]' : 'text-[#ff3b30]';
+          return `<div class="flex items-center gap-2"><span class="${color}">${isPositive ? '✓' : '✗'}</span> ${r}</div>`;
+        }).join('');
+      } else {
+        scoreReasons.innerHTML = '<div class="text-[#8e8e93]">No detailed breakdown available</div>';
+      }
+      
       document.getElementById('modal-recommended').textContent = lead.recommended;
 
       const contact = document.getElementById('modal-contact');
