@@ -467,12 +467,43 @@
       box-shadow: 0 2px 12px rgba(0,0,0,0.04);
     }
 
-    /* Gradient text */
-    .gradient-text {
-      background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    /* Side drawer for playbook */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26,26,26,0.3);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .drawer-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .drawer-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      max-width: 480px;
+      background: var(--bg);
+      z-index: 101;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: -8px 0 32px rgba(0,0,0,0.12);
+    }
+    .drawer-panel.open {
+      transform: translateX(0);
+    }
+    @media (min-width: 640px) {
+      .drawer-panel {
+        padding: 32px;
+      }
     }
   </style>
 </head>
@@ -507,24 +538,6 @@
         <button onclick="refreshData()" class="w-10 h-10 rounded-xl bg-white border border-[#e8e8e6] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:border-[#d0d0ce] transition-all active:scale-95">
           <i class="fa-solid fa-rotate text-sm"></i>
         </button>
-      </div>
-    </div>
-
-    <!-- Progress to Next Level -->
-    <div class="mb-6 bg-white border border-[#e8e8e6] rounded-2xl p-5">
-      <div class="flex items-center justify-between mb-2">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-chart-line text-[#0055ff] text-sm"></i>
-          <span class="text-sm font-semibold text-[#1a1a1a]">Progress to Level 4</span>
-        </div>
-        <span id="progress-text" class="text-xs text-[#a0a0a0] font-mono">0 / 20 deals</span>
-      </div>
-      <div class="progress-track h-2">
-        <div id="progress-bar" class="progress-fill-live" style="width: 0%"></div>
-      </div>
-      <div id="progress-hint" class="flex justify-between mt-2 text-xs text-[#a0a0a0]">
-        <span>Close your first deal to start progress</span>
-        <span>20 deals to Level 4</span>
       </div>
     </div>
 
@@ -588,8 +601,25 @@
       <!-- JS populated -->
     </div>
 
-    <!-- Sales Playbook (moved from bottom, now toggled from header) -->
-    <div id="scripts-panel" class="hidden mb-6 space-y-3">
+    <!-- Sales Playbook Side Drawer -->
+    <div id="drawer-overlay" class="drawer-overlay" onclick="toggleScripts()"></div>
+    <div id="drawer-panel" class="drawer-panel">
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0055ff]/10 to-[#00a86b]/10 border border-[#0055ff]/20 flex items-center justify-center">
+            <i class="fa-solid fa-book-open text-[#0055ff]"></i>
+          </div>
+          <div>
+            <div class="font-semibold text-[#1a1a1a]">Sales Playbook</div>
+            <div class="text-xs text-[#a0a0a0]">Cold call scripts, objection handling, closing tactics</div>
+          </div>
+        </div>
+        <button onclick="toggleScripts()" class="w-9 h-9 rounded-xl bg-[#f0f0ee] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:bg-[#e8e8e6] transition-all">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <div class="space-y-4">
         
         <!-- Script 1 -->
         <div class="script-card">
@@ -979,7 +1009,7 @@
                   <span class="text-lg font-bold ${techColor} font-mono">${lead.seo || 0}</span>
                 </div>
                 <div>
-                  <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">Tech</div>
+                  <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">SEO</div>
                   <div class="text-xs text-[#a0a0a0]">${(lead.seo || 0) <= 30 ? 'High opp' : (lead.seo || 0) <= 60 ? 'Moderate' : 'Low opp'}</div>
                 </div>
               </div>
@@ -996,7 +1026,7 @@
 
             <div class="flex items-center justify-between pt-3 border-t border-[#e8e8e6]">
               <div class="flex items-center gap-2">
-                <span class="px-2 py-1 text-[10px] font-semibold bg-[#e8f0ff] border border-[#0055ff]/20 text-[#0055ff] rounded-lg">${lead.recommended || 'General'}</span>
+                ${lead.recommended !== 'AI Voice' ? `<span class="px-2 py-1 text-[10px] font-semibold bg-[#e8f0ff] border border-[#0055ff]/20 text-[#0055ff] rounded-lg">${lead.recommended || 'General'}</span>` : ''}
                 ${lead.multi ? '<span class="px-2 py-1 text-[10px] font-semibold bg-[#f0f0ee] border border-[#e8e8e6] text-[#6b6b6b] rounded-lg">MULTI</span>' : ''}
               </div>
               <div class="flex gap-1">
@@ -1269,10 +1299,19 @@
     }
 
     function toggleScripts() {
-      const panel = document.getElementById('scripts-panel');
-      const chevron = document.getElementById('scripts-chevron');
-      panel.classList.toggle('hidden');
-      chevron.style.transform = panel.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+      const overlay = document.getElementById('drawer-overlay');
+      const panel = document.getElementById('drawer-panel');
+      const isOpen = panel.classList.contains('open');
+      
+      if (isOpen) {
+        overlay.classList.remove('open');
+        panel.classList.remove('open');
+        document.body.style.overflow = '';
+      } else {
+        overlay.classList.add('open');
+        panel.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
     }
 
     function showToast(msg) {
