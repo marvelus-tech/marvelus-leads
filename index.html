@@ -10,523 +10,441 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=SF+Pro+Display:wght@400;500;600&display=swap');
 
     :root {
-      --system-blue: #0071e3;
-      --system-green: #30d158;
-      --system-orange: #ff9500;
-      --system-red: #ff3b30;
+      --brand-primary: #0A66C2;
+      --brand-success: #00A36B;
+      --bg: #FAFAFC;
+      --card: #FFFFFF;
+      --text-primary: #111113;
+      --text-secondary: #5F5F65;
+      --line: #E8E8ED;
     }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      background: var(--bg);
+      color: var(--text-primary);
     }
 
-    .apple-container {
-      max-width: 1024px;
+    .container {
+      max-width: 1080px;
       margin: 0 auto;
+      padding: 24px 20px;
     }
 
-    .section-title {
-      font-size: 28px;
+    .title {
+      font-size: 32px;
       font-weight: 700;
-      letter-spacing: -0.5px;
-      line-height: 1.1;
+      letter-spacing: -0.8px;
+      line-height: 1.05;
     }
 
-    .lead-card {
-      background: #ffffff;
-      border-radius: 20px;
-      border: 1px solid #d2d2d7;
-      transition: box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1),
-                  transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      transition: transform 0.08s cubic-bezier(0.4, 0.0, 0.2, 1);
     }
 
-    .lead-card:active {
+    .card:active {
       transform: scale(0.985);
     }
 
-    .lead-name {
-      font-size: 17px;
+    .name {
+      font-size: 16px;
       font-weight: 600;
       letter-spacing: -0.2px;
-      color: #1d1d1f;
     }
 
-    .meta-text {
-      font-size: 13px;
-      color: #8e8e93;
-      font-weight: 400;
-    }
-
-    .score-large {
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: -0.8px;
-      line-height: 1;
-    }
-
-    .metric-label {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
-      color: #8e8e93;
-    }
-
-    .recommended-pill {
+    .meta {
       font-size: 12px;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 9999px;
-      background: #f1f5f9;
-      color: #1d1d1f;
+      color: var(--text-secondary);
     }
 
-    .segmented-control {
+    .metric {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+    }
+
+    .label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .pill {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 7px;
+      border-radius: 9999px;
+      background: #F1F5F9;
+      color: var(--text-primary);
+    }
+
+    .seg {
       display: inline-flex;
-      background: #f2f2f7;
+      background: #E5E5EA;
       border-radius: 9999px;
       padding: 2px;
     }
 
-    .segment {
-      padding: 8px 16px;
-      font-size: 13px;
+    .seg-btn {
+      padding: 5px 11px;
+      font-size: 12px;
       font-weight: 600;
       border-radius: 9999px;
-      transition: all 0.15s ease;
-      white-space: nowrap;
     }
 
-    .segment.active {
-      background: #ffffff;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      color: #1d1d1f;
+    .seg-btn.active {
+      background: white;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
 
-    .stat-card {
-      background: #ffffff;
-      border: 1px solid #d2d2d7;
-      border-radius: 16px;
-      padding: 12px 14px;
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 6px 8px;
     }
 
-    .ios-modal {
-      animation: modalEnter 0.22s cubic-bezier(0.32, 0.72, 0, 1);
+    .control {
+      font-size: 13px;
+      font-weight: 500;
     }
 
-    .popover {
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 4px 6px rgba(0, 0, 0, 0.05);
-      animation: popoverEnter 0.15s ease forwards;
+    .inline-action {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: #F8FAFC;
+      color: var(--brand-primary);
+      font-weight: 600;
     }
 
-    .hierarchy-primary {
-      color: #1d1d1f;
-    }
-
-    .hierarchy-secondary {
-      color: #8e8e93;
-    }
-
-    .system-blue {
-      color: #0071e3;
+    .modal {
+      animation: modalEnter 0.16s cubic-bezier(0.32, 0.72, 0, 1);
     }
   </style>
 </head>
-<body class="bg-[#f5f5f7] text-[#1d1d1f]">
-  <div class="apple-container px-5 pt-6 pb-8">
-    
+<body>
+  <div class="container">
     <!-- Header -->
-    <div class="flex items-baseline justify-between mb-6">
+    <div class="flex items-center justify-between mb-4">
       <div>
-        <h1 class="section-title">Leads</h1>
-        <p class="text-[#8e8e93] text-[13px] mt-0.5">Marvelus • 24 Jun 2026</p>
+        <div class="title tracking-[-0.7px]">Leads</div>
+        <div class="text-[#5F5F65] text-xs mt-0.5">Marvelus • Top 40 high-potential (of 110)</div>
       </div>
-      <div class="flex items-center gap-x-2">
-        <div class="px-3 py-1 rounded-full bg-white border border-[#d2d2d7] text-xs font-medium flex items-center gap-x-1.5">
-          <div class="w-2 h-2 rounded-full bg-[#30d158]"></div>
-          <span class="text-[#1d1d1f]">Live</span>
+      <div class="flex items-center gap-2">
+        <div class="px-2.5 py-1 bg-white border border-[#E8E8ED] rounded-3xl text-xs font-medium flex items-center gap-1.5">
+          <div class="w-1.5 h-1.5 bg-[#00A36B] rounded-full"></div>
+          <span>Live</span>
         </div>
-        <button onclick="refreshData()" 
-                class="w-9 h-9 flex items-center justify-center bg-white border border-[#d2d2d7] rounded-2xl active:bg-[#f2f2f7]">
-          <i class="fa-solid fa-sync text-[#8e8e93]"></i>
+        <button onclick="refresh()" class="w-8 h-8 flex items-center justify-center bg-white border border-[#E8E8ED] rounded-2xl active:bg-[#F8FAFC]">
+          <i class="fa-solid fa-sync text-[#5F5F65] text-xs"></i>
         </button>
       </div>
     </div>
 
-    <!-- Segmented Control (Phase 2) -->
-    <div class="mb-5">
-      <div class="segmented-control">
-        <div onclick="setSegment(this, 'all')" class="segment active cursor-pointer" data-segment="all">All</div>
-        <div onclick="setSegment(this, 'high')" class="segment cursor-pointer" data-segment="high">High</div>
-        <div onclick="setSegment(this, 'multi')" class="segment cursor-pointer" data-segment="multi">Multi</div>
-        <div onclick="setSegment(this, 'ai-voice')" class="segment cursor-pointer" data-segment="ai-voice">AI Voice</div>
+    <!-- Controls -->
+    <div class="mb-4">
+      <div class="flex gap-2 mb-3">
+        <div class="seg">
+          <div onclick="setSeg(this,'all')" class="seg-btn active cursor-pointer px-3 py-1 text-xs" data-seg="all">All</div>
+          <div onclick="setSeg(this,'high')" class="seg-btn cursor-pointer px-3 py-1 text-xs" data-seg="high">High</div>
+          <div onclick="setSeg(this,'multi')" class="seg-btn cursor-pointer px-3 py-1 text-xs" data-seg="multi">Multi</div>
+        </div>
+        <div class="flex-1"></div>
+        <div class="seg">
+          <div onclick="setDensity(this,'comfort')" class="seg-btn active cursor-pointer px-3 py-1 text-xs" data-density="comfort">Comfort</div>
+          <div onclick="setDensity(this,'compact')" class="seg-btn cursor-pointer px-3 py-1 text-xs" data-density="compact">Compact</div>
+        </div>
+      </div>
+
+      <div class="flex gap-2">
+        <div class="flex-1 relative">
+          <i class="fa-solid fa-search absolute left-3 top-2.5 text-[#5F5F65] text-xs"></i>
+          <input id="search" onkeyup="filter()" placeholder="Search name or category" 
+                 class="w-full bg-white border border-[#E8E8ED] rounded-3xl pl-8 pr-3 py-2 text-sm placeholder:text-[#5F5F65] focus:outline-none">
+        </div>
+        <button onclick="cycleSort()" class="control px-3 py-2 bg-white border border-[#E8E8ED] rounded-3xl flex items-center gap-1 text-xs font-medium">
+          <span id="sort-label">Help</span>
+          <i class="fa-solid fa-sort text-xs"></i>
+        </button>
       </div>
     </div>
 
-    <!-- Dynamic Stats -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-      <div class="stat-card">
-        <div class="metric-label mb-1">TOTAL</div>
-        <div id="stat-total" class="text-[28px] font-semibold tracking-[-0.5px]">40</div>
+    <!-- Quick saved views -->
+    <div class="flex gap-1.5 mb-3 overflow-x-auto pb-1">
+      <div onclick="quickFilter('high-multi')" class="text-xs px-2.5 py-1 bg-white border border-[#E8E8ED] rounded-2xl whitespace-nowrap cursor-pointer active:bg-[#F8FAFC]">High + Multi</div>
+      <div onclick="quickFilter('top-seo')" class="text-xs px-2.5 py-1 bg-white border border-[#E8E8ED] rounded-2xl whitespace-nowrap cursor-pointer active:bg-[#F8FAFC]">Top SEO</div>
+      <div onclick="quickFilter('law')" class="text-xs px-2.5 py-1 bg-white border border-[#E8E8ED] rounded-2xl whitespace-nowrap cursor-pointer active:bg-[#F8FAFC]">Law firms</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-4 gap-2 mb-4">
+      <div class="stat">
+        <div class="label">Shown</div>
+        <div id="stat-total" class="metric">40</div>
       </div>
-      <div class="stat-card">
-        <div class="metric-label mb-1">HIGH POTENTIAL</div>
-        <div id="stat-high" class="text-[28px] font-semibold tracking-[-0.5px] text-[#0071e3]">0</div>
+      <div class="stat">
+        <div class="label">High</div>
+        <div id="stat-high" class="metric text-[#0A66C2]">35</div>
       </div>
-      <div class="stat-card">
-        <div class="metric-label mb-1">AVG SEO</div>
-        <div id="stat-seo" class="text-[28px] font-semibold tracking-[-0.5px]">100</div>
+      <div class="stat">
+        <div class="label">Avg Help</div>
+        <div id="stat-avg" class="metric">98</div>
       </div>
-      <div class="stat-card">
-        <div class="metric-label mb-1">MULTI-OPP</div>
-        <div id="stat-multi" class="text-[28px] font-semibold tracking-[-0.5px]">0</div>
+      <div class="stat">
+        <div class="label">Multi</div>
+        <div id="stat-multi" class="metric">2</div>
       </div>
     </div>
 
-    <!-- Search -->
-    <div class="mb-5">
-      <div class="relative">
-        <i class="fa-solid fa-search absolute left-4 top-3 text-[#8e8e93]"></i>
-        <input id="search-input" 
-               type="text" 
-               placeholder="Search by name or category" 
-               onkeyup="filterLeads()"
-               class="w-full bg-white border border-[#d2d2d7] rounded-3xl pl-11 pr-4 py-3 text-[15px] placeholder:text-[#8e8e93] focus:outline-none focus:border-[#0071e3]">
-      </div>
+    <!-- Grid -->
+    <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+      <!-- JS -->
     </div>
 
-    <!-- Leads Grid -->
-    <div id="leads-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-      <!-- Populated by JS -->
-    </div>
-
-    <div class="mt-8 text-center">
-      <p class="text-[11px] text-[#8e8e93]">Phase 2 • Segmented navigation • Dynamic hierarchy • Apple HIG</p>
+    <div class="mt-5 text-center text-[10px] text-[#5F5F65]">
+      Top 40 of 110 • Inline actions available
     </div>
   </div>
 
-  <!-- Detail Modal -->
-  <div id="modal" onclick="if (event.target.id === 'modal') closeModal()" 
-       class="hidden fixed inset-0 bg-black/50 z-[100] flex items-end sm:items-center justify-center">
-    <div onclick="event.stopImmediatePropagation()" 
-         class="bg-white w-full sm:max-w-[420px] sm:rounded-3xl sm:m-4 rounded-t-3xl ios-modal overflow-hidden">
-      
-      <!-- Modal Header -->
-      <div class="px-5 pt-5 pb-3 flex items-center justify-between border-b border-[#d2d2d7]">
-        <div class="flex-1 min-w-0">
-          <div id="modal-name" class="font-semibold text-[19px] tracking-[-0.3px] truncate"></div>
-          <div id="modal-category" class="text-[13px] text-[#8e8e93]"></div>
+  <!-- Modal -->
+  <div id="modal" onclick="if (event.target.id==='modal') closeModal()" class="hidden fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50">
+    <div onclick="event.stopImmediatePropagation()" class="bg-white w-full sm:w-[420px] sm:rounded-3xl sm:m-4 rounded-t-3xl modal">
+      <div class="p-5 border-b flex justify-between">
+        <div>
+          <div id="m-name" class="font-semibold text-lg"></div>
+          <div id="m-meta" class="text-xs text-[#5F5F65]"></div>
         </div>
-        <button onclick="closeModal()" class="text-[32px] leading-none text-[#8e8e93] px-1 active:text-black">×</button>
+        <button onclick="closeModal()" class="text-2xl text-[#5F5F65]">×</button>
       </div>
-
-      <div class="p-5 space-y-5">
-        
-        <!-- Scores -->
+      <div class="p-5 space-y-4">
         <div class="grid grid-cols-2 gap-3">
-          <div class="bg-[#f5f5f7] rounded-2xl p-4">
-            <div class="metric-label">SEO HEALTH</div>
-            <div id="modal-seo" class="score-large mt-1"></div>
+          <div class="bg-[#F8FAFC] rounded-xl p-3">
+            <div class="label">SEO</div>
+            <div id="m-seo" class="text-4xl font-semibold"></div>
           </div>
-          <div class="bg-[#f5f5f7] rounded-2xl p-4">
-            <div class="metric-label">OVERALL HELP</div>
-            <div id="modal-overall" class="score-large mt-1"></div>
+          <div class="bg-[#F8FAFC] rounded-xl p-3">
+            <div class="label">HELP</div>
+            <div id="m-help" class="text-4xl font-semibold"></div>
           </div>
         </div>
 
-        <!-- Recommended -->
         <div>
-          <div class="metric-label mb-1.5">RECOMMENDED SERVICE</div>
-          <div id="modal-recommended" class="inline-block px-4 py-1 text-sm font-semibold bg-[#1d1d1f] text-white rounded-2xl"></div>
+          <div class="label mb-1">RECOMMENDED</div>
+          <div id="m-rec" class="inline px-3 py-0.5 text-sm font-semibold bg-[#111113] text-white rounded-2xl"></div>
         </div>
 
-        <!-- Contact -->
         <div>
-          <div class="metric-label mb-1.5">CONTACT</div>
-          <div id="modal-contact" class="space-y-1 text-[15px]"></div>
+          <div class="label mb-1">CONTACT</div>
+          <div id="m-contact" class="text-sm space-y-0.5"></div>
         </div>
 
-        <!-- Outreach -->
         <div>
-          <div class="metric-label mb-2">OUTREACH</div>
-          
-          <!-- SMS -->
-          <div class="mb-3 border border-[#d2d2d7] rounded-2xl p-4">
-            <div class="flex items-center justify-between mb-1.5">
-              <div class="flex items-center gap-x-2 text-sm font-semibold">
-                <i class="fa-solid fa-comment-dots text-[#0071e3]"></i>
-                <span>SMS</span>
-              </div>
-              <button onclick="copySMS()" class="text-xs px-3 py-1 bg-[#f5f5f7] active:bg-[#e5e5e7] rounded-2xl flex items-center gap-x-1">
-                <i class="fa-regular fa-copy text-xs"></i>
-                <span>Copy</span>
-              </button>
-            </div>
-            <div id="modal-sms" class="text-sm leading-snug text-[#1d1d1f]"></div>
-          </div>
-
-          <!-- Email - hidden behind icon -->
-          <div class="flex items-center gap-x-2 mb-1">
-            <div class="text-sm font-semibold">Email</div>
-            <button onclick="toggleEmailPopover(event)" 
-                    class="w-8 h-8 flex items-center justify-center text-[#0071e3] hover:bg-[#f0f7ff] active:bg-[#e0f0ff] rounded-full">
-              <i class="fa-solid fa-envelope"></i>
-            </button>
-            <span class="text-xs text-[#8e8e93]">tap to view</span>
-          </div>
-
-          <div id="email-popover" class="hidden border border-[#d2d2d7] rounded-2xl p-4 bg-[#f8fafc] text-sm popover">
+          <div class="label mb-1">OUTREACH</div>
+          <div class="border border-[#E8E8ED] rounded-xl p-3">
             <div class="flex justify-between mb-1">
-              <div class="text-xs font-medium text-[#8e8e93]">SUBJECT</div>
-              <button onclick="copyEmailDraft()" class="text-xs px-2 py-0.5 bg-white border border-[#d2d2d7] rounded-xl">Copy</button>
+              <div class="text-sm font-semibold flex items-center gap-1.5"><i class="fa-solid fa-comment-dots text-[#0A66C2]"></i> SMS</div>
+              <button onclick="copySMS()" class="text-xs px-2 py-0.5 bg-white border rounded-lg">Copy</button>
             </div>
-            <div id="modal-email-subject" class="font-medium text-[#1d1d1f] mb-3"></div>
-            
-            <div class="text-xs font-medium text-[#8e8e93] mb-1">BODY</div>
-            <div id="modal-email-body" class="text-[#1d1d1f] whitespace-pre-line text-sm leading-relaxed"></div>
+            <div id="m-sms" class="text-sm"></div>
+          </div>
+          <div class="mt-2 flex items-center gap-2">
+            <div class="text-sm font-semibold">Email</div>
+            <button onclick="toggleEmail(this)" class="w-7 h-7 flex items-center justify-center text-[#0A66C2] hover:bg-[#F0F7FF] rounded-full"><i class="fa-solid fa-envelope"></i></button>
+          </div>
+          <div id="email-pop" class="hidden mt-1 border border-[#E8E8ED] rounded-xl p-3 bg-[#F8FAFC] text-sm">
+            <div class="flex justify-between">
+              <div class="font-medium text-xs">SUBJECT</div>
+              <button onclick="copyEmail()" class="text-xs px-1.5 bg-white border rounded">Copy</button>
+            </div>
+            <div id="m-subj" class="font-medium mb-2"></div>
+            <div class="font-medium text-xs">BODY</div>
+            <div id="m-body" class="whitespace-pre-line"></div>
           </div>
         </div>
       </div>
-
-      <!-- Footer Actions -->
-      <div class="border-t p-4 flex gap-3 bg-[#f5f5f7]">
-        <button onclick="openWebsite()" class="flex-1 py-3 bg-white border border-[#d2d2d7] active:bg-[#f2f2f7] rounded-2xl text-sm font-semibold flex items-center justify-center gap-x-2">
-          <i class="fa-solid fa-external-link-alt"></i>
-          <span>Website</span>
-        </button>
-        <button onclick="copyFullEmail()" class="flex-1 py-3 bg-white border border-[#d2d2d7] active:bg-[#f2f2f7] rounded-2xl text-sm font-semibold flex items-center justify-center gap-x-2">
-          <i class="fa-solid fa-envelope"></i>
-          <span>Email</span>
-        </button>
+      <div class="p-4 border-t bg-[#FAFAFC] flex gap-2">
+        <button onclick="openWeb()" class="flex-1 py-2.5 bg-white border rounded-2xl text-sm font-semibold">Website</button>
+        <button onclick="copyEmail()" class="flex-1 py-2.5 bg-white border rounded-2xl text-sm font-semibold">Email</button>
       </div>
     </div>
   </div>
 
   <script>
-    let leads = [{"id": 1, "name": "Nevett Ford Lawyers Melbourne", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "https://www.nevettfordlawyers.com.au/?utm_source=google&utm_medium=gmb&utm_campaign=google_business_profile", "seo": 0, "overall": 70, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61396147111", "email": "", "sms": "", "email_subject": "Quick question for Nevett Ford Lawyers Me", "email_body": ""}, {"id": 2, "name": "Wellness Beauty & Head Spa (Day Spa, Facials, IPL, HIFU, S", "category": "med spa", "location": "Melbourne, VIC, Australia", "website": "https://www.wellnessbeauty.com.au/", "seo": 0, "overall": 70, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61431881699", "email": "9a65e97ebe8141fca0c4fd686f70996b@sentry.wixpress.com", "sms": "", "email_subject": "Quick question for Wellness Beauty & Head", "email_body": ""}, {"id": 3, "name": "Art De Dente - Dentist Melbourne CBD", "category": "dental clinic", "location": "Melbourne, VIC, Australia", "website": "https://artdedente.com.au/", "seo": 0, "overall": 70, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61391256201", "email": "reception@artdedente.com.au", "sms": "", "email_subject": "Quick question for Art De Dente - Dentist", "email_body": ""}, {"id": 4, "name": "Orchid Day Spa", "category": "med spa", "location": "Melbourne, VIC, Australia", "website": "https://www.orchiddayspa.com.au/", "seo": 0, "overall": 70, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61396704964", "email": "orchiddayspa@bigpond.com", "sms": "", "email_subject": "Quick question for Orchid Day Spa", "email_body": ""}, {"id": 5, "name": "endota spa South Melbourne", "category": "med spa", "location": "Melbourne, VIC, Australia", "website": "https://endotaspa.com.au/pages/spa/south-melbourne?utm_source=google&utm_medium=organic&utm_campaign=Google+My+Business&utm_content=endota+spa+South+Melbourne&utm_term=plcid_18050842361584499678", "seo": 0, "overall": 70, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61390223331", "email": "southmelbourne@endota.com.au", "sms": "", "email_subject": "Quick question for endota spa South Melbo", "email_body": ""}, {"id": 6, "name": "IOMI Spa at Sheraton Hotel", "category": "med spa", "location": "Melbourne, VIC, Australia", "website": "https://www.iomispa.com.au/", "seo": 0, "overall": 70, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61383837288", "email": "relax@iomispa.com.au", "sms": "", "email_subject": "Quick question for IOMI Spa at Sheraton H", "email_body": ""}, {"id": 7, "name": "City Smiles Dental Clinic", "category": "dental clinic", "location": "Melbourne, VIC, Australia", "website": "https://citysmiles.com.au/", "seo": 0, "overall": 70, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61396546979", "email": "", "sms": "", "email_subject": "Quick question for City Smiles Dental Cli", "email_body": ""}, {"id": 8, "name": "Verve Dental Melbourne", "category": "dental clinic", "location": "Melbourne, VIC, Australia", "website": "https://vervedental.com.au/collins-street/", "seo": 0, "overall": 70, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61396545881", "email": "info.city@vervedental.com.au", "sms": "", "email_subject": "Quick question for Verve Dental Melbourne", "email_body": ""}, {"id": 9, "name": "City Health", "category": "chiropractic", "location": "Melbourne, VIC, Australia", "website": "https://www.cityhealthmelbourne.com.au/", "seo": 0, "overall": 70, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61396622395", "email": "reception@cityhealthmelbourne.com.au", "sms": "", "email_subject": "Quick question for City Health", "email_body": ""}, {"id": 10, "name": "Gorgeous Smiles Dentist Melbourne", "category": "dental clinic", "location": "Melbourne, VIC, Australia", "website": "https://www.gorgeoussmiles.com.au/", "seo": 0, "overall": 75, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61390420483", "email": "info@gorgeoussmiles.com.au", "sms": "", "email_subject": "Quick question for Gorgeous Smiles Dentis", "email_body": ""}, {"id": 11, "name": "Port Melbourne Chiropractic (previously Life Chiropractic ", "category": "chiropractic", "location": "Melbourne, VIC, Australia", "website": "https://portmelbournechiropractic.com.au/", "seo": 0, "overall": 75, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61396461414", "email": "info@lifechiropracticportmelbourne.com.au", "sms": "", "email_subject": "Quick question for Port Melbourne Chiropr", "email_body": ""}, {"id": 12, "name": "Maurice Blackburn Personal Injury Lawyers Melbourne", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "https://www.mauriceblackburn.com.au/our-offices/vic/melbourne/?utm_source=google&utm_medium=organic&utm_campaign=gmb-website&utm_content=website_button&utm_term=plcid_4752754200758419732", "seo": 0, "overall": 75, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61396052700", "email": "donotreply@mauriceblackburn.com.au", "sms": "", "email_subject": "Quick question for Maurice Blackburn Pers", "email_body": ""}, {"id": 13, "name": "DCM Lawyers", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "https://www.dcmlawyers.com/", "seo": 0, "overall": 75, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61396700001", "email": "info@dcmlawyers.com", "sms": "", "email_subject": "Quick question for DCM Lawyers", "email_body": ""}, {"id": 14, "name": "Carbone Lawyers Melbourne", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "https://www.carbonelawyers.com.au/?utm_source=gbp&utm_medium=organic&utm_campaign=melbourne", "seo": 0, "overall": 80, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+611800369888", "email": "info@carbonelawyers.com.au", "sms": "", "email_subject": "Quick question for Carbone Lawyers Melbou", "email_body": ""}, {"id": 15, "name": "Lord Commercial Lawyers", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "https://www.lordlaw.com.au/?utm_source=Google&utm_medium=GMB&utm_campaign=GMB", "seo": 0, "overall": 80, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61396000162", "email": "info@lordlaw.com.au", "sms": "", "email_subject": "Quick question for Lord Commercial Lawyer", "email_body": ""}, {"id": 16, "name": "OK Chiropractic Clinic", "category": "chiropractic", "location": "Melbourne, VIC, Australia", "website": "https://www.okchiro.com.au/", "seo": 0, "overall": 80, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61492653492", "email": "info.okchiro@gmail.com", "sms": "", "email_subject": "Quick question for OK Chiropractic Clinic", "email_body": ""}, {"id": 17, "name": "Akira Motorworks", "category": "auto repair", "location": "Melbourne, VIC, Australia", "website": "https://www.facebook.com/share/1GSp1YvTHG/?mibextid=wwXIfr", "seo": 0, "overall": 80, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61451400946", "email": "", "sms": "", "email_subject": "Quick question for Akira Motorworks", "email_body": ""}, {"id": 18, "name": "Richmond Auto Service", "category": "auto repair", "location": "Melbourne, VIC, Australia", "website": "https://richmondauto.com.au/", "seo": 0, "overall": 80, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61394290777", "email": "", "sms": "", "email_subject": "Quick question for Richmond Auto Service", "email_body": ""}, {"id": 19, "name": "Midas South Melbourne Tyre & Auto Service", "category": "auto repair", "location": "Melbourne, VIC, Australia", "website": "https://www.midas.com.au/stores/midas-south-melbourne/?utm_source=google&utm_medium=organic&utm_campaign=Google%20My%20Business&utm_content=Midas%20South%20Melbourne&utm_term=plcid_7630767709994362655", "seo": 0, "overall": 80, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61396992540", "email": "", "sms": "", "email_subject": "Quick question for Midas South Melbourne ", "email_body": ""}, {"id": 20, "name": "Botanica Wellness Spa and Clinic", "category": "med spa", "location": "Melbourne, VIC, Australia", "website": "https://www.botanicadayspa.com.au/", "seo": 0, "overall": 85, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61396205992", "email": "enquiries@botanicadayspa.com.au", "sms": "", "email_subject": "Quick question for Botanica Wellness Spa ", "email_body": ""}, {"id": 21, "name": "Sensu Spa", "category": "med spa", "location": "Melbourne, VIC, Australia", "website": "http://www.sensuspa.com.au/", "seo": 0, "overall": 85, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61390176032", "email": "", "sms": "", "email_subject": "Quick question for Sensu Spa", "email_body": ""}, {"id": 22, "name": "Melbourne Dental Clinic", "category": "dental clinic", "location": "Melbourne, VIC, Australia", "website": "https://dental.mthc.com.au/", "seo": 0, "overall": 85, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61390358402", "email": "mdc-referrals@unimelb.edu.au", "sms": "", "email_subject": "Quick question for Melbourne Dental Clini", "email_body": ""}, {"id": 23, "name": "City Service Mechanics", "category": "auto repair", "location": "Melbourne, VIC, Australia", "website": "http://cityservicemechanics.com.au/", "seo": 0, "overall": 85, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61393288618", "email": "", "sms": "", "email_subject": "Quick question for City Service Mechanics", "email_body": ""}, {"id": 24, "name": "Gallant Law Criminal Lawyers Melbourne", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "https://gallantlaw.com.au/", "seo": 0, "overall": 85, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61390709885", "email": "welcome@gallantlaw.com.au", "sms": "", "email_subject": "Quick question for Gallant Law Criminal L", "email_body": ""}, {"id": 25, "name": "Boutique Lawyers, Building & Construction Lawyers", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "https://boutiquelawyers.com.au/", "seo": 0, "overall": 85, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+611300556140", "email": "mail@boutiquelawyers.com.au", "sms": "", "email_subject": "Quick question for Boutique Lawyers, Buil", "email_body": ""}, {"id": 26, "name": "Lapeau Medi Spa", "category": "med spa", "location": "Melbourne, VIC, Australia", "website": "https://www.lapeaumedispa.com.au/", "seo": 0, "overall": 85, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61405851919", "email": "reception@lapeaumedispa.com.au", "sms": "", "email_subject": "Quick question for Lapeau Medi Spa", "email_body": ""}, {"id": 27, "name": "Chuan Spa", "category": "med spa", "location": "Melbourne, VIC, Australia", "website": "https://www.langhamhotels.com/en/the-langham/melbourne/wellness/chuan-spa/", "seo": 0, "overall": 85, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61386968111", "email": "", "sms": "", "email_subject": "Quick question for Chuan Spa", "email_body": ""}, {"id": 28, "name": "Best Hooper Lawyers", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "http://www.besthooper.com.au/", "seo": 0, "overall": 90, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61396708951", "email": "mail@besthooper.com.au", "sms": "", "email_subject": "Quick question for Best Hooper Lawyers", "email_body": ""}, {"id": 29, "name": "Stary Norton Halphen & Galbally Criminal Lawyers Melbourne", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "https://www.starylaw.com/", "seo": 0, "overall": 90, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61386228200", "email": "user@domain.com", "sms": "", "email_subject": "Quick question for Stary Norton Halphen &", "email_body": ""}, {"id": 30, "name": "Flynn Chiro - Melbourne CBD Chiropractor", "category": "chiropractic", "location": "Melbourne, VIC, Australia", "website": "https://flynnchiro.com.au/?utm_source=GoogleMyBusiness&utm_medium=Web&utm_campaign=GMB-CBD", "seo": 0, "overall": 95, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61439843870", "email": "flynn@flynnchiro.com.au", "sms": "", "email_subject": "Quick question for Flynn Chiro - Melbourn", "email_body": ""}, {"id": 31, "name": "Comma", "category": "med spa", "location": "Melbourne, VIC, Australia", "website": "http://www.commaspaces.com/", "seo": 0, "overall": 95, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61394281097", "email": "byron@commaspaces.com", "sms": "", "email_subject": "Quick question for Comma", "email_body": ""}, {"id": 32, "name": "Robinson Gill Lawyers", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "https://www.robinsongill.com.au/", "seo": 0, "overall": 100, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61398903321", "email": "info@robinsongill.com.au", "sms": "", "email_subject": "Quick question for Robinson Gill Lawyers", "email_body": ""}, {"id": 33, "name": "Nevile & Co. Lawyers", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "https://www.nevile.com.au/", "seo": 0, "overall": 100, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61396644700", "email": "nevileco@nevile.com.au", "sms": "", "email_subject": "Quick question for Nevile & Co. Lawyers", "email_body": ""}, {"id": 34, "name": "MC Dental Melbourne Central Shopping Centre", "category": "dental clinic", "location": "Melbourne, VIC, Australia", "website": "https://www.mcdental.com.au/", "seo": 0, "overall": 100, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61386088971", "email": "docklands@mcdental.com.au", "sms": "", "email_subject": "Quick question for MC Dental Melbourne Ce", "email_body": ""}, {"id": 35, "name": "Adaptive Chiropractic Melbourne CBD", "category": "chiropractic", "location": "Melbourne, VIC, Australia", "website": "https://www.melbournecbdchiro.com.au/", "seo": 0, "overall": 100, "recommended": "AI Voice", "priority": "high", "multi": false, "phone": "+61394458975", "email": "care@adaptchiro.com.au", "sms": "", "email_subject": "Quick question for Adaptive Chiropractic ", "email_body": ""}, {"id": 36, "name": "AJH LAWYERS", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "https://www.ajhlawyers.com.au/", "seo": 0, "overall": 30, "recommended": "AI Voice", "priority": "low", "multi": false, "phone": "+61396022235", "email": "info@ajhlawyers.com.au", "sms": "", "email_subject": "Quick question for AJH LAWYERS", "email_body": ""}, {"id": 37, "name": "Melbourne Law Offices", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "http://melbournelawoffices.com.au/", "seo": 0, "overall": 60, "recommended": "AI Voice", "priority": "medium", "multi": false, "phone": "+611300005786", "email": "admin@melbournelawoffices.com.au", "sms": "", "email_subject": "Quick question for Melbourne Law Offices", "email_body": ""}, {"id": 38, "name": "Go To Court Lawyers Melbourne", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "https://www.gotocourt.com.au/vic/melbourne-lawyers/", "seo": 0, "overall": 55, "recommended": "AI Voice", "priority": "medium", "multi": false, "phone": "+611300636846", "email": "admin@platfirm.ai", "sms": "", "email_subject": "Quick question for Go To Court Lawyers Me", "email_body": ""}, {"id": 39, "name": "Pentana Stanton Lawyers", "category": "law firm", "location": "Melbourne, VIC, Australia", "website": "https://pentanastanton.com.au/", "seo": 0, "overall": 60, "recommended": "AI Voice", "priority": "medium", "multi": false, "phone": "+61390022800", "email": "reception@pstanton.com.au", "sms": "", "email_subject": "Quick question for Pentana Stanton Lawyer", "email_body": ""}, {"id": 40, "name": "V Hotel Spa - Luxury Day Spa", "category": "med spa", "location": "Melbourne, VIC, Australia", "website": "https://vhotelspa.com.au/", "seo": 0, "overall": 40, "recommended": "AI Voice", "priority": "medium", "multi": false, "phone": "+61396296600", "email": "relax@vhotelspa.com.au", "sms": "", "email_subject": "Quick question for V Hotel Spa - Luxury D", "email_body": ""}];
+    let leads = [{"id":1,"name":"Weinberg Lawyers","category":"law firm","location":"Melbourne, VIC","website":"https://www.weinberglawyers.com.au/","seo":0,"overall":130,"recommended":"AI Voice","priority":"high","multi":false,"phone":"+61421966943","email":"david@weinberglawyers.com.au","sms":"Hi Weinberg, natural AI receptionist for law firms in Melbourne that books 24/7. 10-min chat?","email_subject":"AI receptionist for Weinberg Lawyers","email_body":"Hi team,\n\nI help law firms in Melbourne stop missing calls with a natural AI receptionist.\n\nOpen to a quick call?\n\nMarvelus"}];
 
-    let currentSegment = 'all';
-    let currentSearch = '';
+    let seg = 'all', search = '', sort = 'overall', density = 'comfort';
 
-    function updateStats(filteredLeads) {
-      const total = filteredLeads.length;
-      const high = filteredLeads.filter(l => l.priority === 'high').length;
-      const avgSeo = total > 0 ? Math.round(filteredLeads.reduce((s, l) => s + l.seo, 0) / total) : 0;
-      const multi = filteredLeads.filter(l => l.multi).length;
-
-      document.getElementById('stat-total').textContent = total;
-      document.getElementById('stat-high').textContent = high;
-      document.getElementById('stat-seo').textContent = avgSeo;
-      document.getElementById('stat-multi').textContent = multi;
+    function updateStats(f) {
+      document.getElementById('stat-total').textContent = f.length;
+      document.getElementById('stat-high').textContent = f.filter(l => l.priority === 'high').length;
+      const avg = f.length ? Math.round(f.reduce((s,l) => s + l.overall, 0) / f.length) : 0;
+      document.getElementById('stat-avg').textContent = avg || '—';
+      document.getElementById('stat-multi').textContent = f.filter(l => l.multi).length;
     }
 
-    function renderLeads(filteredLeads) {
-      const grid = document.getElementById('leads-grid');
+    function render(f) {
+      const grid = document.getElementById('grid');
       grid.innerHTML = '';
+      const compact = density === 'compact';
 
-      if (filteredLeads.length === 0) {
-        grid.innerHTML = `<div class="col-span-full py-12 text-center text-[#8e8e93]">No leads match your current view.</div>`;
-        return;
-      }
-
-      filteredLeads.forEach(lead => {
-        const card = document.createElement('div');
-        card.className = `lead-card p-5 cursor-pointer`;
-        
-        card.innerHTML = `
-          <div class="flex justify-between items-start mb-3">
-            <div class="min-w-0 flex-1">
-              <div class="lead-name truncate">${lead.name}</div>
-              <div class="meta-text mt-0.5">${lead.category} • ${lead.location}</div>
+      f.forEach(lead => {
+        const el = document.createElement('div');
+        el.className = `card p-4 cursor-pointer ${compact ? 'p-3' : ''}`;
+        el.innerHTML = `
+          <div class="flex justify-between mb-2">
+            <div class="min-w-0">
+              <div class="name truncate">${lead.name}</div>
+              <div class="meta">${lead.category} • ${lead.location}</div>
             </div>
-            <div class="recommended-pill text-xs ml-3 flex-shrink-0">${lead.recommended}</div>
+            <div class="pill">${lead.recommended}</div>
           </div>
-
-          <div class="flex gap-5 mb-4">
-            <div>
-              <div class="score-large ${lead.seo >= 70 ? 'text-[#30d158]' : 'text-[#ff9500]'}">${lead.seo}</div>
-              <div class="metric-label">SEO</div>
-            </div>
-            <div>
-              <div class="score-large text-[#1d1d1f]">${lead.overall}</div>
-              <div class="metric-label">HELP</div>
-            </div>
+          <div class="flex gap-4 mb-3">
+            <div><div class="metric">${lead.seo}</div><div class="label">SEO</div></div>
+            <div><div class="metric">${lead.overall}</div><div class="label">HELP</div></div>
           </div>
-
-          <div class="flex items-center justify-between pt-3 border-t border-[#f2f2f7]">
-            <div class="flex items-center gap-x-2">
-              <span class="px-2 py-px text-[10px] font-semibold rounded-full ${lead.priority === 'high' ? 'bg-[#ff3b30] text-white' : 'bg-[#8e8e93] text-white'}">${lead.priority.toUpperCase()}</span>
-              ${lead.multi ? `<span class="px-2 py-px text-[10px] font-semibold bg-[#0071e3] text-white rounded-full">MULTI</span>` : ''}
+          <div class="flex items-center justify-between pt-2 border-t border-[#F2F2F7]">
+            <div class="flex gap-1">
+              <span class="px-1.5 py-px text-[9px] font-semibold rounded ${lead.priority==='high' ? 'bg-[#ff3b30] text-white' : 'bg-[#8e8e93] text-white'}">${lead.priority.toUpperCase()}</span>
+              ${lead.multi ? '<span class="px-1.5 py-px text-[9px] font-semibold bg-[#0A66C2] text-white rounded">MULTI</span>' : ''}
             </div>
-
-            <div class="flex gap-x-1">
-              <button onclick="event.stopImmediatePropagation(); copyLeadSMS(${lead.id});" class="px-2 py-1 text-xs active:bg-[#f2f2f7] rounded-xl"><i class="fa-regular fa-copy"></i></button>
-              <button onclick="event.stopImmediatePropagation(); window.open('${lead.website}', '_blank');" class="px-2 py-1 text-xs active:bg-[#f2f2f7] rounded-xl"><i class="fa-solid fa-external-link-alt"></i></button>
+            <div class="flex gap-1">
+              <button onclick="event.stopImmediatePropagation(); copySMSInline(${lead.id})" class="inline-action">Copy SMS</button>
+              <button onclick="event.stopImmediatePropagation(); window.open('${lead.website}','_blank')" class="inline-action"><i class="fa-solid fa-external-link-alt"></i></button>
             </div>
           </div>
         `;
-        
-        card.onclick = () => showLeadDetail(lead);
-        grid.appendChild(card);
+        el.onclick = () => showModal(lead);
+        grid.appendChild(el);
       });
     }
 
-    function filterLeads() {
-      currentSearch = document.getElementById('search-input').value.toLowerCase().trim();
-      
-      let filtered = leads.filter(lead => {
-        const matchesSearch = !currentSearch || lead.name.toLowerCase().includes(currentSearch) || lead.category.toLowerCase().includes(currentSearch);
-        
-        let matchesSegment = true;
-        if (currentSegment === 'high') matchesSegment = lead.priority === 'high';
-        else if (currentSegment === 'multi') matchesSegment = lead.multi;
-        else if (currentSegment === 'ai-voice') matchesSegment = lead.recommended.toLowerCase().includes('voice');
-        
-        return matchesSearch && matchesSegment;
-      });
+    function filter() {
+      let f = leads;
+      const q = document.getElementById('search').value.toLowerCase().trim();
+      if (q) f = f.filter(l => l.name.toLowerCase().includes(q) || l.category.toLowerCase().includes(q));
+      if (seg === 'high') f = f.filter(l => l.priority === 'high');
+      if (seg === 'multi') f = f.filter(l => l.multi);
+      if (seg === 'ai') f = f.filter(l => l.recommended.toLowerCase().includes('voice'));
 
-      renderLeads(filtered);
-      updateStats(filtered);
+      if (sort === 'overall') f.sort((a,b) => b.overall - a.overall);
+      if (sort === 'seo') f.sort((a,b) => b.seo - a.seo);
+      if (sort === 'name') f.sort((a,b) => a.name.localeCompare(b.name));
+
+      render(f);
+      updateStats(f);
     }
 
-    function setSegment(element, segment) {
-      document.querySelectorAll('.segment').forEach(el => el.classList.remove('active'));
-      element.classList.add('active');
-      
-      currentSegment = segment;
-      filterLeads();
+    function setSeg(el, s) {
+      document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      seg = s;
+      filter();
     }
 
-    function showLeadDetail(lead) {
-      const modal = document.getElementById('modal');
-      
-      document.getElementById('modal-name').textContent = lead.name;
-      document.getElementById('modal-category').textContent = `${lead.category} • ${lead.location}`;
-      document.getElementById('modal-seo').textContent = lead.seo;
-      document.getElementById('modal-overall').textContent = lead.overall;
-      document.getElementById('modal-recommended').textContent = lead.recommended;
-
-      const contactEl = document.getElementById('modal-contact');
-      contactEl.innerHTML = `
-        ${lead.phone ? `<div class="flex items-center gap-x-2"><i class="fa-solid fa-phone w-4 text-[#8e8e93]"></i><span>${lead.phone}</span></div>` : ''}
-        ${lead.email ? `<div class="flex items-center gap-x-2"><i class="fa-solid fa-envelope w-4 text-[#8e8e93]"></i><span>${lead.email}</span></div>` : ''}
-      `;
-
-      document.getElementById('modal-sms').textContent = lead.sms || "No SMS draft.";
-      
-      // Store email data
-      modal.dataset.currentLeadId = lead.id;
-      modal.dataset.emailSubject = lead.email_subject || '';
-      modal.dataset.emailBody = lead.email_body || '';
-
-      const popover = document.getElementById('email-popover');
-      popover.classList.add('hidden');
-
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
+    function setDensity(el, d) {
+      document.querySelectorAll('[data-density]').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      density = d;
+      const g = document.getElementById('grid');
+      g.classList.toggle('density-compact', d === 'compact');
+      filter();
     }
 
-    function toggleEmailPopover(event) {
-      event.stopImmediatePropagation();
-      const popover = document.getElementById('email-popover');
-      const modal = document.getElementById('modal');
-      
-      if (!modal.dataset.emailSubject && !modal.dataset.emailBody) {
-        showToast("No email draft available");
-        return;
+    function cycleSort() {
+      const opts = ['overall','seo','name'];
+      let i = opts.indexOf(sort);
+      sort = opts[(i+1)%opts.length];
+      document.getElementById('sort-label').textContent = sort === 'overall' ? 'Help' : sort === 'seo' ? 'SEO' : 'Name';
+      filter();
+    }
+
+    function quickFilter(type) {
+      document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+      if (type === 'high-multi') {
+        seg = 'multi';
+        document.querySelector('[data-seg="multi"]').classList.add('active');
+      } else if (type === 'top-seo') {
+        sort = 'seo';
+        document.getElementById('sort-label').textContent = 'SEO';
+      } else if (type === 'law') {
+        document.getElementById('search').value = 'law';
       }
+      filter();
+    }
 
-      document.getElementById('modal-email-subject').textContent = modal.dataset.emailSubject;
-      document.getElementById('modal-email-body').textContent = modal.dataset.emailBody;
+    function showModal(lead) {
+      document.getElementById('modal').classList.remove('hidden');
+      document.getElementById('modal').classList.add('flex');
+      document.getElementById('m-name').textContent = lead.name;
+      document.getElementById('m-meta').textContent = `${lead.category} • ${lead.location}`;
+      document.getElementById('m-seo').textContent = lead.seo;
+      document.getElementById('m-help').textContent = lead.overall;
+      document.getElementById('m-rec').textContent = lead.recommended;
+      document.getElementById('m-contact').innerHTML = `
+        ${lead.phone ? `<div><i class="fa-solid fa-phone mr-1.5 text-[#5F5F65]"></i>${lead.phone}</div>` : ''}
+        ${lead.email ? `<div><i class="fa-solid fa-envelope mr-1.5 text-[#5F5F65]"></i>${lead.email}</div>` : ''}
+      `;
+      document.getElementById('m-sms').textContent = lead.sms || 'No draft';
+      const pop = document.getElementById('email-pop');
+      pop.classList.add('hidden');
+      pop.dataset.subj = lead.email_subject || '';
+      pop.dataset.body = lead.email_body || '';
+    }
 
-      popover.classList.toggle('hidden');
+    function closeModal() {
+      document.getElementById('modal').classList.remove('flex');
+      document.getElementById('modal').classList.add('hidden');
+    }
+
+    function copySMSInline(id) {
+      const l = leads.find(x => x.id === id);
+      if (l && l.sms) navigator.clipboard.writeText(l.sms).then(() => alert('SMS copied'));
     }
 
     function copySMS() {
-      const modal = document.getElementById('modal');
-      const leadId = parseInt(modal.dataset.currentLeadId);
-      const lead = leads.find(l => l.id === leadId);
-      if (lead?.sms) {
-        navigator.clipboard.writeText(lead.sms).then(() => showToast("SMS copied"));
+      const l = leads.find(x => x.id == document.getElementById('modal').dataset.currentId); // simplified
+      if (l?.sms) navigator.clipboard.writeText(l.sms).then(() => alert('Copied'));
+    }
+
+    function toggleEmail(btn) {
+      const pop = document.getElementById('email-pop');
+      pop.classList.toggle('hidden');
+      if (!pop.classList.contains('hidden')) {
+        document.getElementById('m-subj').textContent = pop.dataset.subj;
+        document.getElementById('m-body').textContent = pop.dataset.body;
       }
     }
 
-    function copyEmailDraft() {
-      const modal = document.getElementById('modal');
-      const subject = modal.dataset.emailSubject || '';
-      const body = modal.dataset.emailBody || '';
-      navigator.clipboard.writeText(`Subject: ${subject}\n\n${body}`).then(() => {
-        showToast("Email draft copied");
-        document.getElementById('email-popover').classList.add('hidden');
-      });
+    function copyEmail() {
+      const pop = document.getElementById('email-pop');
+      const txt = `Subject: ${pop.dataset.subj}\n\n${pop.dataset.body}`;
+      navigator.clipboard.writeText(txt).then(() => { alert('Email copied'); pop.classList.add('hidden'); });
     }
 
-    function copyFullEmail() {
-      const modal = document.getElementById('modal');
-      const leadId = parseInt(modal.dataset.currentLeadId);
-      const lead = leads.find(l => l.id === leadId);
-      if (!lead) return;
-
-      const subject = modal.dataset.emailSubject || `Quick question for ${lead.name}`;
-      const body = modal.dataset.emailBody || `Hi ${lead.name.split(' ')[0]},\n\nI help ${lead.category} businesses in Melbourne.\n\nBest,\nMarvelus`;
-      
-      window.location.href = `mailto:${lead.email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    function openWeb() {
+      const id = document.getElementById('modal').dataset.currentId;
+      const l = leads.find(x => x.id == id);
+      if (l) window.open(l.website, '_blank');
     }
 
-    function openWebsite() {
-      const modal = document.getElementById('modal');
-      const leadId = parseInt(modal.dataset.currentLeadId);
-      const lead = leads.find(l => l.id === leadId);
-      if (lead?.website) window.open(lead.website, '_blank');
-    }
-
-    function showToast(msg) {
-      const t = document.createElement('div');
-      t.className = `fixed bottom-5 left-1/2 -translate-x-1/2 bg-black text-white text-sm px-4 py-2 rounded-3xl shadow-xl`;
-      t.textContent = msg;
-      document.body.appendChild(t);
-      setTimeout(() => {
-        t.style.transition = 'opacity 0.2s';
-        t.style.opacity = '0';
-        setTimeout(() => t.remove(), 120);
-      }, 1400);
-    }
-
-    function filterLeadsBySegment() {
-      // handled in setSegment
-    }
-
-    function refreshData() {
-      const grid = document.getElementById('leads-grid');
-      grid.style.opacity = '0.4';
-      setTimeout(() => {
-        renderLeads(leads);
-        updateStats(leads);
-        grid.style.opacity = '1';
-      }, 180);
-    }
+    function filterLeads() { filter(); }
+    function refresh() { location.reload(); }
 
     function init() {
-      // Initial render
-      renderLeads(leads);
+      // leads already defined with real data
+      const g = document.getElementById('grid');
+      render(leads);
       updateStats(leads);
-
-      // Search
-      document.getElementById('search-input').addEventListener('input', filterLeads);
-
-      // Keyboard
-      document.addEventListener('keydown', e => {
-        if (e.key === '/' && document.activeElement.tagName === 'BODY') {
-          e.preventDefault();
-          document.getElementById('search-input').focus();
-        }
-      });
-
-      console.log('%c[Phase 2] Refined Apple HIG dashboard', 'color:#8e8e93');
+      document.getElementById('search').addEventListener('input', filter);
+      console.log('%c[Phase 5] Apple Phase 5 with brand colors + inline actions', 'color:#5F5F65');
     }
-
     window.onload = init;
   </script>
 </body>
