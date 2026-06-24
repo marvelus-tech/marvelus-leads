@@ -287,12 +287,16 @@
         <!-- Outreach Drafts -->
         <div>
           <div class="flex items-center justify-between mb-2">
-            <div class="text-xs font-medium text-[#86868b]">OUTREACH DRAFT</div>
+            <div class="text-xs font-medium text-[#86868b]">OUTREACH DRAFTS</div>
           </div>
           
-          <div class="border border-[#e5e7eb] rounded-2xl p-4 bg-white">
+          <!-- SMS (visible) -->
+          <div class="border border-[#e5e7eb] rounded-2xl p-4 bg-white mb-3">
             <div class="flex items-center justify-between mb-2">
-              <div class="text-sm font-semibold">SMS</div>
+              <div class="text-sm font-semibold flex items-center gap-x-1.5">
+                <i class="fa-solid fa-comment-dots text-[#0071e3]"></i>
+                <span>SMS</span>
+              </div>
               <button onclick="copySMS()" 
                       class="text-xs font-medium px-3 py-1 bg-[#f5f5f7] hover:bg-[#e5e5e7] active:bg-[#d2d2d7] rounded-2xl flex items-center gap-x-1.5">
                 <i class="fa-regular fa-copy text-xs"></i>
@@ -300,6 +304,29 @@
               </button>
             </div>
             <div id="modal-sms" class="text-sm leading-snug text-[#1d1d1f] font-light"></div>
+          </div>
+
+          <!-- Email (hidden behind icon + tooltip/popover) -->
+          <div class="flex items-center gap-x-2">
+            <div class="text-sm font-semibold text-[#86868b]">Email</div>
+            <button onclick="toggleEmailDraft(event)"
+                    class="w-8 h-8 flex items-center justify-center text-[#0071e3] hover:bg-[#f0f7ff] active:bg-[#e0efff] rounded-full transition-colors"
+                    aria-label="Show email draft">
+              <i class="fa-solid fa-envelope text-base"></i>
+            </button>
+            <span class="text-[10px] text-[#86868b]">(tap icon)</span>
+          </div>
+
+          <!-- Email draft popover (tooltip style) -->
+          <div id="email-draft-popover" class="hidden mt-2 border border-[#d2d2d7] rounded-2xl p-4 bg-[#f8fafc] text-sm">
+            <div class="flex justify-between items-start mb-1.5">
+              <div class="font-medium text-xs text-[#86868b]">SUBJECT</div>
+              <button onclick="copyEmailDraft()" class="text-xs px-2 py-0.5 bg-white border border-[#d2d2d7] rounded-xl text-[#0071e3]">Copy</button>
+            </div>
+            <div id="modal-email-subject" class="font-medium mb-3 text-[#1d1d1f]"></div>
+            
+            <div class="font-medium text-xs text-[#86868b] mb-1">BODY</div>
+            <div id="modal-email-body" class="text-[#1d1d1f] whitespace-pre-line leading-relaxed"></div>
           </div>
         </div>
       </div>
@@ -350,7 +377,11 @@
         multi: false,
         phone: "+61 405 851 919",
         email: "reception@lapeaumedispa.com.au",
-        sms: "Hi Lapeau, I help med spas in Melbourne get more bookings with a natural 24/7 AI receptionist. Open to a quick 10-min chat?"
+        sms: "Hi Lapeau, I help med spas in Melbourne get more bookings with a natural 24/7 AI receptionist. Open to a quick 10-min chat?",
+        email_subject: "More bookings + better website for Lapeau Medi Spa in Melbourne",
+        email_body: "Hi Lapeau,\n\nI came across Lapeau Medi Spa while looking at strong med spas in Melbourne.\n\nA lot of places like yours are losing enquiries because calls go unanswered after hours and the website/SEO isn't converting well.\n\nWe've built a simple system that combines AI voice receptionist + website optimization + reputation management.\n\nWould you be open to a short 10-15 min call this week?\n\nBest,\nMarvelus",
+        email_subject: "More bookings + better website for Lapeau Medi Spa in Melbourne",
+        email_body: "Hi Lapeau,\n\nI came across Lapeau Medi Spa while looking at strong med spas in Melbourne.\n\nA lot of places like yours are losing enquiries because calls go unanswered after hours and the website/SEO isn't converting well.\n\nWe’ve built a simple system that combines AI voice receptionist + website optimization + reputation management.\n\nWould you be open to a short 10-15 min call this week?\n\nBest,\nMarvelus"
       },
       {
         id: 2,
@@ -365,7 +396,9 @@
         multi: false,
         phone: "+61 3 8696 8111",
         email: "",
-        sms: "Hi Chuan Spa, natural AI receptionist that books clients 24/7 for spas like yours in Melbourne. 10-min chat?"
+        sms: "Hi Chuan Spa, natural AI receptionist that books clients 24/7 for spas like yours in Melbourne. 10-min chat?",
+        email_subject: "AI receptionist for Chuan Spa in Melbourne (24/7 booking)",
+        email_body: "Hi Chuan Spa,\n\nI help med spas in Melbourne get more bookings with a natural Australian AI receptionist that answers 24/7 and books clients straight into your calendar.\n\nWould you be open to a quick 10-min chat this week?\n\nBest,\nMarvelus"
       },
       {
         id: 3,
@@ -380,7 +413,9 @@
         multi: false,
         phone: "+61 3 9988 1251",
         email: "",
-        sms: "Hi Body Catalyst, I help med spas in Melbourne stop missing calls with a natural-sounding AI receptionist. Quick chat?"
+        sms: "Hi Body Catalyst, I help med spas in Melbourne stop missing calls with a natural-sounding AI receptionist. Quick chat?",
+        email_subject: "AI receptionist for Body Catalyst in Melbourne (24/7 booking)",
+        email_body: "Hi Body Catalyst,\n\nI help med spas in Melbourne get more bookings with a natural Australian AI receptionist that answers 24/7 and books clients straight into your calendar.\n\nWould you be open to a quick 10-min chat this week?\n\nBest,\nMarvelus"
       },
       {
         id: 4,
@@ -395,7 +430,9 @@
         multi: false,
         phone: "+61 3 9044 9230",
         email: "info@izumimassage.com.au",
-        sms: "Hi IZUMI, I help day spas in Melbourne with a 24/7 AI receptionist that answers and books automatically. 10-min look?"
+        sms: "Hi IZUMI, I help day spas in Melbourne with a 24/7 AI receptionist that answers and books automatically. 10-min look?",
+        email_subject: "AI receptionist for IZUMI Japanese Massage and Day Spa in Melbourne (24/7 booking)",
+        email_body: "Hi IZUMI,\n\nI help med spas and day spas in Melbourne get more bookings with a natural Australian AI receptionist that answers 24/7 and books clients straight into your calendar.\n\nWould you be open to a quick 10-min chat this week?\n\nBest,\nMarvelus"
       }
     ];
 
@@ -560,6 +597,18 @@
       // SMS
       document.getElementById('modal-sms').textContent = lead.sms || "No draft available.";
       
+      // Email draft (hidden by default, shown via icon)
+      const popover = document.getElementById('email-draft-popover');
+      popover.classList.add('hidden');
+      
+      if (lead.email_subject || lead.email_body) {
+        document.getElementById('modal-email-subject').textContent = lead.email_subject || '';
+        document.getElementById('modal-email-body').textContent = lead.email_body || '';
+        popover.dataset.hasEmail = 'true';
+      } else {
+        popover.dataset.hasEmail = 'false';
+      }
+      
       // Store current lead for copy actions
       modal.dataset.currentLeadId = lead.id;
       
@@ -589,6 +638,32 @@
       if (lead && lead.sms) {
         navigator.clipboard.writeText(lead.sms).then(() => showToast("SMS copied to clipboard"));
       }
+    }
+
+    function toggleEmailDraft(event) {
+      event.stopImmediatePropagation();
+      const popover = document.getElementById('email-draft-popover');
+      if (popover.dataset.hasEmail === 'false') {
+        showToast('No email draft available');
+        return;
+      }
+      popover.classList.toggle('hidden');
+    }
+
+    function copyEmailDraft() {
+      const modal = document.getElementById('modal');
+      const leadId = parseInt(modal.dataset.currentLeadId);
+      const lead = leads.find(l => l.id === leadId);
+      if (!lead) return;
+
+      const fullEmail = `Subject: ${lead.email_subject || ''}
+
+${lead.email_body || ''}`;
+      navigator.clipboard.writeText(fullEmail).then(() => {
+        showToast('Email draft copied');
+        // optionally hide popover after copy
+        document.getElementById('email-draft-popover').classList.add('hidden');
+      });
     }
 
     function copyEmail() {
