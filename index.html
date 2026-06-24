@@ -238,6 +238,132 @@
     <div class="mt-8 text-center">
       <p class="text-[11px] text-[#8e8e93]">Phase 7 • Full Pipeline • 110 Leads</p>
     </div>
+
+    <!-- Scripts Reference -->
+    <div class="mt-8 mb-12">
+      <button onclick="toggleScripts()" class="w-full flex items-center justify-between p-4 bg-white border border-[#d2d2d7] rounded-2xl hover:bg-[#f5f5f7] transition-colors">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#0071e3] bg-opacity-10 rounded-xl flex items-center justify-center">
+            <i class="fa-solid fa-book text-[#0071e3]"></i>
+          </div>
+          <div class="text-left">
+            <div class="font-semibold text-[15px]">Sales Scripts</div>
+            <div class="text-[13px] text-[#8e8e93]">SEO cold call scripts & objection handling</div>
+          </div>
+        </div>
+        <i id="scripts-chevron" class="fa-solid fa-chevron-down text-[#8e8e93] transition-transform"></i>
+      </button>
+      
+      <div id="scripts-panel" class="hidden mt-3 bg-white border border-[#d2d2d7] rounded-2xl overflow-hidden">
+        <div class="p-4 space-y-4 max-h-[600px] overflow-y-auto">
+          
+          <!-- Script 1: Problem → Agitate → Present → Close -->
+          <div class="border border-[#d2d2d7] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="px-2 py-1 bg-[#0071e3] text-white text-[10px] font-bold rounded-lg">#1</span>
+              <span class="font-semibold text-[14px]">The "Only Script You Need"</span>
+            </div>
+            <div class="text-[12px] text-[#8e8e93] mb-2">Problem → Agitate → Present → Close</div>
+            <div class="text-[13px] text-[#1d1d1f] space-y-2 leading-relaxed">
+              <p><strong>Opener:</strong> "Hi [Name], quick question — are you currently getting leads from Google for [service] in [City]?"</p>
+              <p><strong>Problem:</strong> "Most [industry] businesses I talk to in [City] tell me the same thing: they rely on word-of-mouth or paid ads, but when someone searches '[service] near me' on their phone, they're not showing up."</p>
+              <p><strong>Agitate:</strong> "Those people searching on Google are actively looking to buy. If you're not there, your competitor is. And they're getting that call."</p>
+              <p><strong>Present:</strong> "What we do is get [industry] businesses to show up when people search for exactly what you offer. Not ads — organic Google results. People trust those more, and you don't pay per click."</p>
+              <p><strong>Close:</strong> "I'm not asking for a commitment today. What I'd love to do is send you a free video audit of your site — shows exactly why you're not ranking and what it would take to fix it. What's the best email?"</p>
+            </div>
+          </div>
+
+          <!-- Script 2: Pain-First -->
+          <div class="border border-[#d2d2d7] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="px-2 py-1 bg-[#ff9500] text-white text-[10px] font-bold rounded-lg">#2</span>
+              <span class="font-semibold text-[14px]">Pain-First Script</span>
+            </div>
+            <div class="text-[12px] text-[#8e8e93] mb-2">Let them pick their pain</div>
+            <div class="text-[13px] text-[#1d1d1f] space-y-2 leading-relaxed">
+              <p>"I work with [industry] businesses in [City] to solve three common problems:</p>
+              <ol class="list-decimal list-inside space-y-1 ml-2">
+                <li>Not showing up when people search '[service] near me'</li>
+                <li>Website doesn't convert visitors into calls</li>
+                <li>Paying too much for leads that go to 3-4 competitors</li>
+              </ol>
+              <p>Which of those, if any, is something you're dealing with right now?"</p>
+            </div>
+          </div>
+
+          <!-- Script 3: Permission + Value -->
+          <div class="border border-[#d2d2d7] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="px-2 py-1 bg-[#30d158] text-white text-[10px] font-bold rounded-lg">#3</span>
+              <span class="font-semibold text-[14px]">Permission + Value Opener</span>
+            </div>
+            <div class="text-[12px] text-[#8e8e93] mb-2">r/sales top post — 27 upvotes</div>
+            <div class="text-[13px] text-[#1d1d1f] space-y-2 leading-relaxed">
+              <p>"Hi [Name], this is [Your Name] from [Company]. Appreciate I caught you out of the blue — you got a minute?"</p>
+              <p>[Wait for yes]</p>
+              <p>"Great. I'm calling because I was looking at your website and I noticed a few things that are probably costing you leads from Google. Nothing major, but quick wins that most competitors aren't doing."</p>
+              <p>"Worth a 10-minute call to walk through it? I'm not selling anything today, just want to show you what I found."</p>
+            </div>
+          </div>
+
+          <!-- Objection Handling -->
+          <div class="border border-[#d2d2d7] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="px-2 py-1 bg-[#ff3b30] text-white text-[10px] font-bold rounded-lg">OBJ</span>
+              <span class="font-semibold text-[14px]">Objection Handling</span>
+            </div>
+            <div class="text-[13px] text-[#1d1d1f] space-y-3 leading-relaxed">
+              <div>
+                <p class="font-semibold text-[12px] text-[#8e8e93] uppercase tracking-wider mb-1">"I already have SEO"</p>
+                <p>"Good — most of our best clients had someone before us. Quick question: are you getting 10+ calls/month from that relationship? [If no] Most owners don't know if their SEO is actually working because no one shows them the numbers."</p>
+              </div>
+              <div>
+                <p class="font-semibold text-[12px] text-[#8e8e93] uppercase tracking-wider mb-1">"How much does it cost?"</p>
+                <p>"It depends on where you're starting. What I do first is a free audit — shows exactly what needs work. Then I can give you a real number, not a guess. Worth doing the audit?"</p>
+              </div>
+              <div>
+                <p class="font-semibold text-[12px] text-[#8e8e93] uppercase tracking-wider mb-1">"I don't have budget"</p>
+                <p>"Totally get it. I'll send you the free audit anyway — shows you exactly what's costing you leads. Even if we don't work together, you'll know what to fix when budget opens up. What's the best email?"</p>
+              </div>
+              <div>
+                <p class="font-semibold text-[12px] text-[#8e8e93] uppercase tracking-wider mb-1">"Send me an email"</p>
+                <p>"Happy to. Quick question so I send something useful — are you currently getting leads from Google, or is it mostly referrals? [Wait] Perfect. I'll tailor the audit around that."</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Tips -->
+          <div class="bg-[#f5f5f7] rounded-xl p-4">
+            <div class="font-semibold text-[14px] mb-2">Key Tips from Reddit Pros</div>
+            <div class="text-[12px] text-[#1d1d1f] space-y-1.5">
+              <p>• <strong>Never say "SEO" in opener</strong> — say "get found on Google"</p>
+              <p>• <strong>Lead with specific pain</strong> — "3-4 leads a week"</p>
+              <p>• <strong>Offer value first</strong> — free audit, video walkthrough</p>
+              <p>• <strong>Use numbers</strong> — "60-90 days", "8-12 calls"</p>
+              <p>• <strong>Remove risk</strong> — "no contracts", "month-to-month"</p>
+              <p>• <strong>Ask for easy yes</strong> — email is easier than meeting</p>
+              <p>• <strong>Follow up</strong> — 80% of sales happen after 5+ touchpoints</p>
+              <p>• <strong>Speak slowly</strong> — "almost uncomfortably slow"</p>
+              <p>• <strong>Stand up</strong> — use a standing desk for energy</p>
+              <p>• <strong>Record calls</strong> — listen and improve</p>
+            </div>
+          </div>
+
+          <!-- Marketing Tactics -->
+          <div class="bg-[#f5f5f7] rounded-xl p-4">
+            <div class="font-semibold text-[14px] mb-2">Marketing Tactics That Work</div>
+            <div class="text-[12px] text-[#1d1d1f] space-y-1.5">
+              <p>• <strong>Free Video Audits</strong> (Loom) — 30-40% response rate</p>
+              <p>• <strong>Google Business Profile Optimization</strong> — free trial, 50%+ convert</p>
+              <p>• <strong>Review Generation Campaign</strong> — "10 new Google reviews this month — free"</p>
+              <p>• <strong>Local SEO Workshops</strong> — free 30-min Zoom, 10-15% convert</p>
+              <p>• <strong>Case Study Content</strong> — "How [Business] Got 12 More Calls/Month"</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Detail Modal -->
@@ -555,6 +681,13 @@
       const subject = document.getElementById('modal').dataset.emailSubject || `Quick question for ${lead.name}`;
       const body = document.getElementById('modal').dataset.emailBody || `Hi ${lead.name.split(' ')[0]},\n\nI help ${lead.category} businesses in Melbourne.\n\nBest,\nMarvelus`;
       window.location.href = `mailto:${lead.email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
+    function toggleScripts() {
+      const panel = document.getElementById('scripts-panel');
+      const chevron = document.getElementById('scripts-chevron');
+      panel.classList.toggle('hidden');
+      chevron.style.transform = panel.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
     }
 
     function openWebsite() {
