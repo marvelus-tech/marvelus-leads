@@ -1007,7 +1007,12 @@
               <div class="flex items-center gap-2">
                 <span class="text-2xl font-bold ${techColor} font-mono">${lead.seo || 0}</span>
                 <div>
-                  <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">SEO</div>
+                  <div class="flex items-center gap-1">
+                    <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">SEO</div>
+                    <button onclick="event.stopImmediatePropagation(); showSEOTooltip(event)" class="w-4 h-4 rounded-full bg-[#f0f0ee] flex items-center justify-center text-[#a0a0a0] hover:text-[#0055ff] transition-colors">
+                      <i class="fa-solid fa-info text-[8px]"></i>
+                    </button>
+                  </div>
                   <div class="text-xs text-[#a0a0a0]">${(lead.seo || 0) <= 30 ? 'High opp' : (lead.seo || 0) <= 60 ? 'Moderate' : 'Low opp'}</div>
                 </div>
               </div>
@@ -1292,6 +1297,54 @@
       const id = parseInt(document.getElementById('modal').dataset.currentId);
       const lead = leads.find(l => l.id === id);
       window.open(lead.website, '_blank');
+    }
+
+    function showSEOTooltip(e) {
+      e.stopImmediatePropagation();
+      const tooltip = document.createElement('div');
+      tooltip.className = 'fixed z-[200] bg-[#1a1a1a] text-white text-xs rounded-xl p-4 max-w-[280px] shadow-2xl';
+      tooltip.style.left = e.clientX + 'px';
+      tooltip.style.top = (e.clientY + 20) + 'px';
+      tooltip.innerHTML = `
+        <div class="font-semibold mb-2 text-sm">SEO Score</div>
+        <div class="text-[#a0a0a0] mb-3">Tech sophistication score (0-100). Lower = more opportunity for SEO services.</div>
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#ff4757]"></span>
+            <span>0-30: High opportunity</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#f5a623]"></span>
+            <span>31-60: Moderate</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#00a86b]"></span>
+            <span>61-100: Low opportunity</span>
+          </div>
+        </div>
+        <div class="mt-3 pt-3 border-t border-[#333] text-[#a0a0a0]">
+          Based on: chatbot, click-to-call, booking flow, website tech, contact info
+        </div>
+      `;
+      document.body.appendChild(tooltip);
+      
+      // Position to avoid going off screen
+      const rect = tooltip.getBoundingClientRect();
+      if (rect.right > window.innerWidth) {
+        tooltip.style.left = (e.clientX - rect.width) + 'px';
+      }
+      if (rect.bottom > window.innerHeight) {
+        tooltip.style.top = (e.clientY - rect.height - 10) + 'px';
+      }
+      
+      // Remove on click elsewhere
+      setTimeout(() => {
+        const removeTooltip = () => {
+          tooltip.remove();
+          document.removeEventListener('click', removeTooltip);
+        };
+        document.addEventListener('click', removeTooltip);
+      }, 100);
     }
 
     function toggleScripts() {
