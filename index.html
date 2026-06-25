@@ -255,17 +255,36 @@
       animation: goldPulse 1.2s ease-out;
     }
 
-    /* Hot badge — icon only, no border */
-    .badge-hot-icon {
+    /* Tech badge — icon only, no border */
+    .badge-tech-icon {
       width: 28px;
       height: 28px;
       border-radius: 8px;
-      background: var(--danger-light);
-      color: var(--danger);
+      background: var(--warning-light);
+      color: var(--warning);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 12px;
+    }
+
+    /* Action buttons — no border, no background */
+    .action-btn-clean {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-tertiary);
+      transition: all 0.2s ease;
+      border-radius: 8px;
+    }
+    .action-btn-clean:hover {
+      color: var(--text-primary);
+      background: var(--border-subtle);
+    }
+    .action-btn-clean:active {
+      transform: scale(0.92);
     }
 
     /* Stat pills — merged style */
@@ -980,7 +999,8 @@
           
           // Score color logic
           const techColor = lead.seo <= 30 ? 'text-[#ff4757]' : lead.seo <= 60 ? 'text-[#f5a623]' : 'text-[#00a86b]';
-          const scoreColor = lead.overall >= 80 ? 'text-[#00a86b]' : lead.overall >= 60 ? 'text-[#f5a623]' : 'text-[#a0a0a0]';
+          const seoScore = calculateSEOScore(lead);
+          const seoColor = getSEOColor(seoScore);
           
           // Priority badge
           let badgeClass = 'badge-cool';
@@ -999,7 +1019,7 @@
                 <div class="text-sm text-[#a0a0a0]">${lead.category || 'business'} • ${lead.location || 'Unknown'}</div>
               </div>
               <div class="flex items-center gap-2 ml-2 flex-shrink-0">
-                ${badgeText === 'HOT' ? `<div class="badge-hot-icon" title="Hot lead"><i class="fa-solid fa-fire"></i></div>` : `<span class="px-2 py-1 text-[10px] font-semibold ${badgeClass} rounded-lg">${badgeText}</span>`}
+                ${badgeText === 'HOT' ? `<i class="fa-solid fa-fire text-[#ff4757] text-sm" title="Hot lead"></i>` : `<span class="px-2 py-1 text-[10px] font-semibold ${badgeClass} rounded-lg">${badgeText}</span>`}
               </div>
             </div>
 
@@ -1008,8 +1028,8 @@
                 <span class="text-2xl font-bold ${techColor} font-mono">${lead.seo || 0}</span>
                 <div>
                   <div class="flex items-center gap-1">
-                    <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">SEO</div>
-                    <button onclick="event.stopImmediatePropagation(); showSEOTooltip(event)" class="w-4 h-4 rounded-full bg-[#f0f0ee] flex items-center justify-center text-[#a0a0a0] hover:text-[#0055ff] transition-colors">
+                    <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">Tech</div>
+                    <button onclick="event.stopImmediatePropagation(); showTechTooltip(event)" class="w-4 h-4 rounded-full bg-[#f0f0ee] flex items-center justify-center text-[#a0a0a0] hover:text-[#0055ff] transition-colors">
                       <i class="fa-solid fa-info text-[8px]"></i>
                     </button>
                   </div>
@@ -1017,10 +1037,15 @@
                 </div>
               </div>
               <div class="flex items-center gap-2">
-                <span class="text-2xl font-bold ${scoreColor} font-mono">${lead.overall || 0}</span>
+                <span class="text-2xl font-bold ${seoColor} font-mono">${calculateSEOScore(lead)}</span>
                 <div>
-                  <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">Score</div>
-                  <div class="text-xs text-[#a0a0a0]">${(lead.overall || 0) >= 80 ? 'Excellent' : (lead.overall || 0) >= 60 ? 'Good' : 'Fair'}</div>
+                  <div class="flex items-center gap-1">
+                    <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">SEO</div>
+                    <button onclick="event.stopImmediatePropagation(); showSEOTooltip(event)" class="w-4 h-4 rounded-full bg-[#f0f0ee] flex items-center justify-center text-[#a0a0a0] hover:text-[#0055ff] transition-colors">
+                      <i class="fa-solid fa-info text-[8px]"></i>
+                    </button>
+                  </div>
+                  <div class="text-xs text-[#a0a0a0]">${getSEOLabel(calculateSEOScore(lead))}</div>
                 </div>
               </div>
             </div>
@@ -1031,11 +1056,11 @@
                 ${lead.multi ? '<span class="px-2 py-1 text-[10px] font-semibold bg-[#f0f0ee] border border-[#e8e8e6] text-[#6b6b6b] rounded-lg">MULTI</span>' : ''}
               </div>
               <div class="flex gap-1">
-                <button onclick="event.stopImmediatePropagation(); copyLeadSMS(${lead.id})" class="w-8 h-8 rounded-lg bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:bg-[#e8e8e6] transition-all">
-                  <i class="fa-regular fa-copy text-xs"></i>
+                <button onclick="event.stopImmediatePropagation(); copyLeadSMS(${lead.id})" class="action-btn-clean">
+                  <i class="fa-regular fa-copy text-sm"></i>
                 </button>
-                <button onclick="event.stopImmediatePropagation(); window.open('${lead.website || '#'}', '_blank')" class="w-8 h-8 rounded-lg bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:bg-[#e8e8e6] transition-all">
-                  <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                <button onclick="event.stopImmediatePropagation(); window.open('${lead.website || '#'}', '_blank')" class="action-btn-clean">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
                 </button>
               </div>
             </div>
@@ -1299,27 +1324,66 @@
       window.open(lead.website, '_blank');
     }
 
-    function showSEOTooltip(e) {
+    function calculateSEOScore(lead) {
+      // SEO score based on signals we can infer from the data
+      // This is an estimate based on available data points
+      let score = 50; // baseline
+      
+      // Higher tech score = better SEO foundation (they have a site)
+      if (lead.seo <= 30) score -= 20; // Basic site, likely poor SEO
+      else if (lead.seo <= 60) score -= 10; // Moderate
+      else score += 10; // Sophisticated, likely good SEO
+      
+      // Has email = more professional, likely some SEO effort
+      if (lead.email) score += 10;
+      
+      // Has phone = local business presence
+      if (lead.phone) score += 5;
+      
+      // High overall score = more likely to have invested in SEO
+      if (lead.overall >= 80) score += 15;
+      else if (lead.overall >= 60) score += 5;
+      
+      // Priority indicates lead quality, high priority = more likely to need SEO
+      if (lead.priority === 'high') score -= 10; // They need help
+      
+      // Clamp to 0-100
+      return Math.max(0, Math.min(100, score));
+    }
+
+    function getSEOLabel(score) {
+      if (score <= 30) return 'Needs work';
+      if (score <= 60) return 'Moderate';
+      return 'Strong';
+    }
+
+    function getSEOColor(score) {
+      if (score <= 30) return 'text-[#ff4757]';
+      if (score <= 60) return 'text-[#f5a623]';
+      return 'text-[#00a86b]';
+    }
+
+    function showTechTooltip(e) {
       e.stopImmediatePropagation();
       const tooltip = document.createElement('div');
       tooltip.className = 'fixed z-[200] bg-[#1a1a1a] text-white text-xs rounded-xl p-4 max-w-[280px] shadow-2xl';
       tooltip.style.left = e.clientX + 'px';
       tooltip.style.top = (e.clientY + 20) + 'px';
       tooltip.innerHTML = `
-        <div class="font-semibold mb-2 text-sm">SEO Score</div>
-        <div class="text-[#a0a0a0] mb-3">Tech sophistication score (0-100). Lower = more opportunity for SEO services.</div>
+        <div class="font-semibold mb-2 text-sm">Tech Score</div>
+        <div class="text-[#a0a0a0] mb-3">Website sophistication (0-100). Lower = more opportunity for tech services.</div>
         <div class="space-y-2">
           <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-[#ff4757]"></span>
-            <span>0-30: High opportunity</span>
+            <span>0-30: Basic site, high opportunity</span>
           </div>
           <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-[#f5a623]"></span>
-            <span>31-60: Moderate</span>
+            <span>31-60: Moderate tech</span>
           </div>
           <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-[#00a86b]"></span>
-            <span>61-100: Low opportunity</span>
+            <span>61-100: Sophisticated</span>
           </div>
         </div>
         <div class="mt-3 pt-3 border-t border-[#333] text-[#a0a0a0]">
@@ -1328,7 +1392,6 @@
       `;
       document.body.appendChild(tooltip);
       
-      // Position to avoid going off screen
       const rect = tooltip.getBoundingClientRect();
       if (rect.right > window.innerWidth) {
         tooltip.style.left = (e.clientX - rect.width) + 'px';
@@ -1337,7 +1400,52 @@
         tooltip.style.top = (e.clientY - rect.height - 10) + 'px';
       }
       
-      // Remove on click elsewhere
+      setTimeout(() => {
+        const removeTooltip = () => {
+          tooltip.remove();
+          document.removeEventListener('click', removeTooltip);
+        };
+        document.addEventListener('click', removeTooltip);
+      }, 100);
+    }
+
+    function showSEOTooltip(e) {
+      e.stopImmediatePropagation();
+      const tooltip = document.createElement('div');
+      tooltip.className = 'fixed z-[200] bg-[#1a1a1a] text-white text-xs rounded-xl p-4 max-w-[280px] shadow-2xl';
+      tooltip.style.left = e.clientX + 'px';
+      tooltip.style.top = (e.clientY + 20) + 'px';
+      tooltip.innerHTML = `
+        <div class="font-semibold mb-2 text-sm">SEO Score</div>
+        <div class="text-[#a0a0a0] mb-3">Estimated search ranking strength (0-100). Lower = more SEO opportunity.</div>
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#ff4757]"></span>
+            <span>0-30: Needs SEO work</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#f5a623]"></span>
+            <span>31-60: Moderate presence</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#00a86b]"></span>
+            <span>61-100: Strong ranking</span>
+          </div>
+        </div>
+        <div class="mt-3 pt-3 border-t border-[#333] text-[#a0a0a0]">
+          Estimated from: website tech, contact presence, overall lead quality
+        </div>
+      `;
+      document.body.appendChild(tooltip);
+      
+      const rect = tooltip.getBoundingClientRect();
+      if (rect.right > window.innerWidth) {
+        tooltip.style.left = (e.clientX - rect.width) + 'px';
+      }
+      if (rect.bottom > window.innerHeight) {
+        tooltip.style.top = (e.clientY - rect.height - 10) + 'px';
+      }
+      
       setTimeout(() => {
         const removeTooltip = () => {
           tooltip.remove();
