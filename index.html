@@ -482,6 +482,41 @@
       100% { transform: translateX(100%); }
     }
 
+    /* Activity toggle icons */
+    .activity-toggle {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-tertiary);
+    }
+    .activity-toggle:hover {
+      border-color: #d0d0ce;
+      background: var(--border-subtle);
+    }
+    .activity-toggle.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .activity-toggle.active-phone {
+      background: var(--success);
+      color: white;
+      border-color: var(--success);
+    }
+    .activity-toggle.active-mail {
+      background: var(--gold);
+      color: white;
+      border-color: var(--gold);
+    }
+
     /* Sticky header */
     .header-sticky {
       position: sticky;
@@ -642,6 +677,7 @@
         <button onclick="setSegment(this, 'all')" class="segment-btn-mercury active" data-segment="all">All</button>
         <button onclick="setSegment(this, 'high')" class="segment-btn-mercury" data-segment="high"><i class="fa-solid fa-fire mr-1 text-xs"></i> Hot<span id="filter-hot-count" class="filter-count"></span></button>
         <button onclick="setSegment(this, 'contacted')" class="segment-btn-mercury" data-segment="contacted"><i class="fa-solid fa-phone mr-1 text-xs"></i> Contacted</button>
+        <button onclick="setSegment(this, 'uncontacted')" class="segment-btn-mercury" data-segment="uncontacted"><i class="fa-solid fa-circle mr-1 text-xs"></i> Needs contact</button>
         <button onclick="setSegment(this, 'closed')" class="segment-btn-mercury" data-segment="closed"><i class="fa-solid fa-trophy mr-1 text-xs"></i> Closed</button>
       </div>
       <div class="flex-1 flex gap-2">
@@ -799,7 +835,7 @@
 
     <!-- Footer -->
     <div class="mt-8 text-center">
-      <p class="text-xs text-[#a0a0a0]">Marvelus Lead Engine • Phase 7 • 110 Leads</p>
+      <p class="text-xs text-[#a0a0a0]">Marvelus Lead Engine • Phase 7 • 110 Leads • Activity Tracking Enabled</p>
     </div>
   </div>
 
@@ -897,6 +933,23 @@
           <div id="modal-contact" class="space-y-2"></div>
         </div>
 
+        <!-- Activity Tracking -->
+        <div>
+          <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-3">Activity</div>
+          <div class="flex items-center gap-3">
+            <button id="modal-toggle-email" onclick="toggleEmailSentFromModal()" class="activity-toggle" title="Email sent">
+              <i class="fa-solid fa-envelope"></i>
+            </button>
+            <button id="modal-toggle-call" onclick="toggleCallMadeFromModal()" class="activity-toggle" title="Call made">
+              <i class="fa-solid fa-phone"></i>
+            </button>
+            <button id="modal-toggle-mail" onclick="togglePhysicalMailFromModal()" class="activity-toggle" title="Physical mail sent">
+              <i class="fa-solid fa-envelope-open-text"></i>
+            </button>
+            <div id="modal-activity-summary" class="text-xs text-[#a0a0a0] ml-2"></div>
+          </div>
+        </div>
+
         <!-- Outreach -->
         <div>
           <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-3">Outreach</div>
@@ -965,8 +1018,17 @@
     let contactedLeads = JSON.parse(localStorage.getItem('contactedLeads') || '[]');
     let closedLeads = JSON.parse(localStorage.getItem('closedLeads') || '[]');
 
+    // Activity tracking: email, phone call, physical mail
+    let emailSent = JSON.parse(localStorage.getItem('emailSent') || '[]');
+    let callMade = JSON.parse(localStorage.getItem('callMade') || '[]');
+    let physicalMailSent = JSON.parse(localStorage.getItem('physicalMailSent') || '[]');
+
     async function loadLeads() {
       try {
+        // Migrate old localStorage if needed (ensure arrays exist)
+        if (!localStorage.getItem('emailSent')) localStorage.setItem('emailSent', '[]');
+        if (!localStorage.getItem('callMade')) localStorage.setItem('callMade', '[]');
+        if (!localStorage.getItem('physicalMailSent')) localStorage.setItem('physicalMailSent', '[]');
         const response = await fetch('dashboard_data.json');
         if (!response.ok) throw new Error('Failed to load leads: ' + response.status);
         leads = await response.json();
@@ -1069,6 +1131,19 @@
                   ${isContacted && !isClosed ? '<i class="fa-solid fa-phone text-[#00a86b] flex-shrink-0" title="Contacted"></i>' : ''}
                 </div>
                 <div class="text-sm text-[#a0a0a0]">${lead.category || 'business'} • ${lead.location || 'Unknown'}</div>
+
+                <!-- Activity tracking icons -->
+                <div class="flex items-center gap-1 mt-2">
+                  <button onclick="event.stopImmediatePropagation(); toggleEmailSent(${lead.id})" class="activity-toggle ${emailSent.includes(lead.id) ? 'active' : ''}" title="Email sent">
+                    <i class="fa-solid fa-envelope"></i>
+                  </button>
+                  <button onclick="event.stopImmediatePropagation(); toggleCallMade(${lead.id})" class="activity-toggle ${callMade.includes(lead.id) ? 'active-phone' : ''}" title="Call made">
+                    <i class="fa-solid fa-phone"></i>
+                  </button>
+                  <button onclick="event.stopImmediatePropagation(); togglePhysicalMail(${lead.id})" class="activity-toggle ${physicalMailSent.includes(lead.id) ? 'active-mail' : ''}" title="Physical mail sent">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                  </button>
+                </div>
               </div>
               <div class="flex items-center gap-2 ml-2 flex-shrink-0">
                 ${badgeText === 'HOT' ? `<i class="fa-solid fa-fire text-[#ff4757] text-sm" title="Hot lead"></i>` : `<span class="px-2 py-1 text-[10px] font-semibold ${badgeClass} rounded-lg">${badgeText}</span>`}
@@ -1133,6 +1208,7 @@
         let matchesSeg = true;
         if (currentSegment === 'high') matchesSeg = l.priority === 'high';
         else if (currentSegment === 'contacted') matchesSeg = contactedLeads.includes(l.id);
+        else if (currentSegment === 'uncontacted') matchesSeg = !contactedLeads.includes(l.id) && !closedLeads.includes(l.id);
         else if (currentSegment === 'closed') matchesSeg = closedLeads.includes(l.id);
         else if (currentSegment === 'multi') matchesSeg = l.multi;
         else if (currentSegment === 'ai') matchesSeg = l.recommended.toLowerCase().includes('voice');
@@ -1155,6 +1231,82 @@
       el.classList.add('active');
       currentSegment = seg;
       filterLeads();
+    }
+
+    function toggleEmailSent(id) {
+      if (emailSent.includes(id)) {
+        emailSent = emailSent.filter(x => x !== id);
+      } else {
+        emailSent.push(id);
+      }
+      localStorage.setItem('emailSent', JSON.stringify(emailSent));
+      updateContactedFromActivity();
+      filterLeads();
+      showToast(emailSent.includes(id) ? 'Email marked sent' : 'Email unmarked');
+    }
+
+    function toggleCallMade(id) {
+      if (callMade.includes(id)) {
+        callMade = callMade.filter(x => x !== id);
+      } else {
+        callMade.push(id);
+      }
+      localStorage.setItem('callMade', JSON.stringify(callMade));
+      updateContactedFromActivity();
+      filterLeads();
+      showToast(callMade.includes(id) ? 'Call marked made' : 'Call unmarked');
+    }
+
+    function togglePhysicalMail(id) {
+      if (physicalMailSent.includes(id)) {
+        physicalMailSent = physicalMailSent.filter(x => x !== id);
+      } else {
+        physicalMailSent.push(id);
+      }
+      localStorage.setItem('physicalMailSent', JSON.stringify(physicalMailSent));
+      updateContactedFromActivity();
+      filterLeads();
+      showToast(physicalMailSent.includes(id) ? 'Physical mail marked sent' : 'Physical mail unmarked');
+    }
+
+    function updateContactedFromActivity() {
+      // Sync contactedLeads to include any lead with at least one activity
+      const allActivity = [...new Set([...emailSent, ...callMade, ...physicalMailSent])];
+      allActivity.forEach(id => {
+        if (!contactedLeads.includes(id)) {
+          contactedLeads.push(id);
+        }
+      });
+      // Remove from contactedLeads if no activity and not explicitly marked contacted
+      contactedLeads = contactedLeads.filter(id => {
+        return allActivity.includes(id) || closedLeads.includes(id);
+      });
+      contactedCount = contactedLeads.length;
+      localStorage.setItem('contactedLeads', JSON.stringify(contactedLeads));
+      localStorage.setItem('contactedCount', contactedCount.toString());
+      updateGamificationStats();
+    }
+
+    function toggleEmailSentFromModal() {
+      const id = parseInt(document.getElementById('modal').dataset.currentId);
+      toggleEmailSent(id);
+      // Refresh modal
+      const lead = leads.find(l => l.id === id);
+      if (lead) showDetail(lead);
+    }
+
+    function toggleCallMadeFromModal() {
+      const id = parseInt(document.getElementById('modal').dataset.currentId);
+      toggleCallMade(id);
+      const lead = leads.find(l => l.id === id);
+      if (lead) showDetail(lead);
+    }
+
+    function togglePhysicalMailFromModal() {
+      const id = parseInt(document.getElementById('modal').dataset.currentId);
+      togglePhysicalMail(id);
+      const lead = leads.find(l => l.id === id);
+      if (lead) showDetail(lead);
     }
 
     function toggleSort() {
