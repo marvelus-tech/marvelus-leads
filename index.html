@@ -371,15 +371,59 @@
       border-color: #d0d0ce;
     }
 
-    /* Level badge */
+    /* Level badge — colored background, black text */
     .level-badge-mercury {
       background: linear-gradient(135deg, var(--gold), #c9956b);
-      color: white;
+      color: #1a1a1a;
       font-weight: 700;
       font-size: 11px;
       padding: 3px 10px;
       border-radius: 6px;
       font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Info button — larger tap target */
+    .info-btn {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-tertiary);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      padding: 0;
+    }
+    .info-btn:hover {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+    .info-btn:active {
+      transform: scale(0.9);
+    }
+
+    /* Playbook toggle — no border, clean */
+    .playbook-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      background: transparent;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .playbook-toggle:hover {
+      background: var(--accent-light);
+    }
+    .playbook-toggle:active {
+      transform: scale(0.92);
     }
 
     /* Shimmering gold button */
@@ -551,8 +595,8 @@
           <span class="text-xs text-[#a0a0a0]">day streak</span>
         </div>
         <!-- Sales Playbook Toggle -->
-        <button onclick="toggleScripts()" class="w-10 h-10 rounded-xl bg-white border border-[#e8e8e6] flex items-center justify-center text-[#0055ff] hover:bg-[#e8f0ff] hover:border-[#0055ff]/30 transition-all active:scale-95" title="Sales Playbook">
-          <i class="fa-solid fa-book-open text-sm"></i>
+        <button onclick="toggleScripts()" class="playbook-toggle" title="Sales Playbook">
+          <i class="fa-solid fa-book-open text-lg"></i>
         </button>
         <button onclick="refreshData()" class="w-10 h-10 rounded-xl bg-white border border-[#e8e8e6] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:border-[#d0d0ce] transition-all active:scale-95">
           <i class="fa-solid fa-rotate text-sm"></i>
@@ -642,12 +686,16 @@
         
         <!-- Script 1 -->
         <div class="script-card">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0055ff] to-[#00a86b] flex items-center justify-center text-white text-xs font-bold">1</span>
-            <span class="font-semibold text-[#1a1a1a]">The "Only Script You Need"</span>
-            <span class="text-xs text-[#a0a0a0] ml-auto">Problem → Agitate → Present → Close</span>
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0055ff] to-[#00a86b] flex items-center justify-center text-white text-xs font-bold">1</span>
+              <span class="font-semibold text-[#1a1a1a]">The "Only Script You Need"</span>
+            </div>
+            <button onclick="copyScript('script1')" class="btn-secondary text-xs py-1.5 px-3">
+              <i class="fa-regular fa-copy mr-1"></i>Copy
+            </button>
           </div>
-          <div class="text-sm text-[#6b6b6b] space-y-2 leading-relaxed">
+          <div id="script1" class="text-sm text-[#6b6b6b] space-y-2 leading-relaxed">
             <p><span class="text-[#0055ff] font-medium">Opener:</span> "Hi [Name], quick question — are you currently getting leads from Google for [service] in [City]?"</p>
             <p><span class="text-[#0055ff] font-medium">Problem:</span> "Most [industry] businesses I talk to in [City] tell me the same thing: they rely on word-of-mouth or paid ads, but when someone searches '[service] near me' on their phone, they're not showing up."</p>
             <p><span class="text-[#0055ff] font-medium">Agitate:</span> "Those people searching on Google are actively looking to buy. If you're not there, your competitor is. And they're getting that call."</p>
@@ -657,12 +705,16 @@
 
         <!-- Script 2 -->
         <div class="script-card">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#f5a623] to-[#ff4757] flex items-center justify-center text-white text-xs font-bold">2</span>
-            <span class="font-semibold text-[#1a1a1a]">Pain-First Script</span>
-            <span class="text-xs text-[#a0a0a0] ml-auto">Let them pick their pain</span>
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#f5a623] to-[#ff4757] flex items-center justify-center text-white text-xs font-bold">2</span>
+              <span class="font-semibold text-[#1a1a1a]">Pain-First Script</span>
+            </div>
+            <button onclick="copyScript('script2')" class="btn-secondary text-xs py-1.5 px-3">
+              <i class="fa-regular fa-copy mr-1"></i>Copy
+            </button>
           </div>
-          <div class="text-sm text-[#6b6b6b] space-y-2 leading-relaxed">
+          <div id="script2" class="text-sm text-[#6b6b6b] space-y-2 leading-relaxed">
             <p>"I work with [industry] businesses in [City] to solve three common problems:</p>
             <ol class="list-decimal list-inside space-y-1 ml-2 text-[#6b6b6b]">
               <li>Not showing up when people search '[service] near me'</li>
@@ -1029,7 +1081,7 @@
                 <div>
                   <div class="flex items-center gap-1">
                     <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">Tech</div>
-                    <button onclick="event.stopImmediatePropagation(); showTechTooltip(event)" class="w-4 h-4 rounded-full bg-[#f0f0ee] flex items-center justify-center text-[#a0a0a0] hover:text-[#0055ff] transition-colors">
+                    <button onclick="event.stopImmediatePropagation(); showTechTooltip(event)" class="info-btn">
                       <i class="fa-solid fa-info text-[8px]"></i>
                     </button>
                   </div>
@@ -1041,7 +1093,7 @@
                 <div>
                   <div class="flex items-center gap-1">
                     <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">SEO</div>
-                    <button onclick="event.stopImmediatePropagation(); showSEOTooltip(event)" class="w-4 h-4 rounded-full bg-[#f0f0ee] flex items-center justify-center text-[#a0a0a0] hover:text-[#0055ff] transition-colors">
+                    <button onclick="event.stopImmediatePropagation(); showSEOTooltip(event)" class="info-btn">
                       <i class="fa-solid fa-info text-[8px]"></i>
                     </button>
                   </div>
@@ -1453,6 +1505,13 @@
         };
         document.addEventListener('click', removeTooltip);
       }, 100);
+    }
+
+    function copyScript(scriptId) {
+      const scriptText = document.getElementById(scriptId).innerText;
+      navigator.clipboard.writeText(scriptText).then(() => {
+        showToast('Script copied');
+      });
     }
 
     function toggleScripts() {
