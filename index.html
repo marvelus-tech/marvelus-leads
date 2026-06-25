@@ -1131,19 +1131,6 @@
                   ${isContacted && !isClosed ? '<i class="fa-solid fa-phone text-[#00a86b] flex-shrink-0" title="Contacted"></i>' : ''}
                 </div>
                 <div class="text-sm text-[#a0a0a0]">${lead.category || 'business'} • ${lead.location || 'Unknown'}</div>
-
-                <!-- Activity tracking icons -->
-                <div class="flex items-center gap-1 mt-2">
-                  <button onclick="event.stopImmediatePropagation(); toggleEmailSent(${lead.id})" class="activity-toggle ${emailSent.includes(lead.id) ? 'active' : ''}" title="Email sent">
-                    <i class="fa-solid fa-envelope"></i>
-                  </button>
-                  <button onclick="event.stopImmediatePropagation(); toggleCallMade(${lead.id})" class="activity-toggle ${callMade.includes(lead.id) ? 'active-phone' : ''}" title="Call made">
-                    <i class="fa-solid fa-phone"></i>
-                  </button>
-                  <button onclick="event.stopImmediatePropagation(); togglePhysicalMail(${lead.id})" class="activity-toggle ${physicalMailSent.includes(lead.id) ? 'active-mail' : ''}" title="Physical mail sent">
-                    <i class="fa-solid fa-envelope-open-text"></i>
-                  </button>
-                </div>
               </div>
               <div class="flex items-center gap-2 ml-2 flex-shrink-0">
                 ${badgeText === 'HOT' ? `<i class="fa-solid fa-fire text-[#ff4757] text-sm" title="Hot lead"></i>` : `<span class="px-2 py-1 text-[10px] font-semibold ${badgeClass} rounded-lg">${badgeText}</span>`}
@@ -1182,7 +1169,18 @@
                 ${lead.recommended !== 'AI Voice' ? `<span class="px-2 py-1 text-[10px] font-semibold bg-[#e8f0ff] border border-[#0055ff]/20 text-[#0055ff] rounded-lg">${lead.recommended || 'General'}</span>` : ''}
                 ${lead.multi ? '<span class="px-2 py-1 text-[10px] font-semibold bg-[#f0f0ee] border border-[#e8e8e6] text-[#6b6b6b] rounded-lg">MULTI</span>' : ''}
               </div>
-              <div class="flex gap-1">
+              <div class="flex gap-1 items-center">
+                <!-- Activity tracking icons -->
+                <button onclick="event.stopImmediatePropagation(); toggleEmailSent(${lead.id})" class="activity-toggle ${emailSent.includes(lead.id) ? 'active' : ''}" title="Email sent">
+                  <i class="fa-solid fa-envelope"></i>
+                </button>
+                <button onclick="event.stopImmediatePropagation(); toggleCallMade(${lead.id})" class="activity-toggle ${callMade.includes(lead.id) ? 'active-phone' : ''}" title="Call made">
+                  <i class="fa-solid fa-phone"></i>
+                </button>
+                <button onclick="event.stopImmediatePropagation(); togglePhysicalMail(${lead.id})" class="activity-toggle ${physicalMailSent.includes(lead.id) ? 'active-mail' : ''}" title="Physical mail sent">
+                  <i class="fa-solid fa-envelope-open-text"></i>
+                </button>
+                <div class="w-px h-4 bg-[#e8e8e6] mx-1"></div>
                 <button onclick="event.stopImmediatePropagation(); copyLeadSMS(${lead.id})" class="action-btn-clean">
                   <i class="fa-regular fa-copy text-sm"></i>
                 </button>
