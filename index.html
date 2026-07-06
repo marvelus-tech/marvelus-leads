@@ -1294,7 +1294,7 @@
         if (!localStorage.getItem('emailSent')) localStorage.setItem('emailSent', '[]');
         if (!localStorage.getItem('callMade')) localStorage.setItem('callMade', '[]');
         if (!localStorage.getItem('physicalMailSent')) localStorage.setItem('physicalMailSent', '[]');
-        const response = await fetch('dashboard_data.json');
+        const response = await fetch(`dashboard_data.json?cb=${Date.now()}`);
         if (!response.ok) throw new Error('Failed to load leads: ' + response.status);
         leads = await response.json();
         console.log(`Loaded ${leads.length} leads`);
