@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Marvelus Leads — Pipeline</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -1029,7 +1032,7 @@
         if (!localStorage.getItem('emailSent')) localStorage.setItem('emailSent', '[]');
         if (!localStorage.getItem('callMade')) localStorage.setItem('callMade', '[]');
         if (!localStorage.getItem('physicalMailSent')) localStorage.setItem('physicalMailSent', '[]');
-        const response = await fetch('dashboard_data.json');
+        const response = await fetch('dashboard_data.json?v=' + new Date().getTime());
         if (!response.ok) throw new Error('Failed to load leads: ' + response.status);
         leads = await response.json();
         console.log(`Loaded ${leads.length} leads`);
