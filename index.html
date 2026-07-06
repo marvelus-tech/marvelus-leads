@@ -1632,9 +1632,27 @@
       return 'text-[#00a86b]';
     }
 
+    let activeTooltip = null;
+
+    function removeActiveTooltip() {
+      if (activeTooltip) {
+        activeTooltip.remove();
+        activeTooltip = null;
+      }
+    }
+
     function showTechTooltip(e) {
       e.stopImmediatePropagation();
+      // If clicking same type while open, just close it (toggle)
+      if (activeTooltip && activeTooltip.dataset.tooltipType === 'tech') {
+        removeActiveTooltip();
+        return;
+      }
+      // Close any other open tooltip first
+      removeActiveTooltip();
+      
       const tooltip = document.createElement('div');
+      tooltip.dataset.tooltipType = 'tech';
       tooltip.className = 'fixed z-[200] bg-[#1a1a1a] text-white text-xs rounded-xl p-4 max-w-[280px] shadow-2xl';
       tooltip.style.left = e.clientX + 'px';
       tooltip.style.top = (e.clientY + 20) + 'px';
@@ -1660,6 +1678,7 @@
         </div>
       `;
       document.body.appendChild(tooltip);
+      activeTooltip = tooltip;
       
       const rect = tooltip.getBoundingClientRect();
       if (rect.right > window.innerWidth) {
@@ -1670,17 +1689,28 @@
       }
       
       setTimeout(() => {
-        const removeTooltip = () => {
-          tooltip.remove();
-          document.removeEventListener('click', removeTooltip);
+        const outsideClickHandler = (ev) => {
+          if (!tooltip.contains(ev.target)) {
+            removeActiveTooltip();
+            document.removeEventListener('click', outsideClickHandler);
+          }
         };
-        document.addEventListener('click', removeTooltip);
+        document.addEventListener('click', outsideClickHandler);
       }, 100);
     }
 
     function showSEOTooltip(e) {
       e.stopImmediatePropagation();
+      // If clicking same type while open, just close it (toggle)
+      if (activeTooltip && activeTooltip.dataset.tooltipType === 'seo') {
+        removeActiveTooltip();
+        return;
+      }
+      // Close any other open tooltip first
+      removeActiveTooltip();
+      
       const tooltip = document.createElement('div');
+      tooltip.dataset.tooltipType = 'seo';
       tooltip.className = 'fixed z-[200] bg-[#1a1a1a] text-white text-xs rounded-xl p-4 max-w-[280px] shadow-2xl';
       tooltip.style.left = e.clientX + 'px';
       tooltip.style.top = (e.clientY + 20) + 'px';
@@ -1706,6 +1736,7 @@
         </div>
       `;
       document.body.appendChild(tooltip);
+      activeTooltip = tooltip;
       
       const rect = tooltip.getBoundingClientRect();
       if (rect.right > window.innerWidth) {
@@ -1716,11 +1747,13 @@
       }
       
       setTimeout(() => {
-        const removeTooltip = () => {
-          tooltip.remove();
-          document.removeEventListener('click', removeTooltip);
+        const outsideClickHandler = (ev) => {
+          if (!tooltip.contains(ev.target)) {
+            removeActiveTooltip();
+            document.removeEventListener('click', outsideClickHandler);
+          }
         };
-        document.addEventListener('click', removeTooltip);
+        document.addEventListener('click', outsideClickHandler);
       }, 100);
     }
 
