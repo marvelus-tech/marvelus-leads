@@ -1425,7 +1425,7 @@
           const delay = Math.min(index * 0.05, 0.5);
           
           const div = document.createElement('div');
-          div.className = 'card-mercury p-5 cursor-pointer';
+          div.className = 'card-mercury p-5 cursor-pointer flex flex-col';
           div.style.animation = `modalIn 0.4s cubic-bezier(0.32, 0.72, 0, 1) ${delay}s both`;
           
           // Score color logic
@@ -1448,12 +1448,8 @@
                   ${isContacted && !isClosed ? '<i class="fa-solid fa-phone text-[#00a86b] flex-shrink-0" title="Contacted"></i>' : ''}
                 </div>
                 <div class="text-sm text-[#a0a0a0]">${lead.category || 'business'} • ${lead.location || 'Unknown'}</div>
-                ${lead.phone || lead.email ? `
-                <div class="flex items-center gap-2 mt-1.5">
-                  ${lead.phone ? `<a href="tel:${lead.phone}" onclick="event.stopImmediatePropagation()" class="text-xs text-[#0055ff] hover:underline flex items-center gap-1" title="Call ${lead.phone}"><i class="fa-solid fa-phone text-[10px]"></i>${lead.phone}</a>` : ''}
-                  ${lead.phone && lead.email ? '<span class="text-[#d0d0ce]">•</span>' : ''}
-                  ${lead.email ? `<button onclick="event.stopImmediatePropagation(); copyEmail('${lead.email.replace(/'/g, "\\'")}')" class="text-xs text-[#0055ff] hover:underline flex items-center gap-1 cursor-pointer" title="Copy ${lead.email}"><i class="fa-regular fa-envelope text-[10px]"></i>${lead.email}</button>` : ''}
-                </div>` : ''}
+                ${lead.phone ? `<div class="mt-1"><a href="tel:${lead.phone}" onclick="event.stopImmediatePropagation()" class="text-xs text-[#0055ff] hover:underline flex items-center gap-1.5" title="Call ${lead.phone}"><i class="fa-solid fa-phone text-[10px]"></i>${lead.phone}</a></div>` : ''}
+                ${lead.email ? `<div class="mt-0.5"><button onclick="event.stopImmediatePropagation(); copyEmail('${lead.email.replace(/'/g, "\\'")}')" class="text-xs text-[#0055ff] hover:underline flex items-center gap-1.5 cursor-pointer text-left" title="Copy ${lead.email}"><i class="fa-regular fa-envelope text-[10px]"></i>${lead.email}</button></div>` : ''}
               </div>
               <div class="flex items-center gap-2 ml-2 flex-shrink-0">
                 ${badgeText === 'HOT' ? `<i class="fa-solid fa-fire text-[#ff4757] text-sm" title="Hot lead"></i>` : `<span class="px-2 py-1 text-[10px] font-semibold ${badgeClass} rounded-lg">${badgeText}</span>`}
@@ -1487,7 +1483,7 @@
               </div>
             </div>
 
-            <div class="flex items-center justify-between pt-3 border-t border-[#e8e8e6]">
+            <div class="mt-auto flex items-center justify-between pt-3 border-t border-[#e8e8e6]">
               <div class="flex items-center gap-2">
                 ${lead.recommended !== 'AI Voice' ? `<span class="px-2 py-1 text-[10px] font-semibold bg-[#e8f0ff] border border-[#0055ff]/20 text-[#0055ff] rounded-lg">${lead.recommended || 'General'}</span>` : ''}
                 ${lead.multi ? '<span class="px-2 py-1 text-[10px] font-semibold bg-[#f0f0ee] border border-[#e8e8e6] text-[#6b6b6b] rounded-lg">MULTI</span>' : ''}
