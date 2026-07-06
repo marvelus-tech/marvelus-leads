@@ -26,7 +26,6 @@
       -moz-osx-font-smoothing: grayscale;
       background: var(--system-bg);
       color: #1d1d1f;
-      overflow-x: hidden;
     }
 
     .apple-container {
@@ -171,7 +170,7 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    /* Slide-out Panel */
+    /* Slide-out Panel (Phase 8 additions) */
     .slide-panel-overlay {
       position: fixed;
       inset: 0;
@@ -313,7 +312,27 @@
       margin-top: 2px;
     }
 
-    /* Action Buttons */
+    /* Import Section */
+    .import-zone {
+      border: 2px dashed var(--system-line);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .import-zone:hover {
+      border-color: var(--system-blue);
+      background: #f0f7ff;
+    }
+
+    .import-zone.drag-over {
+      border-color: var(--system-blue);
+      background: #f0f7ff;
+    }
+
+    /* Buttons */
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -372,26 +391,6 @@
       color: #1d1d1f;
     }
 
-    /* Import Section */
-    .import-zone {
-      border: 2px dashed var(--system-line);
-      border-radius: 14px;
-      padding: 24px;
-      text-align: center;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-
-    .import-zone:hover {
-      border-color: var(--system-blue);
-      background: #f0f7ff;
-    }
-
-    .import-zone.drag-over {
-      border-color: var(--system-blue);
-      background: #f0f7ff;
-    }
-
     /* Scrollbar */
     .panel-content::-webkit-scrollbar {
       width: 6px;
@@ -421,17 +420,17 @@
 </head>
 <body>
 
-  <!-- Main Dashboard -->
+  <!-- Main Dashboard (Phase 7 preserved) -->
   <div class="apple-container pt-8 pb-12">
     
-    <!-- Header -->
+    <!-- Header (Phase 7 + new Prospect Tracker button) -->
     <div class="flex items-center justify-between mb-6">
       <div>
         <div class="section-title tracking-[-1px]">Leads</div>
         <div class="text-[#8e8e93] text-[13px] mt-0.5">Marvelus • Today</div>
       </div>
       <div class="flex items-center gap-x-2">
-        <!-- Prospect Tracker Button -->
+        <!-- NEW: Prospect Tracker Button (Phase 8) -->
         <button onclick="openProspectTracker()" class="flex items-center gap-x-2 px-4 py-2 bg-white border border-[#d2d2d7] rounded-2xl text-sm font-semibold hover:bg-[#f5f5f7] active:bg-[#e5e5e7] transition-colors">
           <i class="fa-solid fa-chart-bar text-[#0071e3]"></i>
           <span>Prospect Tracker</span>
@@ -446,7 +445,7 @@
       </div>
     </div>
 
-    <!-- Segmented Control -->
+    <!-- Segmented Control (Phase 7 preserved) -->
     <div class="mb-5">
       <div class="segmented">
         <div onclick="setSegment(this, 'all')" class="segment active" data-segment="all">All</div>
@@ -456,7 +455,7 @@
       </div>
     </div>
 
-    <!-- Stats -->
+    <!-- Stats (Phase 7 preserved) -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
       <div class="stat">
         <div class="metric-label">Total</div>
@@ -476,7 +475,7 @@
       </div>
     </div>
 
-    <!-- Search + Sort -->
+    <!-- Search + Sort (Phase 7 preserved) -->
     <div class="flex gap-3 mb-5">
       <div class="flex-1 relative">
         <i class="fa-solid fa-search absolute left-4 top-3.5 text-[#8e8e93]"></i>
@@ -492,17 +491,104 @@
       </div>
     </div>
 
-    <!-- Leads Grid -->
+    <!-- Leads Grid (Phase 7 preserved) -->
     <div id="leads-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
       <!-- JS populated -->
     </div>
 
     <div class="mt-8 text-center">
-      <p class="text-[11px] text-[#8e8e93]">Phase 8 • Prospect Tracker • Integrated</p>
+      <p class="text-[11px] text-[#8e8e93]">Phase 7 • Full Pipeline • 110 Leads</p>
     </div>
   </div>
 
-  <!-- Slide-out Prospect Tracker Panel -->
+  <!-- Detail Modal (Phase 7 preserved) -->
+  <div id="modal" onclick="if (event.target.id === 'modal') closeModal()" 
+       class="hidden fixed inset-0 bg-black/60 z-[100] flex items-end sm:items-center justify-center">
+    <div onclick="event.stopImmediatePropagation()" 
+         class="bg-white w-full sm:max-w-[440px] sm:rounded-3xl sm:m-4 rounded-t-3xl modal-sheet overflow-hidden">
+      
+      <div class="px-5 pt-5 pb-3 flex items-center justify-between border-b">
+        <div class="min-w-0 flex-1">
+          <div id="modal-name" class="font-semibold text-[19px] tracking-[-0.3px] truncate"></div>
+          <div id="modal-meta" class="text-[13px] text-[#8e8e93]"></div>
+        </div>
+        <button onclick="closeModal()" class="text-[30px] leading-none px-1 text-[#8e8e93] active:text-black">×</button>
+      </div>
+
+      <div class="p-5 space-y-6">
+        <!-- Metrics -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-[#f5f5f7] rounded-2xl p-4">
+            <div class="text-xs text-[#8e8e93] font-medium tracking-wider">SEO HEALTH</div>
+            <div id="modal-seo" class="text-[42px] font-semibold tracking-[-1.5px] mt-1"></div>
+          </div>
+          <div class="bg-[#f5f5f7] rounded-2xl p-4">
+            <div class="text-xs text-[#8e8e93] font-medium tracking-wider">OVERALL HELP</div>
+            <div id="modal-overall" class="text-[42px] font-semibold tracking-[-1.5px] mt-1"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-xs text-[#8e8e93] font-medium tracking-wider mb-1.5">RECOMMENDED</div>
+          <div id="modal-recommended" class="inline-block px-4 py-1 text-sm font-semibold bg-[#1d1d1f] text-white rounded-2xl"></div>
+        </div>
+
+        <div>
+          <div class="text-xs text-[#8e8e93] font-medium tracking-wider mb-2">CONTACT</div>
+          <div id="modal-contact" class="space-y-2 text-[15px]"></div>
+        </div>
+
+        <!-- Outreach -->
+        <div>
+          <div class="text-xs text-[#8e8e93] font-medium tracking-wider mb-2">OUTREACH</div>
+          
+          <div class="border border-[#d2d2d7] rounded-2xl p-4 mb-3">
+            <div class="flex items-center justify-between mb-1">
+              <div class="flex items-center gap-x-2 text-sm font-semibold">
+                <i class="fa-solid fa-comment-dots text-[#0071e3]"></i>
+                <span>SMS</span>
+              </div>
+              <button onclick="copySMS()" class="text-xs px-3 py-1 bg-[#f5f5f7] active:bg-[#e5e5e7] rounded-2xl">Copy</button>
+            </div>
+            <div id="modal-sms" class="text-sm leading-snug text-[#1d1d1f]"></div>
+          </div>
+
+          <div class="flex items-center gap-x-2">
+            <div class="text-sm font-semibold">Email</div>
+            <button onclick="toggleEmail(event)" class="w-8 h-8 flex items-center justify-center text-[#0071e3] hover:bg-[#f0f7ff] active:bg-[#e0f0ff] rounded-full">
+              <i class="fa-solid fa-envelope"></i>
+            </button>
+            <span class="text-xs text-[#8e8e93]">tap icon</span>
+          </div>
+
+          <div id="email-popover" class="hidden mt-2 border border-[#d2d2d7] rounded-2xl p-4 bg-[#f8fafc]">
+            <div class="flex justify-between mb-1">
+              <div class="text-xs font-medium text-[#8e8e93]">SUBJECT</div>
+              <button onclick="copyEmailDraft()" class="text-xs px-2 py-px bg-white border border-[#d2d2d7] rounded-xl">Copy</button>
+            </div>
+            <div id="modal-email-subject" class="font-medium text-sm mb-3"></div>
+            <div class="text-xs font-medium text-[#8e8e93] mb-1">BODY</div>
+            <div id="modal-email-body" class="text-sm leading-relaxed whitespace-pre-line"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t p-4 flex gap-3 bg-[#f5f5f7]">
+        <button onclick="openWebsite()" class="flex-1 py-3 bg-white border border-[#d2d2d7] active:bg-[#f2f2f7] rounded-2xl text-sm font-semibold flex items-center justify-center gap-x-2">
+          <i class="fa-solid fa-external-link-alt"></i>
+          <span>Website</span>
+        </button>
+        <button onclick="copyFullEmail()" class="flex-1 py-3 bg-white border border-[#d2d2d7] active:bg-[#f2f2f7] rounded-2xl text-sm font-semibold flex items-center justify-center gap-x-2">
+          <i class="fa-solid fa-envelope"></i>
+          <span>Email</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- NEW: Phase 8 Slide-out Prospect Tracker Panel -->
+  <!-- ============================================ -->
   <div id="slide-overlay" class="slide-panel-overlay" onclick="closeProspectTracker()"></div>
   
   <div id="slide-panel" class="slide-panel">
@@ -633,43 +719,251 @@
     </div>
   </div>
 
-  <!-- Toast Notification -->
+  <!-- Toast -->
   <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#1d1d1f] text-white px-5 py-3 rounded-2xl text-sm font-medium opacity-0 pointer-events-none transition-opacity duration-300 z-[300]">
     <span id="toast-message"></span>
   </div>
 
   <script>
-    // ───────────────────────────────────────────────
-    // Data & State
-    // ───────────────────────────────────────────────
-    
-    let prospects = [];
-    let sortColumn = 'opportunity_score';
-    let sortDirection = 'desc';
-    let selectedProspects = new Set();
+    // ============================================================
+    // Phase 7: Leads Dashboard (preserved exactly as before)
+    // ============================================================
+    let leads = [];
+    let currentSegment = 'all';
+    let currentSearch = '';
+    let currentSort = 'overall';
 
-    // Load from localStorage on init
-    function loadProspects() {
-      const saved = localStorage.getItem('marvelus_prospects');
-      if (saved) {
-        try {
-          prospects = JSON.parse(saved);
-          renderTable();
-          updateFormulaBar();
-        } catch (e) {
-          console.error('Failed to load prospects:', e);
-        }
+    async function loadLeads() {
+      try {
+        const response = await fetch('dashboard_data.json');
+        if (!response.ok) throw new Error('Failed to load leads');
+        leads = await response.json();
+        console.log(`Loaded ${leads.length} leads`);
+        filterLeads();
+      } catch (err) {
+        console.error('Error loading leads:', err);
+        document.getElementById('leads-grid').innerHTML = 
+          '<div class="col-span-full py-12 text-center text-[#8e8e93]">Error loading leads. Please refresh.</div>';
       }
     }
 
-    // Save to localStorage
-    function saveProspects() {
-      localStorage.setItem('marvelus_prospects', JSON.stringify(prospects));
+    function updateStats(filtered) {
+      const total = filtered.length;
+      const high = filtered.filter(l => l.priority === 'high').length;
+      const avgSeo = total ? Math.round(filtered.reduce((a, b) => a + b.seo, 0) / total) : 0;
+      const multi = filtered.filter(l => l.multi).length;
+
+      document.getElementById('stat-total').textContent = total;
+      document.getElementById('stat-high').textContent = high;
+      document.getElementById('stat-seo').textContent = avgSeo;
+      document.getElementById('stat-multi').textContent = multi;
     }
 
-    // ───────────────────────────────────────────────
-    // Panel Controls
-    // ───────────────────────────────────────────────
+    function renderLeads(filtered) {
+      const grid = document.getElementById('leads-grid');
+      grid.innerHTML = '';
+
+      if (!filtered.length) {
+        grid.innerHTML = '<div class="col-span-full py-12 text-center text-[#8e8e93]">No leads match the current view.</div>';
+        return;
+      }
+
+      filtered.forEach(lead => {
+        const div = document.createElement('div');
+        div.className = 'lead-card p-5 cursor-pointer';
+        div.innerHTML = `
+          <div class="flex justify-between items-start mb-3">
+            <div class="min-w-0 flex-1">
+              <div class="lead-name truncate">${lead.name}</div>
+              <div class="meta mt-0.5">${lead.category} • ${lead.location}</div>
+            </div>
+            <div class="pill ml-3 flex-shrink-0">${lead.recommended}</div>
+          </div>
+
+          <div class="flex gap-6 mb-4">
+            <div>
+              <div class="metric ${lead.seo >= 70 ? 'text-[#30d158]' : 'text-[#ff9500]'}">${lead.seo}</div>
+              <div class="metric-label">SEO</div>
+            </div>
+            <div>
+              <div class="metric">${lead.overall}</div>
+              <div class="metric-label">HELP</div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 border-t border-[#f2f2f7]">
+            <div>
+              <span class="px-2 py-px text-[10px] font-semibold rounded-full ${lead.priority === 'high' ? 'bg-[#ff3b30] text-white' : lead.priority === 'medium' ? 'bg-[#ff9500] text-white' : 'bg-[#8e8e93] text-white'}">${lead.priority.toUpperCase()}</span>
+              ${lead.multi ? '<span class="ml-1.5 px-2 py-px text-[10px] font-semibold bg-[#0071e3] text-white rounded-full">MULTI</span>' : ''}
+            </div>
+            <div class="flex gap-x-0.5">
+              <button onclick="event.stopImmediatePropagation(); copyLeadSMS(${lead.id})" class="action-btn text-sm w-9"><i class="fa-regular fa-copy"></i></button>
+              <button onclick="event.stopImmediatePropagation(); window.open('${lead.website}', '_blank')" class="action-btn text-sm w-9"><i class="fa-solid fa-external-link-alt"></i></button>
+            </div>
+          </div>
+        `;
+        div.onclick = () => showDetail(lead);
+        grid.appendChild(div);
+      });
+    }
+
+    function filterLeads() {
+      currentSearch = document.getElementById('search-input').value.toLowerCase().trim();
+
+      let filtered = leads.filter(l => {
+        const matchesSearch = !currentSearch || l.name.toLowerCase().includes(currentSearch) || l.category.toLowerCase().includes(currentSearch);
+        let matchesSeg = true;
+        if (currentSegment === 'high') matchesSeg = l.priority === 'high';
+        else if (currentSegment === 'multi') matchesSeg = l.multi;
+        else if (currentSegment === 'ai') matchesSeg = l.recommended.toLowerCase().includes('voice');
+        return matchesSearch && matchesSeg;
+      });
+
+      filtered.sort((a, b) => {
+        if (currentSort === 'overall') return b.overall - a.overall;
+        if (currentSort === 'seo') return b.seo - a.seo;
+        if (currentSort === 'name') return a.name.localeCompare(b.name);
+        return 0;
+      });
+
+      renderLeads(filtered);
+      updateStats(filtered);
+    }
+
+    function setSegment(el, seg) {
+      document.querySelectorAll('.segment').forEach(s => s.classList.remove('active'));
+      el.classList.add('active');
+      currentSegment = seg;
+      filterLeads();
+    }
+
+    function toggleSort() {
+      const options = ['overall', 'seo', 'name'];
+      const labels = { overall: 'Score', seo: 'SEO Health', name: 'Name' };
+      let idx = options.indexOf(currentSort);
+      currentSort = options[(idx + 1) % options.length];
+      document.getElementById('sort-label').textContent = labels[currentSort];
+      filterLeads();
+    }
+
+    function showDetail(lead) {
+      const modal = document.getElementById('modal');
+      document.getElementById('modal-name').textContent = lead.name;
+      document.getElementById('modal-meta').textContent = `${lead.category} • ${lead.location}`;
+      document.getElementById('modal-seo').textContent = lead.seo;
+      document.getElementById('modal-overall').textContent = lead.overall;
+      document.getElementById('modal-recommended').textContent = lead.recommended;
+
+      const contact = document.getElementById('modal-contact');
+      contact.innerHTML = `
+        ${lead.phone ? `<div><i class="fa-solid fa-phone mr-2 text-[#8e8e93]"></i>${lead.phone}</div>` : ''}
+        ${lead.email ? `<div><i class="fa-solid fa-envelope mr-2 text-[#8e8e93]"></i>${lead.email}</div>` : ''}
+      `;
+
+      document.getElementById('modal-sms').textContent = lead.sms;
+      modal.dataset.currentId = lead.id;
+      modal.dataset.emailSubject = lead.email_subject;
+      modal.dataset.emailBody = lead.email_body;
+
+      document.getElementById('email-popover').classList.add('hidden');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('modal');
+      modal.classList.remove('flex');
+      modal.classList.add('hidden');
+    }
+
+    function toggleEmail(e) {
+      e.stopImmediatePropagation();
+      const pop = document.getElementById('email-popover');
+      const modal = document.getElementById('modal');
+
+      if (!modal.dataset.emailSubject) {
+        alert('No email draft available for this lead.');
+        return;
+      }
+
+      document.getElementById('modal-email-subject').textContent = modal.dataset.emailSubject;
+      document.getElementById('modal-email-body').textContent = modal.dataset.emailBody;
+      pop.classList.toggle('hidden');
+    }
+
+    function copySMS() {
+      const id = parseInt(document.getElementById('modal').dataset.currentId);
+      const lead = leads.find(l => l.id === id);
+      navigator.clipboard.writeText(lead.sms).then(() => showToast('SMS copied'));
+    }
+
+    function copyLeadSMS(id) {
+      const lead = leads.find(l => l.id === id);
+      navigator.clipboard.writeText(lead.sms).then(() => showToast('SMS copied'));
+    }
+
+    function copyEmailDraft() {
+      const modal = document.getElementById('modal');
+      const text = `Subject: ${modal.dataset.emailSubject}\n\n${modal.dataset.emailBody}`;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Email draft copied');
+        document.getElementById('email-popover').classList.add('hidden');
+      });
+    }
+
+    function copyFullEmail() {
+      const id = parseInt(document.getElementById('modal').dataset.currentId);
+      const lead = leads.find(l => l.id === id);
+      const subject = document.getElementById('modal').dataset.emailSubject || `Quick question for ${lead.name}`;
+      const body = document.getElementById('modal').dataset.emailBody || `Hi ${lead.name.split(' ')[0]},\n\nI help ${lead.category} businesses in Melbourne.\n\nBest,\nMarvelus`;
+      window.location.href = `mailto:${lead.email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
+    function openWebsite() {
+      const id = parseInt(document.getElementById('modal').dataset.currentId);
+      const lead = leads.find(l => l.id === id);
+      window.open(lead.website, '_blank');
+    }
+
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.className = 'fixed bottom-5 left-1/2 -translate-x-1/2 bg-black text-white text-sm px-4 py-2 rounded-3xl shadow';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => {
+        t.style.transition = 'opacity .15s';
+        t.style.opacity = '0';
+        setTimeout(() => t.remove(), 100);
+      }, 1300);
+    }
+
+    function refreshData() {
+      const grid = document.getElementById('leads-grid');
+      grid.style.opacity = '0.3';
+      setTimeout(() => {
+        loadLeads();
+        grid.style.opacity = '1';
+      }, 160);
+    }
+
+    function init() {
+      loadLeads();
+      document.getElementById('search-input').addEventListener('input', filterLeads);
+      document.addEventListener('keydown', e => {
+        if (e.key === '/' && document.activeElement.tagName === 'BODY') {
+          e.preventDefault();
+          document.getElementById('search-input').focus();
+        }
+      });
+      console.log('%c[Phase 7-8] Full Pipeline + Prospect Tracker • 110 Leads', 'color:#8e8e93');
+    }
+
+    // ============================================================
+    // Phase 8: Prospect Tracker (new additions)
+    // ============================================================
+    let prospects = [];
+    let prospectSortColumn = 'opportunity_score';
+    let prospectSortDirection = 'desc';
 
     function openProspectTracker() {
       document.getElementById('slide-overlay').classList.add('active');
@@ -684,15 +978,28 @@
       document.body.style.overflow = '';
     }
 
-    // Close on Escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeProspectTracker();
     });
 
-    // ───────────────────────────────────────────────
-    // CSV Import / Export
-    // ───────────────────────────────────────────────
+    function loadProspects() {
+      const saved = localStorage.getItem('marvelus_prospects');
+      if (saved) {
+        try {
+          prospects = JSON.parse(saved);
+          renderProspectTable();
+          updateFormulaBar();
+        } catch (e) {
+          console.error('Failed to load prospects:', e);
+        }
+      }
+    }
 
+    function saveProspects() {
+      localStorage.setItem('marvelus_prospects', JSON.stringify(prospects));
+    }
+
+    // CSV Import / Export
     function handleDragOver(e) {
       e.preventDefault();
       e.currentTarget.classList.add('drag-over');
@@ -740,7 +1047,6 @@
           prospect[h] = values[idx] || '';
         });
         
-        // Normalize data
         prospect.opportunity_score = parseInt(prospect.opportunity_score) || 0;
         prospect.rating = parseFloat(prospect.rating) || 0;
         prospect.review_count = parseInt(prospect.review_count) || 0;
@@ -757,7 +1063,7 @@
       
       prospects = [...prospects, ...newProspects];
       saveProspects();
-      renderTable();
+      renderProspectTable();
       updateFormulaBar();
     }
 
@@ -789,18 +1095,9 @@
       showToast(`Exported ${prospects.length} prospects`);
     }
 
-    // ───────────────────────────────────────────────
-    // Scraper Integration
-    // ───────────────────────────────────────────────
-
     function runScraper() {
-      showToast('Opening scraper... Run it from the command line:');
-      setTimeout(() => {
-        showToast('python3 scripts/melbourne_prospector.py --service plumber --suburb Frankston');
-      }, 2000);
+      showToast('Run from CLI: python3 scripts/melbourne_prospector.py --service plumber --suburb Frankston');
       
-      // In a real implementation, this would spawn the scraper via API
-      // For now, we'll add a sample prospect for demonstration
       const sampleProspects = [
         {
           id: 'sample_1',
@@ -844,16 +1141,12 @@
       
       prospects = [...prospects, ...sampleProspects];
       saveProspects();
-      renderTable();
+      renderProspectTable();
       updateFormulaBar();
       showToast('Added 2 sample prospects. Run the scraper for real data.');
     }
 
-    // ───────────────────────────────────────────────
-    // Table Rendering
-    // ───────────────────────────────────────────────
-
-    function renderTable() {
+    function renderProspectTable() {
       const tbody = document.getElementById('prospect-tbody');
       const emptyState = document.getElementById('empty-state');
       
@@ -865,17 +1158,16 @@
       
       emptyState.classList.add('hidden');
       
-      // Sort prospects
       const sorted = [...prospects].sort((a, b) => {
-        let aVal = a[sortColumn];
-        let bVal = b[sortColumn];
+        let aVal = a[prospectSortColumn];
+        let bVal = b[prospectSortColumn];
         
         if (typeof aVal === 'string') {
           aVal = aVal.toLowerCase();
           bVal = bVal.toLowerCase();
         }
         
-        if (sortDirection === 'asc') {
+        if (prospectSortDirection === 'asc') {
           return aVal > bVal ? 1 : -1;
         } else {
           return aVal < bVal ? 1 : -1;
@@ -924,13 +1216,12 @@
         </tr>
       `).join('');
       
-      // Update sort indicators
       document.querySelectorAll('.prospect-table th').forEach(th => {
         th.classList.remove('sort-asc', 'sort-desc');
       });
-      const activeTh = document.querySelector(`th[onclick="sortTable('${sortColumn}')"]`);
+      const activeTh = document.querySelector(`th[onclick="sortTable('${prospectSortColumn}')"]`);
       if (activeTh) {
-        activeTh.classList.add(sortDirection === 'asc' ? 'sort-asc' : 'sort-desc');
+        activeTh.classList.add(prospectSortDirection === 'asc' ? 'sort-asc' : 'sort-desc');
       }
       
       document.getElementById('footer-count').textContent = `${prospects.length} prospect${prospects.length !== 1 ? 's' : ''}`;
@@ -955,18 +1246,14 @@
     }
 
     function sortTable(column) {
-      if (sortColumn === column) {
-        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+      if (prospectSortColumn === column) {
+        prospectSortDirection = prospectSortDirection === 'asc' ? 'desc' : 'asc';
       } else {
-        sortColumn = column;
-        sortDirection = 'desc';
+        prospectSortColumn = column;
+        prospectSortDirection = 'desc';
       }
-      renderTable();
+      renderProspectTable();
     }
-
-    // ───────────────────────────────────────────────
-    // Formula Bar
-    // ───────────────────────────────────────────────
 
     function updateFormulaBar() {
       const total = prospects.length;
@@ -975,8 +1262,6 @@
       const cold = prospects.filter(p => p.priority === 'Cold').length;
       const audits = prospects.filter(p => p.status === 'Audit Sent').length;
       const closed = prospects.filter(p => p.status === 'Closed').length;
-      
-      // Pipeline value (estimate: $1,500 per warm/hot prospect)
       const pipelineValue = (hot + warm) * 1500;
       
       document.getElementById('ft-total').textContent = total;
@@ -988,23 +1273,16 @@
       document.getElementById('ft-pipeline').textContent = '$' + pipelineValue.toLocaleString();
     }
 
-    // ───────────────────────────────────────────────
-    // Actions
-    // ───────────────────────────────────────────────
-
     function generateAudit(id) {
       const prospect = prospects.find(p => p.id === id);
       if (!prospect) return;
       
       showToast(`Generating audit for ${prospect.name}...`);
-      
-      // Update status
       prospect.status = 'Audit Sent';
       saveProspects();
-      renderTable();
+      renderProspectTable();
       updateFormulaBar();
       
-      // In a real implementation, this would call the audit_automator.py
       setTimeout(() => {
         showToast(`Audit report ready for ${prospect.name}`);
       }, 1500);
@@ -1027,7 +1305,7 @@
       
       prospect.status = 'Meeting';
       saveProspects();
-      renderTable();
+      renderProspectTable();
       updateFormulaBar();
       showToast(`${prospect.name} added to pipeline`);
     }
@@ -1039,7 +1317,7 @@
       if (confirm(`Delete ${prospect.name}?`)) {
         prospects = prospects.filter(p => p.id !== id);
         saveProspects();
-        renderTable();
+        renderProspectTable();
         updateFormulaBar();
         showToast('Prospect deleted');
       }
@@ -1049,7 +1327,7 @@
       if (confirm('Delete all prospects? This cannot be undone.')) {
         prospects = [];
         saveProspects();
-        renderTable();
+        renderProspectTable();
         updateFormulaBar();
         showToast('All prospects cleared');
       }
@@ -1065,58 +1343,8 @@
       showToast(`Added ${selected.length} prospects to main pipeline`);
     }
 
-    // ───────────────────────────────────────────────
-    // Toast
-    // ───────────────────────────────────────────────
-
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      const toastMessage = document.getElementById('toast-message');
-      toastMessage.textContent = message;
-      toast.classList.remove('opacity-0', 'pointer-events-none');
-      toast.classList.add('opacity-100');
-      
-      setTimeout(() => {
-        toast.classList.remove('opacity-100');
-        toast.classList.add('opacity-0', 'pointer-events-none');
-      }, 3000);
-    }
-
-    // ───────────────────────────────────────────────
-    // Initialize
-    // ───────────────────────────────────────────────
-
-    // Load demo data on first visit if empty
-    if (localStorage.getItem('marvelus_prospects') === null) {
-      // Will show empty state with instructions
-    }
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      loadProspects();
-    });
-
-    // ───────────────────────────────────────────────
-    // Existing Dashboard Functions (preserved)
-    // ───────────────────────────────────────────────
-
-    function setSegment(el, segment) {
-      document.querySelectorAll('.segment').forEach(s => s.classList.remove('active'));
-      el.classList.add('active');
-    }
-
-    function refreshData() {
-      showToast('Refreshing data...');
-    }
-
-    function filterLeads() {
-      // Existing filter logic
-    }
-
-    function toggleSort() {
-      showToast('Sort functionality');
-    }
+    // Start
+    window.onload = init;
   </script>
-
 </body>
 </html>
