@@ -1996,6 +1996,11 @@
       navigator.clipboard.writeText(email).then(() => showToast(`Email copied: ${email}`));
     }
 
+    // Copy email from card
+    function copyEmail(email) {
+      navigator.clipboard.writeText(email).then(() => showToast(`Email copied: ${email}`));
+    }
+
     function copyScript(scriptId) {
       const scriptText = document.getElementById(scriptId).innerText;
       navigator.clipboard.writeText(scriptText).then(() => {
