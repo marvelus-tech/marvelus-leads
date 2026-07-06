@@ -617,16 +617,16 @@
       <div class="flex items-center gap-2">
         <!-- Level Badge -->
         <div class="hidden sm:flex items-center gap-2 bg-white border border-[#e8e8e6] rounded-xl px-3 py-2">
-          <span class="level-badge-mercury">LVL 3</span>
+          <span id="level-badge" class="level-badge-mercury">LVL 1</span>
           <div class="w-16 h-2 bg-[#f0f0ee] rounded-full overflow-hidden">
-            <div class="h-full bg-gradient-to-r from-[#0055ff] to-[#00a86b] rounded-full" style="width: 65%"></div>
+            <div id="level-progress" class="h-full bg-gradient-to-r from-[#0055ff] to-[#00a86b] rounded-full" style="width: 0%"></div>
           </div>
-          <span class="text-xs text-[#a0a0a0] font-mono">65%</span>
+          <span id="level-percent" class="text-xs text-[#a0a0a0] font-mono">0%</span>
         </div>
         <!-- Streak (hidden until achieved) -->
         <div id="streak-badge" class="streak-hidden flex items-center gap-1.5 bg-white border border-[#e8e8e6] rounded-xl px-3 py-2">
           <i class="fa-solid fa-fire text-[#f5a623] text-sm"></i>
-          <span class="text-sm font-bold text-[#1a1a1a]">5</span>
+          <span id="streak-count" class="text-sm font-bold text-[#1a1a1a]">0</span>
           <span class="text-xs text-[#a0a0a0]">day streak</span>
         </div>
         <!-- Sales Playbook Toggle -->
@@ -1048,11 +1048,49 @@
       if (elContacted) elContacted.textContent = contactedCount;
       if (elClosed) elClosed.textContent = closedCount;
       
-      // Update progress bar
+      // Calculate level dynamically (5 deals per level, start at 1)
+      const level = Math.floor(closedCount / 5) + 1;
+      const levelProgress = ((closedCount % 5) / 5) * 100;
+      const nextLevelDeals = level * 5;
+      const remainingToNext = nextLevelDeals - closedCount;
+      
+      // Update level badge
+      const levelBadge = document.getElementById('level-badge');
+      const levelProgressBar = document.getElementById('level-progress');
+      const levelPercent = document.getElementById('level-percent');
+      if (levelBadge) levelBadge.textContent = 'LVL ' + level;
+      if (levelProgressBar) levelProgressBar.style.width = levelProgress + '%';
+      if (levelPercent) levelPercent.textContent = Math.round(levelProgress) + '%';
+      
+      // Calculate streak based on consecutive activity days
+      let streakCount = parseInt(localStorage.getItem('streakCount') || '0');
+      const lastActivityDate = localStorage.getItem('lastActivityDate');
+      const today = new Date().toDateString();
+      const yesterday = new Date(Date.now() - 86400000).toDateString();
+      
+      if (lastActivityDate === today) {
+        // Activity already today, streak stays
+      } else if (lastActivityDate === yesterday) {
+        // Activity yesterday but not today yet, streak intact
+      } else if (lastActivityDate && lastActivityDate !== today) {
+        // Gap > 1 day, reset streak (but only if we haven't done activity today)
+        // Don't auto-reset here; reset happens when activity is done after a gap
+      }
+      
+      // Update streak badge
+      const streakBadge = document.getElementById('streak-badge');
+      const streakCountEl = document.getElementById('streak-count');
+      if (streakCountEl) streakCountEl.textContent = streakCount;
+      if (streakBadge && streakCount > 0) {
+        streakBadge.classList.remove('streak-hidden');
+      } else if (streakBadge) {
+        streakBadge.classList.add('streak-hidden');
+      }
+      
+      // Update progress bar (legacy, uses 20 deals for now)
       const progressBar = document.getElementById('progress-bar');
       const progressText = document.getElementById('progress-text');
       const progressHint = document.getElementById('progress-hint');
-      const streakBadge = document.getElementById('streak-badge');
       
       if (progressBar) {
         const pct = Math.min((closedCount / 20) * 100, 100);
@@ -1062,20 +1100,34 @@
         progressText.textContent = closedCount + ' / 20 deals';
       }
       if (progressHint) {
-        const remaining = Math.max(20 - closedCount, 0);
-        if (remaining === 0) {
-          progressHint.innerHTML = '<span>Level 4 achieved!</span><span>Keep closing</span>';
+        if (remainingToNext === 0 && closedCount > 0) {
+          progressHint.innerHTML = '<span>Level ' + (level + 1) + ' achieved!</span><span>Keep closing</span>';
         } else if (closedCount === 0) {
-          progressHint.innerHTML = '<span>Close your first deal to start</span><span>20 to Level 4</span>';
+          progressHint.innerHTML = '<span>Close your first deal to start</span><span>5 to Level 2</span>';
         } else {
-          progressHint.innerHTML = '<span>' + remaining + ' more to Level 4</span><span>Keep going</span>';
+          progressHint.innerHTML = '<span>' + remainingToNext + ' more to Level ' + (level + 1) + '</span><span>Keep going</span>';
         }
       }
+    }
+
+    function recordActivity() {
+      const today = new Date().toDateString();
+      const yesterday = new Date(Date.now() - 86400000).toDateString();
+      const lastActivityDate = localStorage.getItem('lastActivityDate');
+      let streakCount = parseInt(localStorage.getItem('streakCount') || '0');
       
-      // Show streak only when contacted > 0
-      if (streakBadge && contactedCount > 0) {
-        streakBadge.classList.remove('streak-hidden');
+      if (lastActivityDate === today) {
+        // Already recorded today, don't increment streak again
+      } else if (lastActivityDate === yesterday) {
+        streakCount++;
+        localStorage.setItem('streakCount', streakCount.toString());
+      } else {
+        // Reset streak to 1 (first day of new streak)
+        streakCount = 1;
+        localStorage.setItem('streakCount', streakCount.toString());
       }
+      localStorage.setItem('lastActivityDate', today);
+      updateGamificationStats();
     }
 
     function updateStats(filtered) {
@@ -1236,6 +1288,7 @@
         emailSent = emailSent.filter(x => x !== id);
       } else {
         emailSent.push(id);
+        recordActivity();
       }
       localStorage.setItem('emailSent', JSON.stringify(emailSent));
       updateContactedFromActivity();
@@ -1248,6 +1301,7 @@
         callMade = callMade.filter(x => x !== id);
       } else {
         callMade.push(id);
+        recordActivity();
       }
       localStorage.setItem('callMade', JSON.stringify(callMade));
       updateContactedFromActivity();
@@ -1260,6 +1314,7 @@
         physicalMailSent = physicalMailSent.filter(x => x !== id);
       } else {
         physicalMailSent.push(id);
+        recordActivity();
       }
       localStorage.setItem('physicalMailSent', JSON.stringify(physicalMailSent));
       updateContactedFromActivity();
@@ -1445,6 +1500,7 @@
         contactedCount++;
         localStorage.setItem('contactedLeads', JSON.stringify(contactedLeads));
         localStorage.setItem('contactedCount', contactedCount.toString());
+        recordActivity();
         updateGamificationStats();
         showToast('Marked as contacted');
         showDetail(leads.find(l => l.id === id));
@@ -1465,6 +1521,7 @@
         localStorage.setItem('contactedLeads', JSON.stringify(contactedLeads));
         localStorage.setItem('closedCount', closedCount.toString());
         localStorage.setItem('contactedCount', contactedCount.toString());
+        recordActivity();
         updateGamificationStats();
         triggerConfetti();
         showToast('Deal closed');
@@ -1503,12 +1560,18 @@
     function copySMS() {
       const id = parseInt(document.getElementById('modal').dataset.currentId);
       const lead = leads.find(l => l.id === id);
-      navigator.clipboard.writeText(lead.sms).then(() => showToast('SMS copied'));
+      navigator.clipboard.writeText(lead.sms).then(() => {
+        showToast('SMS copied');
+        recordActivity();
+      });
     }
 
     function copyLeadSMS(id) {
       const lead = leads.find(l => l.id === id);
-      navigator.clipboard.writeText(lead.sms).then(() => showToast('SMS copied'));
+      navigator.clipboard.writeText(lead.sms).then(() => {
+        showToast('SMS copied');
+        recordActivity();
+      });
     }
 
     function copyEmailDraft() {
@@ -1517,6 +1580,7 @@
       navigator.clipboard.writeText(text).then(() => {
         showToast('Email copied');
         document.getElementById('email-popover').classList.add('hidden');
+        recordActivity();
       });
     }
 
