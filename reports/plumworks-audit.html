@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO Opportunity Report — Marvelus</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=SF+Pro+Display:wght@400;500;600;700&display=swap');
+
+    :root {
+      --system-blue: #0071e3;
+      --system-green: #30d158;
+      --system-orange: #ff9500;
+      --system-red: #ff3b30;
+      --system-gray: #8e8e93;
+      --system-bg: #f5f5f7;
+      --system-card: #ffffff;
+      --system-line: #d2d2d7;
+      --text-primary: #1d1d1f;
+      --text-secondary: #86868b;
+    }
+
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: var(--system-bg);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 48px;
+      background: white;
+      min-height: 100vh;
+    }
+
+    @media print {
+      body { background: white; }
+      .page { 
+        padding: 32px 40px; 
+        max-width: 100%;
+      }
+      .no-print { display: none !important; }
+      .page-break { page-break-before: always; }
+    }
+
+    /* Typography */
+    .title-hero {
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+      color: var(--text-primary);
+    }
+
+    .title-section {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.8px;
+      line-height: 1.1;
+      color: var(--text-primary);
+    }
+
+    .title-card {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.4px;
+      line-height: 1.2;
+    }
+
+    .body-large {
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: -0.2px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+    }
+
+    .body-small {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: -0.1px;
+      color: var(--text-secondary);
+    }
+
+    .label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--system-card);
+      border: 1px solid var(--system-line);
+      border-radius: 18px;
+      padding: 28px;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .card-elevated {
+      background: var(--system-card);
+      border: 1px solid var(--system-line);
+      border-radius: 18px;
+      padding: 32px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Progress Rings */
+    .progress-ring-container {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .progress-ring-svg {
+      transform: rotate(-90deg);
+    }
+
+    .progress-ring-bg {
+      fill: none;
+      stroke: #f0f0f0;
+      stroke-width: 8;
+    }
+
+    .progress-ring-fill {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s ease;
+    }
+
+    .progress-ring-text {
+      position: absolute;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.6px;
+      color: var(--text-primary);
+    }
+
+    .progress-ring-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    /* Status Indicators */
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 8px;
+    }
+
+    .status-pass { background: var(--system-green); }
+    .status-fail { background: var(--system-red); }
+    .status-warn { background: var(--system-orange); }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-badge-pass { background: #e8f5e9; color: #1b5e20; }
+    .status-badge-fail { background: #ffebee; color: #b71c1c; }
+    .status-badge-warn { background: #fff3e0; color: #e65100; }
+
+    /* Competitor Cards */
+    .competitor-card {
+      background: var(--system-card);
+      border: 1px solid var(--system-line);
+      border-radius: 14px;
+      padding: 20px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .competitor-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Table */
+    .data-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .data-table th {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--system-line);
+    }
+
+    .data-table td {
+      padding: 14px 16px;
+      font-size: 14px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .data-table tr:hover td {
+      background: #fafafa;
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--system-line);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 28px;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--system-blue);
+      border: 3px solid white;
+      box-shadow: 0 0 0 2px var(--system-line);
+    }
+
+    .timeline-item.active::before {
+      background: var(--system-blue);
+      box-shadow: 0 0 0 2px var(--system-blue);
+    }
+
+    .timeline-item.completed::before {
+      background: var(--system-green);
+      box-shadow: 0 0 0 2px var(--system-green);
+    }
+
+    .timeline-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .timeline-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* CTA Button */
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 32px;
+      background: var(--system-blue);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 16px rgba(0, 113, 227, 0.3);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0, 113, 227, 0.4);
+    }
+
+    /* Metrics Grid */
+    .metric-value {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1;
+      color: var(--text-primary);
+    }
+
+    .metric-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Brand Header */
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      background: var(--system-blue);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: var(--system-line);
+      margin: 32px 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .page { padding: 24px 20px; }
+      .title-hero { font-size: 32px; }
+      .title-section { font-size: 22px; }
+      .card, .card-elevated { padding: 20px; }
+      .metric-value { font-size: 28px; }
+    }
+
+    /* Print optimization */
+    @media print {
+      .card, .card-elevated { 
+        box-shadow: none !important; 
+        border: 1px solid #e0e0e0 !important;
+      }
+      .competitor-card:hover { transform: none; }
+      .cta-button { 
+        background: #0071e3 !important; 
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  
+  <!-- Brand Header -->
+  <div class="flex items-center justify-between mb-8">
+    <div class="brand-mark">
+      <div class="brand-logo">M</div>
+      <span>Marvelus</span>
+    </div>
+    <div class="body-small">July 06, 2026</div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <div class="mb-10">
+    <div class="label mb-3">SEO Opportunity Report</div>
+    <h1 class="title-hero mb-4">Plumworks Test</h1>
+    <p class="body-large max-w-2xl">
+      We've analyzed your digital presence across plumber in Frankston and identified 
+      <strong style="color: var(--text-primary);">5 high-impact opportunities</strong> 
+      to dominate local search and outrank your competitors.
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SCORE CARD SECTION -->
+  <div class="mb-10">
+    <h2 class="title-section mb-6">SEO Health Score</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      
+      <!-- Technical -->
+      <div class="flex flex-col items-center">
+        <div class="progress-ring-container" style="width: 120px; height: 120px;">
+          <svg class="progress-ring-svg" width="120" height="120" viewBox="0 0 120 120">
+            <circle class="progress-ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="progress-ring-fill" cx="60" cy="60" r="52" 
+              stroke="#ff3b30" 
+              stroke-dasharray="326.73" 
+              stroke-dashoffset="212.37"/>
+          </svg>
+          <span class="progress-ring-text">35</span>
+        </div>
+        <div class="progress-ring-label">Technical</div>
+      </div>
+
+      <!-- On-Page -->
+      <div class="flex flex-col items-center">
+        <div class="progress-ring-container" style="width: 120px; height: 120px;">
+          <svg class="progress-ring-svg" width="120" height="120" viewBox="0 0 120 120">
+            <circle class="progress-ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="progress-ring-fill" cx="60" cy="60" r="52" 
+              stroke="#ff3b30" 
+              stroke-dasharray="326.73" 
+              stroke-dashoffset="326.73"/>
+          </svg>
+          <span class="progress-ring-text">0</span>
+        </div>
+        <div class="progress-ring-label">On-Page</div>
+      </div>
+
+      <!-- Local -->
+      <div class="flex flex-col items-center">
+        <div class="progress-ring-container" style="width: 120px; height: 120px;">
+          <svg class="progress-ring-svg" width="120" height="120" viewBox="0 0 120 120">
+            <circle class="progress-ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="progress-ring-fill" cx="60" cy="60" r="52" 
+              stroke="#ff3b30" 
+              stroke-dasharray="326.73" 
+              stroke-dashoffset="212.37"/>
+          </svg>
+          <span class="progress-ring-text">35</span>
+        </div>
+        <div class="progress-ring-label">Local SEO</div>
+      </div>
+
+      <!-- Overall -->
+      <div class="flex flex-col items-center">
+        <div class="progress-ring-container" style="width: 120px; height: 120px;">
+          <svg class="progress-ring-svg" width="120" height="120" viewBox="0 0 120 120">
+            <circle class="progress-ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="progress-ring-fill" cx="60" cy="60" r="52" 
+              stroke="#ff3b30" 
+              stroke-dasharray="326.73" 
+              stroke-dashoffset="248.31"
+              style="stroke-width: 10;"/>
+          </svg>
+          <span class="progress-ring-text" style="font-size: 28px;">24</span>
+        </div>
+        <div class="progress-ring-label">Overall</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CURRENT STATUS SECTION -->
+  <div class="mb-10">
+    <h2 class="title-section mb-6">Current Status</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      
+      <div class="card flex items-center justify-between">
+        <div class="flex items-center">
+          <span class="status-dot status-pass"></span>
+          <span class="text-sm font-medium">SSL / HTTPS</span>
+        </div>
+        <span class="status-badge status-badge-pass">Secure</span>
+      </div>
+
+      <div class="card flex items-center justify-between">
+        <div class="flex items-center">
+          <span class="status-dot status-fail"></span>
+          <span class="text-sm font-medium">Mobile Friendly</span>
+        </div>
+        <span class="status-badge status-badge-fail">Needs Improvement</span>
+      </div>
+
+      <div class="card flex items-center justify-between">
+        <div class="flex items-center">
+          <span class="status-dot status-fail"></span>
+          <span class="text-sm font-medium">Page Speed</span>
+        </div>
+        <span class="status-badge status-badge-fail">Slow</span>
+      </div>
+
+      <div class="card flex items-center justify-between">
+        <div class="flex items-center">
+          <span class="status-dot status-fail"></span>
+          <span class="text-sm font-medium">Title Tag</span>
+        </div>
+        <span class="status-badge status-badge-fail">Missing</span>
+      </div>
+
+      <div class="card flex items-center justify-between">
+        <div class="flex items-center">
+          <span class="status-dot status-fail"></span>
+          <span class="text-sm font-medium">Meta Description</span>
+        </div>
+        <span class="status-badge status-badge-fail">Missing</span>
+      </div>
+
+      <div class="card flex items-center justify-between">
+        <div class="flex items-center">
+          <span class="status-dot status-fail"></span>
+          <span class="text-sm font-medium">Schema Markup</span>
+        </div>
+        <span class="status-badge status-badge-fail">Not Found</span>
+      </div>
+
+      <div class="card flex items-center justify-between">
+        <div class="flex items-center">
+          <span class="status-dot status-fail"></span>
+          <span class="text-sm font-medium">Google Business Profile</span>
+        </div>
+        <span class="status-badge status-badge-fail">Not Claimed</span>
+      </div>
+
+      <div class="card flex items-center justify-between">
+        <div class="flex items-center">
+          <span class="status-dot status-pass"></span>
+          <span class="text-sm font-medium">Reviews Count</span>
+        </div>
+        <span class="status-badge status-badge-pass">286 reviews</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- COMPETITION SECTION -->
+  <div class="mb-10">
+    <h2 class="title-section mb-2">Your Competition</h2>
+    <p class="body-large mb-6">Top 3 competitors ranking for "plumber Frankston"</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      
+      <!-- Competitor 1 -->
+      <div class="competitor-card">
+        <div class="flex items-center justify-between mb-3">
+          <span class="label" style="color: var(--system-blue);">#1 Position</span>
+          <div class="flex items-center text-sm">
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <span class="font-semibold">{{comp1_rating}}</span>
+            <span class="text-gray-400 ml-1">({{comp1_reviews}})</span>
+          </div>
+        </div>
+        <h3 class="title-card mb-2">{{comp1_name}}</h3>
+        <p class="body-small">{{comp1_snippet}}</p>
+      </div>
+
+      <!-- Competitor 2 -->
+      <div class="competitor-card">
+        <div class="flex items-center justify-between mb-3">
+          <span class="label" style="color: var(--text-secondary);">#2 Position</span>
+          <div class="flex items-center text-sm">
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <span class="font-semibold">{{comp2_rating}}</span>
+            <span class="text-gray-400 ml-1">({{comp2_reviews}})</span>
+          </div>
+        </div>
+        <h3 class="title-card mb-2">{{comp2_name}}</h3>
+        <p class="body-small">{{comp2_snippet}}</p>
+      </div>
+
+      <!-- Competitor 3 -->
+      <div class="competitor-card">
+        <div class="flex items-center justify-between mb-3">
+          <span class="label" style="color: var(--text-secondary);">#3 Position</span>
+          <div class="flex items-center text-sm">
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <span class="font-semibold">{{comp3_rating}}</span>
+            <span class="text-gray-400 ml-1">({{comp3_reviews}})</span>
+          </div>
+        </div>
+        <h3 class="title-card mb-2">{{comp3_name}}</h3>
+        <p class="body-small">{{comp3_snippet}}</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- QUICK WINS SECTION -->
+  <div class="mb-10">
+    <h2 class="title-section mb-2">Quick Wins</h2>
+    <p class="body-large mb-6">Prioritized actions with highest impact and lowest effort</p>
+    
+    <div class="card-elevated overflow-hidden">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Issue</th>
+            <th>Impact</th>
+            <th>Time to Fix</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="font-medium">{Add responsive viewport meta tag}</td>
+            <td><span class="status-badge status-badge-{pass}">{High}</span></td>
+            <td>{15 minutes}</td>
+            <td><span class="status-badge status-badge-warn">Recommended</span></td>
+          </tr>
+          <tr>
+            <td class="font-medium">{Add LocalBusiness schema markup}</td>
+            <td><span class="status-badge status-badge-{warn}">{Medium}</span></td>
+            <td>{2 hours}</td>
+            <td><span class="status-badge status-badge-warn">Recommended</span></td>
+          </tr>
+          <tr>
+            <td class="font-medium">{Write optimized page title (50-60 chars)}</td>
+            <td><span class="status-badge status-badge-{pass}">{High}</span></td>
+            <td>{30 minutes}</td>
+            <td><span class="status-badge status-badge-warn">Recommended</span></td>
+          </tr>
+          <tr>
+            <td class="font-medium">{Write meta description (150-160 chars)}</td>
+            <td><span class="status-badge status-badge-{pass}">{High}</span></td>
+            <td>{30 minutes}</td>
+            <td><span class="status-badge status-badge-warn">Recommended</span></td>
+          </tr>
+          <tr>
+            <td class="font-medium">{Add H1 heading with primary keyword}</td>
+            <td><span class="status-badge status-badge-{pass}">{High}</span></td>
+            <td>{20 minutes}</td>
+            <td><span class="status-badge status-badge-warn">Recommended</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 90-DAY ROADMAP SECTION -->
+  <div class="mb-10">
+    <h2 class="title-section mb-2">90-Day Roadmap</h2>
+    <p class="body-large mb-6">Your path from invisible to dominant</p>
+    
+    <div class="card">
+      <div class="timeline">
+        
+        <div class="timeline-item completed">
+          <div class="timeline-title">Foundation Phase — Days 1-30</div>
+          <div class="timeline-desc">
+            Fix technical SEO issues, claim and optimize Google Business Profile, 
+            implement schema markup, and establish baseline tracking.
+          </div>
+        </div>
+
+        <div class="timeline-item active">
+          <div class="timeline-title">Content Phase — Days 31-60</div>
+          <div class="timeline-desc">
+            Launch service pages for each suburb, build local landing pages, 
+            start review generation campaign, and create blog content strategy.
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-title">Scale Phase — Days 61-90</div>
+          <div class="timeline-desc">
+            Build local citations and backlinks, expand to adjacent suburbs, 
+            launch paid ads to amplify organic wins, and implement lead nurturing.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- EXPECTED RESULTS SECTION -->
+  <div class="mb-10">
+    <h2 class="title-section mb-6">Expected Results</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <div class="card text-center">
+        <div class="label mb-2">Month 1</div>
+        <div class="metric-value mb-2">+15</div>
+        <div class="metric-label mb-4">Avg. Position Improvement</div>
+        <div class="body-small">Technical fixes implemented, GBP optimized, site indexed properly</div>
+      </div>
+
+      <div class="card text-center">
+        <div class="label mb-2">Month 2</div>
+        <div class="metric-value mb-2">+25</div>
+        <div class="metric-label mb-4">Avg. Position Improvement</div>
+        <div class="body-small">Content pages live, 50+ new reviews, 20 local citations built</div>
+      </div>
+
+      <div class="card text-center">
+        <div class="label mb-2">Month 3</div>
+        <div class="metric-value mb-2">+35</div>
+        <div class="metric-label mb-4">Avg. Position Improvement</div>
+        <div class="body-small">Top 3 rankings for primary keywords, consistent lead flow established</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CTA SECTION -->
+  <div class="card-elevated text-center py-12">
+    <h2 class="title-section mb-3">Ready to Dominate Local Search?</h2>
+    <p class="body-large mb-8 max-w-xl mx-auto">
+      Let's discuss how Marvelus can implement these recommendations and turn your 
+      plumber business into the #1 choice in Frankston.
+    </p>
+    <a href="https://calendly.com/marvelus/strategy-call" class="cta-button no-print">
+      <i class="far fa-calendar-alt mr-2"></i>
+      Schedule a Free Strategy Call
+    </a>
+    <p class="body-small mt-4 no-print">No commitment. Just actionable insights.</p>
+  </div>
+
+  <!-- Footer -->
+  <div class="mt-10 text-center">
+    <div class="brand-mark justify-center mb-2">
+      <div class="brand-logo">M</div>
+      <span>Marvelus</span>
+    </div>
+    <p class="body-small">© 2026 Marvelus. Confidential report prepared for Plumworks Test.</p>
+  </div>
+
+</div>
+
+</body>
+</html>

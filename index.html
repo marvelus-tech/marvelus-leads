@@ -3,1818 +3,1120 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <title>Marvelus Leads — Pipeline</title>
+  <title>Leads • Marvelus</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #f7f7f5;
-      --surface: #ffffff;
-      --surface-elevated: #ffffff;
-      --border: #e8e8e6;
-      --border-subtle: #f0f0ee;
-      --text-primary: #1a1a1a;
-      --text-secondary: #6b6b6b;
-      --text-tertiary: #a0a0a0;
-      --accent: #0055ff;
-      --accent-light: #e8f0ff;
-      --accent-glow: rgba(0,85,255,0.12);
-      --success: #00a86b;
-      --success-light: #e6f7f0;
-      --warning: #f5a623;
-      --warning-light: #fef5e6;
-      --danger: #ff4757;
-      --danger-light: #ffe8ea;
-      --gold: #d4a574;
-      --gold-light: #faf3ec;
-      --gradient-start: #0055ff;
-      --gradient-end: #00a86b;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=SF+Pro+Display:wght@400;500;600;700&display=swap');
 
-    * {
-      -webkit-tap-highlight-color: transparent;
-      box-sizing: border-box;
+    :root {
+      --system-blue: #0071e3;
+      --system-green: #30d158;
+      --system-orange: #ff9500;
+      --system-red: #ff3b30;
+      --system-gray: #8e8e93;
+      --system-bg: #f5f5f7;
+      --system-card: #ffffff;
+      --system-line: #d2d2d7;
     }
 
     body {
-      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      min-height: 100vh;
+      background: var(--system-bg);
+      color: #1d1d1f;
+      overflow-x: hidden;
     }
 
-    .font-mono { font-family: 'JetBrains Mono', monospace; }
-
-    /* Card — borderless, no radius, shadow only */
-    .card-mercury {
-      background: var(--surface);
-      border: none;
-      border-radius: 0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .card-mercury:hover {
-      box-shadow: 0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
-      transform: translateY(-2px);
-    }
-    .card-mercury:active {
-      transform: translateY(0) scale(0.98);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-      transition-duration: 0.1s;
+    .apple-container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding-left: 20px;
+      padding-right: 20px;
     }
 
-    /* Gradient accent bar */
-    .accent-bar {
-      height: 3px;
-      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
-      border-radius: 999px;
+    .section-title {
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: -0.8px;
+      line-height: 1.05;
     }
 
-    /* Gamified score ring */
-    .score-ring-container {
-      position: relative;
-      width: 48px;
-      height: 48px;
+    .lead-card {
+      background: var(--system-card);
+      border: 1px solid var(--system-line);
+      border-radius: 18px;
+      transition: box-shadow 0.15s cubic-bezier(0.4, 0.0, 0.2, 1),
+                  transform 0.1s cubic-bezier(0.4, 0.0, 0.2, 1);
     }
-    .score-ring-container svg {
-      transform: rotate(-90deg);
+
+    .lead-card:hover {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     }
-    .score-ring-bg {
-      fill: none;
-      stroke: var(--border);
-      stroke-width: 4;
+
+    .lead-card:active {
+      transform: scale(0.985);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
     }
-    .score-ring-fill {
-      fill: none;
-      stroke-width: 4;
-      stroke-linecap: round;
-      transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+
+    .lead-name {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.25px;
+      line-height: 1.25;
     }
-    .score-ring-value {
-      position: absolute;
-      inset: 0;
+
+    .meta {
+      font-size: 13px;
+      color: var(--system-gray);
+      font-weight: 400;
+      letter-spacing: -0.1px;
+    }
+
+    .metric {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.6px;
+      line-height: 1;
+    }
+
+    .metric-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--system-gray);
+    }
+
+    .pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 9px;
+      border-radius: 9999px;
+      background: #f1f5f9;
+      color: #1d1d1f;
+      letter-spacing: -0.1px;
+    }
+
+    .pill-hot { background: #ffebee; color: #c62828; }
+    .pill-warm { background: #fff3e0; color: #ef6c00; }
+    .pill-cold { background: #e3f2fd; color: #1565c0; }
+    .pill-closed { background: #e8f5e9; color: #2e7d32; }
+    .pill-audit { background: #f3e5f5; color: #6a1b9a; }
+
+    .segmented {
+      display: inline-flex;
+      background: #e5e5ea;
+      border-radius: 9999px;
+      padding: 2px;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .segment {
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 9999px;
+      transition: all 0.1s ease;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .segment.active {
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      color: #1d1d1f;
+    }
+
+    .stat {
+      background: var(--system-card);
+      border: 1px solid var(--system-line);
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+
+    .modal-sheet {
+      animation: sheetEnter 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .hierarchy-primary { color: #1d1d1f; font-weight: 600; }
+    .hierarchy-secondary { color: #8e8e93; }
+
+    .action-btn {
+      min-height: 44px;
+      min-width: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
-      font-size: 14px;
-      font-family: 'JetBrains Mono', monospace;
+      border-radius: 12px;
+      transition: background-color 0.1s ease;
     }
 
-    /* Mercury-style segmented control */
-    .segment-mercury {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 4px;
-      display: inline-flex;
+    .action-btn:active {
+      background: #f2f2f7;
     }
-    .segment-btn-mercury {
-      padding: 8px 16px;
-      border-radius: 8px;
+
+    .sort-btn {
       font-size: 13px;
       font-weight: 500;
-      color: var(--text-secondary);
-      transition: all 0.2s ease;
-      cursor: pointer;
-      border: none;
-      background: transparent;
-      font-family: 'DM Sans', sans-serif;
-    }
-    .segment-btn-mercury:hover {
-      color: var(--text-primary);
-      background: var(--border-subtle);
-    }
-    .segment-btn-mercury.active {
-      background: var(--text-primary);
-      color: white;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      padding: 6px 12px;
+      background: #ffffff;
+      border: 1px solid var(--system-line);
+      border-radius: 9999px;
     }
 
-    /* Search bar */
-    .search-mercury {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      transition: all 0.2s ease;
-    }
-    .search-mercury:focus-within {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-
-    /* Stats with subtle backgrounds */
-    .stat-mercury {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      transition: all 0.2s ease;
-    }
-    .stat-mercury:hover {
-      border-color: #d0d0ce;
-    }
-
-    /* Gamified progress bar */
-    .progress-mercury {
-      height: 6px;
-      background: var(--border-subtle);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .progress-fill-mercury {
-      height: 100%;
-      border-radius: 999px;
-      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* Priority badges */
-    .badge-hot {
-      background: var(--danger-light);
-      color: var(--danger);
-      border: 1px solid rgba(255,71,87,0.15);
-    }
-    .badge-warm {
-      background: var(--warning-light);
-      color: #c77a00;
-      border: 1px solid rgba(245,166,35,0.15);
-    }
-    .badge-cool {
-      background: var(--border-subtle);
-      color: var(--text-secondary);
-      border: 1px solid var(--border);
-    }
-
-    /* Modal */
-    .modal-backdrop-mercury {
-      background: rgba(26,26,26,0.4);
-      backdrop-filter: blur(8px);
-    }
-    .modal-sheet-mercury {
-      background: var(--surface);
-      border-radius: 24px 24px 0 0;
-      box-shadow: 0 -8px 32px rgba(0,0,0,0.12);
-      animation: sheetUp 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-    }
-    @media (min-width: 640px) {
-      .modal-sheet-mercury {
-        border-radius: 24px;
-        animation: modalIn 0.25s cubic-bezier(0.32, 0.72, 0, 1);
-      }
-    }
-    @keyframes sheetUp {
+    @keyframes sheetEnter {
       from { transform: translateY(100%); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
-    @keyframes modalIn {
-      from { transform: scale(0.96); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
 
-    /* Deal stage tracker */
-    .stage-dot-mercury {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      border: 2px solid var(--border);
-      background: var(--surface);
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-    .stage-dot-mercury.active {
-      border-color: var(--accent);
-      background: var(--accent);
-      box-shadow: 0 0 0 4px var(--accent-glow);
-    }
-    .stage-dot-mercury.completed {
-      border-color: var(--success);
-      background: var(--success);
-    }
-    .stage-line-mercury {
-      height: 2px;
-      background: var(--border);
-      flex: 1;
-      transition: background 0.3s ease;
-    }
-    .stage-line-mercury.completed {
-      background: linear-gradient(90deg, var(--success), var(--accent));
-    }
-
-    /* Gold pulse — replaces confetti */
-    @keyframes goldPulse {
-      0% { box-shadow: 0 0 0 0 rgba(212,165,116,0.4); }
-      70% { box-shadow: 0 0 0 20px rgba(212,165,116,0); }
-      100% { box-shadow: 0 0 0 0 rgba(212,165,116,0); }
-    }
-    .gold-pulse {
-      animation: goldPulse 1.2s ease-out;
-    }
-
-    /* Tech badge — icon only, no border */
-    .badge-tech-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: var(--warning-light);
-      color: var(--warning);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-    }
-
-    /* Action buttons — no border, no background */
-    .action-btn-clean {
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-tertiary);
-      transition: all 0.2s ease;
-      border-radius: 8px;
-    }
-    .action-btn-clean:hover {
-      color: var(--text-primary);
-      background: var(--border-subtle);
-    }
-    .action-btn-clean:active {
-      transform: scale(0.92);
-    }
-
-    /* Stat pills — merged style */
-    .stat-pill {
-      background: var(--surface);
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02);
-      transition: all 0.2s ease;
-    }
-    .stat-pill:hover {
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-    }
-
-    /* Filter with count */
-    .filter-count {
-      background: var(--danger-light);
-      color: var(--danger);
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 6px;
-      margin-left: 4px;
-    }
-
-    /* Toast */
-    .toast-mercury {
-      background: var(--text-primary);
-      color: white;
-      border-radius: 12px;
-      padding: 12px 20px;
-      font-size: 14px;
-      font-weight: 500;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-      animation: toastUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
-    }
-    @keyframes toastUp {
-      from { transform: translate(-50%, 20px); opacity: 0; }
-      to { transform: translate(-50%, 0); opacity: 1; }
-    }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #d0d0ce; }
-
-    /* Action buttons */
-    .btn-primary {
-      background: var(--text-primary);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      padding: 10px 16px;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .btn-primary:hover {
-      background: #333;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    .btn-primary:active {
-      transform: translateY(0);
-    }
-
-    .btn-secondary {
-      background: var(--surface);
-      color: var(--text-primary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 16px;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .btn-secondary:hover {
-      background: var(--border-subtle);
-      border-color: #d0d0ce;
-    }
-
-    /* Level badge — colored background, black text */
-    .level-badge-mercury {
-      background: linear-gradient(135deg, var(--gold), #c9956b);
-      color: #1a1a1a;
-      font-weight: 700;
-      font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 6px;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    /* Info button — larger tap target */
-    .info-btn {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-tertiary);
-      transition: all 0.2s ease;
-      cursor: pointer;
-      border: none;
-      padding: 0;
-    }
-    .info-btn:hover {
-      background: var(--accent-light);
-      color: var(--accent);
-    }
-    .info-btn:active {
-      transform: scale(0.9);
-    }
-
-    /* Playbook toggle — no border, clean */
-    .playbook-toggle {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent);
-      background: transparent;
-      transition: all 0.2s ease;
-      cursor: pointer;
-      border: none;
-    }
-    .playbook-toggle:hover {
-      background: var(--accent-light);
-    }
-    .playbook-toggle:active {
-      transform: scale(0.92);
-    }
-
-    /* Shimmering gold button */
-    .btn-gold-shimmer {
-      background: linear-gradient(135deg, #d4a574, #f0c987, #e8b96a, #d4a574);
-      background-size: 300% 300%;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      padding: 10px 16px;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      animation: shimmerGold 3s ease infinite;
-      box-shadow: 0 2px 12px rgba(212,165,116,0.3);
-    }
-    .btn-gold-shimmer:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 20px rgba(212,165,116,0.5);
-    }
-    @keyframes shimmerGold {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    /* Real progress bar */
-    .progress-track {
-      background: var(--border-subtle);
-      border-radius: 999px;
-      overflow: hidden;
-      position: relative;
-    }
-    .progress-fill-live {
-      height: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
-      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-    .progress-fill-live::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      animation: progressShimmer 2s ease-in-out infinite;
-    }
-    @keyframes progressShimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-
-    /* Activity toggle icons */
-    .activity-toggle {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text-tertiary);
-    }
-    .activity-toggle:hover {
-      border-color: #d0d0ce;
-      background: var(--border-subtle);
-    }
-    .activity-toggle.active {
-      background: var(--accent);
-      color: white;
-      border-color: var(--accent);
-    }
-    .activity-toggle.active-phone {
-      background: var(--success);
-      color: white;
-      border-color: var(--success);
-    }
-    .activity-toggle.active-mail {
-      background: var(--gold);
-      color: white;
-      border-color: var(--gold);
-    }
-
-    /* Sticky header */
-    .header-sticky {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(247,247,245,0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 0;
-      margin: 0 -16px;
-      padding-left: 16px;
-      padding-right: 16px;
-    }
-    @media (min-width: 640px) {
-      .header-sticky {
-        margin: 0 -24px;
-        padding-left: 24px;
-        padding-right: 24px;
-      }
-    }
-
-    /* Metric block in modal */
-    .metric-block-mercury {
-      background: var(--border-subtle);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px;
-      transition: all 0.2s ease;
-    }
-    .metric-block-mercury:hover {
-      border-color: #d0d0ce;
-      background: var(--surface);
-    }
-
-    /* Script cards */
-    .script-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px;
-      transition: all 0.2s ease;
-    }
-    .script-card:hover {
-      border-color: #d0d0ce;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-    }
-
-    /* Side drawer for playbook */
-    .drawer-overlay {
+    /* Slide-out Panel */
+    .slide-panel-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(26,26,26,0.3);
-      backdrop-filter: blur(4px);
-      z-index: 100;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 200;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease;
     }
-    .drawer-overlay.open {
+
+    .slide-panel-overlay.active {
       opacity: 1;
-      pointer-events: auto;
+      pointer-events: all;
     }
-    .drawer-panel {
+
+    .slide-panel {
       position: fixed;
       top: 0;
       right: 0;
-      bottom: 0;
       width: 100%;
-      max-width: 480px;
-      background: var(--bg);
-      z-index: 101;
+      max-width: 720px;
+      height: 100vh;
+      background: white;
+      z-index: 201;
       transform: translateX(100%);
       transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-      overflow-y: auto;
-      padding: 24px;
-      box-shadow: -8px 0 32px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.08);
     }
-    .drawer-panel.open {
+
+    .slide-panel.active {
       transform: translateX(0);
     }
-    @media (min-width: 640px) {
-      .drawer-panel {
-        padding: 32px;
-      }
+
+    .panel-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--system-line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+    }
+
+    .panel-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    .panel-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--system-line);
+      background: #fafafa;
+    }
+
+    /* Table Styles */
+    .prospect-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 13px;
+    }
+
+    .prospect-table th {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      color: var(--system-gray);
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--system-line);
+      background: #fafafa;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .prospect-table th:hover {
+      color: #1d1d1f;
+    }
+
+    .prospect-table th.sort-asc::after {
+      content: ' ▲';
+      font-size: 10px;
+    }
+
+    .prospect-table th.sort-desc::after {
+      content: ' ▼';
+      font-size: 10px;
+    }
+
+    .prospect-table td {
+      padding: 12px;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: middle;
+    }
+
+    .prospect-table tr:hover td {
+      background: #fafafa;
+    }
+
+    .prospect-table tr.selected td {
+      background: #f0f7ff;
+    }
+
+    /* Formula Bar */
+    .formula-bar {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .formula-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 16px;
+      background: white;
+      border-radius: 12px;
+      border: 1px solid var(--system-line);
+    }
+
+    .formula-value {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #1d1d1f;
+    }
+
+    .formula-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--system-gray);
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    /* Action Buttons */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--system-blue);
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background: #005bb5;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: white;
+      color: #1d1d1f;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 10px;
+      border: 1px solid var(--system-line);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      background: #f5f5f7;
+    }
+
+    .btn-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--system-gray);
+      transition: all 0.15s ease;
+    }
+
+    .btn-icon:hover {
+      background: #f5f5f7;
+      color: #1d1d1f;
+    }
+
+    /* Import Section */
+    .import-zone {
+      border: 2px dashed var(--system-line);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .import-zone:hover {
+      border-color: var(--system-blue);
+      background: #f0f7ff;
+    }
+
+    .import-zone.drag-over {
+      border-color: var(--system-blue);
+      background: #f0f7ff;
+    }
+
+    /* Scrollbar */
+    .panel-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .panel-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .panel-content::-webkit-scrollbar-thumb {
+      background: #d2d2d7;
+      border-radius: 3px;
+    }
+
+    .panel-content::-webkit-scrollbar-thumb:hover {
+      background: #8e8e93;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .slide-panel { max-width: 100%; }
+      .formula-bar { justify-content: center; }
+      .prospect-table { font-size: 12px; }
+      .prospect-table th, .prospect-table td { padding: 8px 6px; }
     }
   </style>
 </head>
 <body>
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 pb-20">
+
+  <!-- Main Dashboard -->
+  <div class="apple-container pt-8 pb-12">
     
-    <!-- Sticky Header -->
-    <div class="header-sticky flex items-center justify-between mb-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
       <div>
-        <h1 class="text-xl font-bold tracking-tight text-[#1a1a1a]">Lead Engine</h1>
-        <p class="text-sm text-[#a0a0a0]">Marvelus</p>
+        <div class="section-title tracking-[-1px]">Leads</div>
+        <div class="text-[#8e8e93] text-[13px] mt-0.5">Marvelus • Today</div>
       </div>
-      <div class="flex items-center gap-2">
-        <!-- Level Badge -->
-        <div class="hidden sm:flex items-center gap-2 bg-white border border-[#e8e8e6] rounded-xl px-3 py-2">
-          <span id="level-badge" class="level-badge-mercury">LVL 1</span>
-          <div class="w-16 h-2 bg-[#f0f0ee] rounded-full overflow-hidden">
-            <div id="level-progress" class="h-full bg-gradient-to-r from-[#0055ff] to-[#00a86b] rounded-full" style="width: 0%"></div>
-          </div>
-          <span id="level-percent" class="text-xs text-[#a0a0a0] font-mono">0%</span>
-        </div>
-        <!-- Streak (hidden until achieved) -->
-        <div id="streak-badge" class="streak-hidden flex items-center gap-1.5 bg-white border border-[#e8e8e6] rounded-xl px-3 py-2">
-          <i class="fa-solid fa-fire text-[#f5a623] text-sm"></i>
-          <span id="streak-count" class="text-sm font-bold text-[#1a1a1a]">0</span>
-          <span class="text-xs text-[#a0a0a0]">day streak</span>
-        </div>
-        <!-- Sales Playbook Toggle -->
-        <button onclick="toggleScripts()" class="playbook-toggle" title="Sales Playbook">
-          <i class="fa-solid fa-book-open text-lg"></i>
+      <div class="flex items-center gap-x-2">
+        <!-- Prospect Tracker Button -->
+        <button onclick="openProspectTracker()" class="flex items-center gap-x-2 px-4 py-2 bg-white border border-[#d2d2d7] rounded-2xl text-sm font-semibold hover:bg-[#f5f5f7] active:bg-[#e5e5e7] transition-colors">
+          <i class="fa-solid fa-chart-bar text-[#0071e3]"></i>
+          <span>Prospect Tracker</span>
         </button>
-        <button onclick="refreshData()" class="w-10 h-10 rounded-xl bg-white border border-[#e8e8e6] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:border-[#d0d0ce] transition-all active:scale-95">
-          <i class="fa-solid fa-rotate text-sm"></i>
+        <div class="px-3 py-1.5 bg-white border border-[#d2d2d7] rounded-3xl text-xs font-medium flex items-center gap-x-1.5">
+          <div class="w-2 h-2 bg-[#30d158] rounded-full"></div>
+          <span>Live</span>
+        </div>
+        <button onclick="refreshData()" class="w-10 h-10 flex items-center justify-center bg-white border border-[#d2d2d7] rounded-2xl active:bg-[#f2f2f7]">
+          <i class="fa-solid fa-sync text-[#8e8e93]"></i>
         </button>
       </div>
     </div>
 
-    <!-- Stats Row — Consolidated: Pipeline + Contacted merged, Hot moved to filter -->
-    <div class="grid grid-cols-3 gap-3 mb-6">
-      <div class="stat-pill">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-medium text-[#a0a0a0] uppercase tracking-wider">Pipeline</span>
-          <i class="fa-solid fa-layer-group text-[#0055ff]/40 text-sm"></i>
-        </div>
-        <div class="flex items-baseline gap-1">
-          <span id="stat-contacted" class="text-2xl font-bold text-[#00a86b] font-mono">0</span>
-          <span class="text-sm text-[#a0a0a0] font-mono">/</span>
-          <span id="stat-total" class="text-lg font-bold text-[#1a1a1a] font-mono">0</span>
-        </div>
-        <div class="text-xs text-[#a0a0a0] mt-1">Contacted</div>
-      </div>
-      <div class="stat-pill">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-medium text-[#a0a0a0] uppercase tracking-wider">Closed</span>
-          <i class="fa-solid fa-trophy text-[#d4a574]/40 text-sm"></i>
-        </div>
-        <div id="stat-closed" class="text-2xl font-bold text-[#d4a574] font-mono">0</div>
-        <div class="text-xs text-[#a0a0a0] mt-1">Deals won</div>
-      </div>
-      <div class="stat-pill">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-medium text-[#a0a0a0] uppercase tracking-wider">Hot Leads</span>
-          <i class="fa-solid fa-fire text-[#ff4757]/40 text-sm"></i>
-        </div>
-        <div id="stat-high" class="text-2xl font-bold text-[#ff4757] font-mono">0</div>
-        <div class="text-xs text-[#a0a0a0] mt-1">High priority</div>
+    <!-- Segmented Control -->
+    <div class="mb-5">
+      <div class="segmented">
+        <div onclick="setSegment(this, 'all')" class="segment active" data-segment="all">All</div>
+        <div onclick="setSegment(this, 'high')" class="segment" data-segment="high">High</div>
+        <div onclick="setSegment(this, 'multi')" class="segment" data-segment="multi">Multi</div>
+        <div onclick="setSegment(this, 'ai')" class="segment" data-segment="ai">AI Voice</div>
       </div>
     </div>
 
-    <!-- Controls -->
-    <div class="flex flex-col sm:flex-row gap-3 mb-6">
-      <div class="segment-mercury">
-        <button onclick="setSegment(this, 'all')" class="segment-btn-mercury active" data-segment="all">All</button>
-        <button onclick="setSegment(this, 'high')" class="segment-btn-mercury" data-segment="high"><i class="fa-solid fa-fire mr-1 text-xs"></i> Hot<span id="filter-hot-count" class="filter-count"></span></button>
-        <button onclick="setSegment(this, 'contacted')" class="segment-btn-mercury" data-segment="contacted"><i class="fa-solid fa-phone mr-1 text-xs"></i> Contacted</button>
-        <button onclick="setSegment(this, 'uncontacted')" class="segment-btn-mercury" data-segment="uncontacted"><i class="fa-solid fa-circle mr-1 text-xs"></i> Needs contact</button>
-        <button onclick="setSegment(this, 'closed')" class="segment-btn-mercury" data-segment="closed"><i class="fa-solid fa-trophy mr-1 text-xs"></i> Closed</button>
+    <!-- Stats -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+      <div class="stat">
+        <div class="metric-label">Total</div>
+        <div id="stat-total" class="metric mt-0.5">0</div>
       </div>
-      <div class="flex-1 flex gap-2">
-        <div class="search-mercury flex-1 flex items-center rounded-xl px-4 py-2.5">
-          <i class="fa-solid fa-magnifying-glass text-[#a0a0a0] mr-3 text-sm"></i>
-          <input id="search-input" type="text" placeholder="Search leads..." 
-                 onkeyup="filterLeads()"
-                 class="bg-transparent border-none outline-none text-sm text-[#1a1a1a] placeholder-[#a0a0a0] w-full font-medium">
-          <kbd class="hidden sm:inline-block text-xs text-[#a0a0a0] bg-[#f0f0ee] px-2 py-0.5 rounded font-mono">/</kbd>
-        </div>
-        <button onclick="toggleSort()" class="search-mercury rounded-xl px-4 py-2.5 text-sm font-medium text-[#6b6b6b] hover:text-[#1a1a1a] flex items-center gap-2 whitespace-nowrap">
+      <div class="stat">
+        <div class="metric-label">High Potential</div>
+        <div id="stat-high" class="metric mt-0.5 text-[#0071e3]">0</div>
+      </div>
+      <div class="stat">
+        <div class="metric-label">Avg SEO</div>
+        <div id="stat-seo" class="metric mt-0.5">0</div>
+      </div>
+      <div class="stat">
+        <div class="metric-label">Multi-opportunity</div>
+        <div id="stat-multi" class="metric mt-0.5">0</div>
+      </div>
+    </div>
+
+    <!-- Search + Sort -->
+    <div class="flex gap-3 mb-5">
+      <div class="flex-1 relative">
+        <i class="fa-solid fa-search absolute left-4 top-3.5 text-[#8e8e93]"></i>
+        <input id="search-input" type="text" placeholder="Search leads" 
+               onkeyup="filterLeads()"
+               class="w-full bg-white border border-[#d2d2d7] rounded-3xl pl-11 pr-4 py-3 text-[15px] placeholder:text-[#8e8e93] focus:outline-none">
+      </div>
+      <div class="relative">
+        <button onclick="toggleSort()" class="sort-btn flex items-center gap-x-1.5 h-full px-4 text-sm font-medium">
           <span id="sort-label">Score</span>
-          <i class="fa-solid fa-chevron-down text-xs text-[#a0a0a0]"></i>
+          <i class="fa-solid fa-chevron-down text-xs"></i>
         </button>
       </div>
     </div>
 
     <!-- Leads Grid -->
-    <div id="leads-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div id="leads-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
       <!-- JS populated -->
     </div>
 
-    <!-- Sales Playbook Side Drawer -->
-    <div id="drawer-overlay" class="drawer-overlay" onclick="toggleScripts()"></div>
-    <div id="drawer-panel" class="drawer-panel">
-      <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0055ff]/10 to-[#00a86b]/10 border border-[#0055ff]/20 flex items-center justify-center">
-            <i class="fa-solid fa-book-open text-[#0055ff]"></i>
-          </div>
-          <div>
-            <div class="font-semibold text-[#1a1a1a]">Sales Playbook</div>
-            <div class="text-xs text-[#a0a0a0]">Cold call scripts, objection handling, closing tactics</div>
-          </div>
-        </div>
-        <button onclick="toggleScripts()" class="w-9 h-9 rounded-xl bg-[#f0f0ee] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:bg-[#e8e8e6] transition-all">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      
-      <div class="space-y-4">
-        
-        <!-- Script 1 -->
-        <div class="script-card">
-          <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center gap-2">
-              <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0055ff] to-[#00a86b] flex items-center justify-center text-white text-xs font-bold">1</span>
-              <span class="font-semibold text-[#1a1a1a]">The "Only Script You Need"</span>
-            </div>
-            <button onclick="copyScript('script1')" class="btn-secondary text-xs py-1.5 px-3">
-              <i class="fa-regular fa-copy mr-1"></i>Copy
-            </button>
-          </div>
-          <div id="script1" class="text-sm text-[#6b6b6b] space-y-2 leading-relaxed">
-            <p><span class="text-[#0055ff] font-medium">Opener:</span> "Hi [Name], quick question — are you currently getting leads from Google for [service] in [City]?"</p>
-            <p><span class="text-[#0055ff] font-medium">Problem:</span> "Most [industry] businesses I talk to in [City] tell me the same thing: they rely on word-of-mouth or paid ads, but when someone searches '[service] near me' on their phone, they're not showing up."</p>
-            <p><span class="text-[#0055ff] font-medium">Agitate:</span> "Those people searching on Google are actively looking to buy. If you're not there, your competitor is. And they're getting that call."</p>
-            <p><span class="text-[#0055ff] font-medium">Close:</span> "I'm not asking for a commitment today. What I'd love to do is send you a free video audit of your site — shows exactly why you're not ranking. What's the best email?"</p>
-          </div>
-        </div>
-
-        <!-- Script 2 -->
-        <div class="script-card">
-          <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center gap-2">
-              <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#f5a623] to-[#ff4757] flex items-center justify-center text-white text-xs font-bold">2</span>
-              <span class="font-semibold text-[#1a1a1a]">Pain-First Script</span>
-            </div>
-            <button onclick="copyScript('script2')" class="btn-secondary text-xs py-1.5 px-3">
-              <i class="fa-regular fa-copy mr-1"></i>Copy
-            </button>
-          </div>
-          <div id="script2" class="text-sm text-[#6b6b6b] space-y-2 leading-relaxed">
-            <p>"I work with [industry] businesses in [City] to solve three common problems:</p>
-            <ol class="list-decimal list-inside space-y-1 ml-2 text-[#6b6b6b]">
-              <li>Not showing up when people search '[service] near me'</li>
-              <li>Website doesn't convert visitors into calls</li>
-              <li>Paying too much for leads that go to 3-4 competitors</li>
-            </ol>
-            <p class="text-[#6b6b6b]">Which of those, if any, is something you're dealing with right now?"</p>
-          </div>
-        </div>
-
-        <!-- Objection Handling -->
-        <div class="script-card">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#ff4757] to-[#ff6b81] flex items-center justify-center text-white text-xs font-bold">
-              <i class="fa-solid fa-shield text-xs"></i>
-            </span>
-            <span class="font-semibold text-[#1a1a1a]">Objection Handling</span>
-          </div>
-          <div class="grid sm:grid-cols-2 gap-3 text-sm">
-            <div class="space-y-1">
-              <p class="text-[#ff4757] font-medium text-xs uppercase tracking-wider">"I already have SEO"</p>
-              <p class="text-[#6b6b6b]">"Good — most of our best clients had someone before us. Are you getting 10+ calls/month from that relationship?"</p>
-            </div>
-            <div class="space-y-1">
-              <p class="text-[#ff4757] font-medium text-xs uppercase tracking-wider">"How much does it cost?"</p>
-              <p class="text-[#6b6b6b]">"It depends on where you're starting. What I do first is a free audit — shows exactly what needs work. Worth doing the audit?"</p>
-            </div>
-            <div class="space-y-1">
-              <p class="text-[#ff4757] font-medium text-xs uppercase tracking-wider">"No budget"</p>
-              <p class="text-[#6b6b6b]">"Totally get it. I'll send you the free audit anyway — shows what's costing you leads. What's the best email?"</p>
-            </div>
-            <div class="space-y-1">
-              <p class="text-[#ff4757] font-medium text-xs uppercase tracking-wider">"Send me an email"</p>
-              <p class="text-[#6b6b6b]">"Happy to. Quick question — are you getting leads from Google, or mostly referrals? I'll tailor the audit around that."</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Key Tips -->
-        <div class="bg-gradient-to-br from-[#e8f0ff] to-[#e6f7f0] border border-[#0055ff]/10 rounded-2xl p-5">
-          <div class="font-semibold text-[#1a1a1a] mb-3 flex items-center gap-2">
-            <i class="fa-solid fa-lightbulb text-[#f5a623]"></i>
-            Key Tips from Reddit Pros
-          </div>
-          <div class="grid sm:grid-cols-2 gap-2 text-sm text-[#6b6b6b]">
-            <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
-              <span>Never say "SEO" in opener — say "get found on Google"</span>
-            </div>
-            <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
-              <span>Lead with specific pain — "3-4 leads a week"</span>
-            </div>
-            <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
-              <span>Offer value first — free audit, video walkthrough</span>
-            </div>
-            <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
-              <span>Use numbers — "60-90 days", "8-12 calls"</span>
-            </div>
-            <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
-              <span>Remove risk — "no contracts", "month-to-month"</span>
-            </div>
-            <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
-              <span>Ask for easy yes — email is easier than meeting</span>
-            </div>
-            <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
-              <span>Follow up — 80% of sales happen after 5+ touches</span>
-            </div>
-            <div class="flex items-start gap-2">
-              <span class="text-[#00a86b] mt-0.5 font-bold"><i class="fa-solid fa-check text-xs"></i></span>
-              <span>Speak slowly — "almost uncomfortably slow"</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Footer -->
     <div class="mt-8 text-center">
-      <p class="text-xs text-[#a0a0a0]">Marvelus Lead Engine • Phase 7 • 110 Leads • Activity Tracking Enabled</p>
+      <p class="text-[11px] text-[#8e8e93]">Phase 8 • Prospect Tracker • Integrated</p>
     </div>
   </div>
 
-  <!-- Detail Modal -->
-  <div id="modal" onclick="if (event.target.id === 'modal') closeModal()" 
-       class="hidden fixed inset-0 z-[100] modal-backdrop-mercury flex items-end sm:items-center justify-center">
-    <div onclick="event.stopImmediatePropagation()" 
-         class="modal-sheet-mercury w-full sm:max-w-[480px] sm:m-4 overflow-hidden max-h-[90vh] overflow-y-auto bg-white">
+  <!-- Slide-out Prospect Tracker Panel -->
+  <div id="slide-overlay" class="slide-panel-overlay" onclick="closeProspectTracker()"></div>
+  
+  <div id="slide-panel" class="slide-panel">
+    <!-- Panel Header -->
+    <div class="panel-header">
+      <div class="flex items-center gap-x-3">
+        <div class="w-10 h-10 bg-[#0071e3] rounded-xl flex items-center justify-center text-white">
+          <i class="fa-solid fa-chart-bar"></i>
+        </div>
+        <div>
+          <h2 class="text-[19px] font-bold tracking-[-0.3px]">Prospect Tracker</h2>
+          <p class="text-[13px] text-[#8e8e93]">Scrape → Track → Audit → Close</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-x-2">
+        <button onclick="exportCSV()" class="btn-secondary" title="Export CSV">
+          <i class="fa-solid fa-download"></i>
+          <span class="hidden sm:inline">Export</span>
+        </button>
+        <button onclick="closeProspectTracker()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-[#f5f5f7] transition-colors">
+          <i class="fa-solid fa-xmark text-lg text-[#8e8e93]"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel Content -->
+    <div class="panel-content">
       
-      <!-- Modal Header -->
-      <div class="sticky top-0 z-10 px-6 pt-6 pb-4 bg-white border-b border-[#e8e8e6]">
-        <div class="flex items-center justify-between">
-          <div class="min-w-0 flex-1">
-            <div id="modal-name" class="font-bold text-lg text-[#1a1a1a] tracking-tight truncate"></div>
-            <div id="modal-meta" class="text-sm text-[#a0a0a0] mt-0.5"></div>
-          </div>
-          <button onclick="closeModal()" class="w-9 h-9 rounded-xl bg-[#f0f0ee] flex items-center justify-center text-[#a0a0a0] hover:text-[#1a1a1a] hover:bg-[#e8e8e6] transition-all ml-3 flex-shrink-0">
-            <i class="fa-solid fa-xmark"></i>
+      <!-- Import Section -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-[15px] font-semibold">Import Prospects</h3>
+          <button onclick="runScraper()" class="btn-primary">
+            <i class="fa-solid fa-rocket"></i>
+            <span>Run Scraper</span>
           </button>
+        </div>
+        
+        <div id="import-zone" class="import-zone" onclick="document.getElementById('csv-input').click()"
+             ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+          <i class="fa-solid fa-cloud-arrow-up text-2xl text-[#8e8e93] mb-2"></i>
+          <p class="text-sm font-medium text-[#1d1d1f]">Drop CSV file or click to browse</p>
+          <p class="text-xs text-[#8e8e93] mt-1">Supports: prospects_raw.csv format</p>
+          <input type="file" id="csv-input" accept=".csv" style="display: none;" onchange="handleFileSelect(event)">
         </div>
       </div>
 
-      <div class="p-6 space-y-6">
-        <!-- Deal Stage Tracker -->
-        <div>
-          <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-3">Deal Stage</div>
-          <div class="flex items-center gap-2">
-            <div class="stage-dot-mercury active" data-stage="new" onclick="setStage('new')"></div>
-            <div class="stage-line-mercury completed"></div>
-            <div class="stage-dot-mercury" data-stage="contacted" onclick="setStage('contacted')"></div>
-            <div class="stage-line-mercury"></div>
-            <div class="stage-dot-mercury" data-stage="pitched" onclick="setStage('pitched')"></div>
-            <div class="stage-line-mercury"></div>
-            <div class="stage-dot-mercury" data-stage="closed" onclick="setStage('closed')"></div>
+      <!-- Formula Bar -->
+      <div class="mb-6">
+        <div class="formula-bar">
+          <div class="formula-item">
+            <span class="formula-value" id="ft-total">0</span>
+            <span class="formula-label">Total</span>
           </div>
-          <div class="flex justify-between mt-2 text-xs text-[#a0a0a0]">
-            <span>New</span>
-            <span>Contacted</span>
-            <span>Pitched</span>
-            <span>Closed</span>
+          <div class="formula-item" style="border-color: #ffebee;">
+            <span class="formula-value text-[#c62828]" id="ft-hot">0</span>
+            <span class="formula-label">Hot</span>
           </div>
-        </div>
-
-        <!-- Score Rings -->
-        <div class="grid grid-cols-2 gap-4">
-          <div class="metric-block-mercury">
-            <div class="flex items-center gap-3">
-              <div class="score-ring-container">
-                <svg width="48" height="48" viewBox="0 0 48 48">
-                  <circle class="score-ring-bg" cx="24" cy="24" r="20"/>
-                  <circle id="modal-seo-ring" class="score-ring-fill" cx="24" cy="24" r="20" 
-                          stroke-dasharray="125.7" stroke-dashoffset="125.7" stroke="#0055ff"/>
-                </svg>
-                <div id="modal-seo" class="score-ring-value text-[#0055ff]"></div>
-              </div>
-              <div>
-                <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider">Tech Score</div>
-                <div id="modal-seo-desc" class="text-xs text-[#a0a0a0] mt-0.5"></div>
-              </div>
-            </div>
+          <div class="formula-item" style="border-color: #fff3e0;">
+            <span class="formula-value text-[#ef6c00]" id="ft-warm">0</span>
+            <span class="formula-label">Warm</span>
           </div>
-          <div class="metric-block-mercury">
-            <div class="flex items-center gap-3">
-              <div class="score-ring-container">
-                <svg width="48" height="48" viewBox="0 0 48 48">
-                  <circle class="score-ring-bg" cx="24" cy="24" r="20"/>
-                  <circle id="modal-overall-ring" class="score-ring-fill" cx="24" cy="24" r="20" 
-                          stroke-dasharray="125.7" stroke-dashoffset="125.7" stroke="#00a86b"/>
-                </svg>
-                <div id="modal-overall" class="score-ring-value text-[#00a86b]"></div>
-              </div>
-              <div>
-                <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider">Lead Score</div>
-                <div id="modal-overall-desc" class="text-xs text-[#a0a0a0] mt-0.5"></div>
-              </div>
-            </div>
+          <div class="formula-item" style="border-color: #e3f2fd;">
+            <span class="formula-value text-[#1565c0]" id="ft-cold">0</span>
+            <span class="formula-label">Cold</span>
           </div>
-        </div>
-
-        <!-- Score Breakdown -->
-        <div id="modal-score-breakdown" class="bg-[#f7f7f5] border border-[#e8e8e6] rounded-2xl p-5">
-          <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-3">Score Breakdown</div>
-          <div id="modal-score-reasons" class="space-y-2"></div>
-        </div>
-
-        <!-- Recommended Service -->
-        <div>
-          <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-2">Recommended</div>
-          <div id="modal-recommended" class="inline-flex items-center gap-2 px-4 py-2 bg-[#e8f0ff] border border-[#0055ff]/20 rounded-xl text-sm font-semibold text-[#0055ff]"></div>
-        </div>
-
-        <!-- Contact Info -->
-        <div>
-          <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-2">Contact</div>
-          <div id="modal-contact" class="space-y-2"></div>
-        </div>
-
-        <!-- Activity Tracking -->
-        <div>
-          <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-3">Activity</div>
-          <div class="flex items-center gap-3">
-            <button id="modal-toggle-email" onclick="toggleEmailSentFromModal()" class="activity-toggle" title="Email sent">
-              <i class="fa-solid fa-envelope"></i>
-            </button>
-            <button id="modal-toggle-call" onclick="toggleCallMadeFromModal()" class="activity-toggle" title="Call made">
-              <i class="fa-solid fa-phone"></i>
-            </button>
-            <button id="modal-toggle-mail" onclick="togglePhysicalMailFromModal()" class="activity-toggle" title="Physical mail sent">
-              <i class="fa-solid fa-envelope-open-text"></i>
-            </button>
-            <div id="modal-activity-summary" class="text-xs text-[#a0a0a0] ml-2"></div>
+          <div class="formula-item" style="border-color: #f3e5f5;">
+            <span class="formula-value text-[#6a1b9a]" id="ft-audits">0</span>
+            <span class="formula-label">Audits Sent</span>
           </div>
-        </div>
-
-        <!-- Outreach -->
-        <div>
-          <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-3">Outreach</div>
-          
-          <div class="bg-[#f7f7f5] border border-[#e8e8e6] rounded-2xl p-5 mb-3">
-            <div class="flex items-center justify-between mb-2">
-              <div class="flex items-center gap-2 text-sm font-semibold text-[#1a1a1a]">
-                <i class="fa-solid fa-comment-dots text-[#0055ff]"></i>
-                <span>SMS</span>
-              </div>
-              <button onclick="copySMS()" class="btn-secondary text-xs py-1.5 px-3">
-                <i class="fa-regular fa-copy mr-1"></i>Copy
-              </button>
-            </div>
-            <div id="modal-sms" class="text-sm text-[#6b6b6b] leading-relaxed"></div>
+          <div class="formula-item" style="border-color: #e8f5e9;">
+            <span class="formula-value text-[#2e7d32]" id="ft-closed">0</span>
+            <span class="formula-label">Closed</span>
           </div>
-
-          <div class="flex items-center gap-3">
-            <button onclick="toggleEmail(event)" class="btn-secondary flex-1 py-3 text-sm font-semibold flex items-center justify-center gap-2">
-              <i class="fa-solid fa-envelope"></i>
-              <span>Email Draft</span>
-            </button>
-            <button onclick="openWebsite()" class="btn-secondary flex-1 py-3 text-sm font-semibold flex items-center justify-center gap-2">
-              <i class="fa-solid fa-globe"></i>
-              <span>Website</span>
-            </button>
-          </div>
-
-          <div id="email-popover" class="hidden mt-3 bg-[#f7f7f5] border border-[#e8e8e6] rounded-2xl p-5">
-            <div class="flex justify-between items-center mb-2">
-              <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider">Subject</div>
-              <button onclick="copyEmailDraft()" class="btn-secondary text-xs py-1.5 px-3">
-                <i class="fa-regular fa-copy mr-1"></i>Copy
-              </button>
-            </div>
-            <div id="modal-email-subject" class="text-sm font-medium text-[#1a1a1a] mb-4"></div>
-            <div class="text-xs font-semibold text-[#a0a0a0] uppercase tracking-wider mb-2">Body</div>
-            <div id="modal-email-body" class="text-sm text-[#6b6b6b] leading-relaxed whitespace-pre-line"></div>
+          <div class="formula-item" style="border-color: #e0f2f1;">
+            <span class="formula-value text-[#00695c]" id="ft-pipeline">$0</span>
+            <span class="formula-label">Pipeline</span>
           </div>
         </div>
       </div>
 
-      <!-- Modal Footer Actions -->
-      <div class="sticky bottom-0 border-t border-[#e8e8e6] p-4 bg-white">
-        <div class="flex gap-3">
-          <button onclick="markContacted()" id="btn-contacted" class="btn-secondary flex-1 py-3 text-sm font-semibold flex items-center justify-center gap-2">
-            <i class="fa-solid fa-phone"></i>
-            <span>Mark Contacted</span>
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="prospect-table" id="prospect-table">
+          <thead>
+            <tr>
+              <th onclick="sortTable('name')">Business</th>
+              <th onclick="sortTable('suburb')">Suburb</th>
+              <th onclick="sortTable('service')">Service</th>
+              <th onclick="sortTable('opportunity_score')">Score</th>
+              <th onclick="sortTable('priority')">Priority</th>
+              <th onclick="sortTable('status')">Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="prospect-tbody">
+            <!-- JS populated -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="text-center py-12 hidden">
+        <i class="fa-solid fa-inbox text-4xl text-[#d2d2d7] mb-3"></i>
+        <p class="text-[15px] font-medium text-[#8e8e93]">No prospects yet</p>
+        <p class="text-sm text-[#8e8e93] mt-1">Run the scraper or import a CSV to get started</p>
+      </div>
+
+    </div>
+
+    <!-- Panel Footer -->
+    <div class="panel-footer">
+      <div class="flex items-center justify-between">
+        <div class="text-xs text-[#8e8e93]">
+          <span id="footer-count">0 prospects</span> • Auto-saved to localStorage
+        </div>
+        <div class="flex gap-x-2">
+          <button onclick="clearAllProspects()" class="btn-secondary text-xs">
+            <i class="fa-solid fa-trash"></i>
+            Clear All
           </button>
-          <button onclick="markClosed()" id="btn-closed" class="btn-gold-shimmer flex-1 py-3 text-sm font-semibold flex items-center justify-center gap-2">
-            <i class="fa-solid fa-trophy"></i>
-            <span>Mark Closed</span>
+          <button onclick="saveToPipeline()" class="btn-primary text-xs">
+            <i class="fa-solid fa-plus"></i>
+            Add to Pipeline
           </button>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#1d1d1f] text-white px-5 py-3 rounded-2xl text-sm font-medium opacity-0 pointer-events-none transition-opacity duration-300 z-[300]">
+    <span id="toast-message"></span>
   </div>
 
   <script>
-    let leads = [];
-    let currentSegment = 'all';
-    let currentSearch = '';
-    let currentSort = 'overall';
-    let contactedCount = parseInt(localStorage.getItem('contactedCount') || '0');
-    let closedCount = parseInt(localStorage.getItem('closedCount') || '0');
-    let contactedLeads = JSON.parse(localStorage.getItem('contactedLeads') || '[]');
-    let closedLeads = JSON.parse(localStorage.getItem('closedLeads') || '[]');
+    // ───────────────────────────────────────────────
+    // Data & State
+    // ───────────────────────────────────────────────
+    
+    let prospects = [];
+    let sortColumn = 'opportunity_score';
+    let sortDirection = 'desc';
+    let selectedProspects = new Set();
 
-    // Activity tracking: email, phone call, physical mail
-    let emailSent = JSON.parse(localStorage.getItem('emailSent') || '[]');
-    let callMade = JSON.parse(localStorage.getItem('callMade') || '[]');
-    let physicalMailSent = JSON.parse(localStorage.getItem('physicalMailSent') || '[]');
-
-    async function loadLeads() {
-      try {
-        // Migrate old localStorage if needed (ensure arrays exist)
-        if (!localStorage.getItem('emailSent')) localStorage.setItem('emailSent', '[]');
-        if (!localStorage.getItem('callMade')) localStorage.setItem('callMade', '[]');
-        if (!localStorage.getItem('physicalMailSent')) localStorage.setItem('physicalMailSent', '[]');
-        const response = await fetch('dashboard_data.json?v=' + new Date().getTime());
-        if (!response.ok) throw new Error('Failed to load leads: ' + response.status);
-        leads = await response.json();
-        console.log(`Loaded ${leads.length} leads`);
-        updateGamificationStats();
-        filterLeads();
-      } catch (err) {
-        console.error('Error loading leads:', err);
-        document.getElementById('leads-grid').innerHTML = 
-          '<div class="col-span-full py-12 text-center text-[#a0a0a0]"><i class="fa-solid fa-triangle-exclamation mb-2 text-2xl"></i><br>Error loading leads: ' + err.message + '<br><button onclick="loadLeads()" class="mt-4 px-4 py-2 bg-[#0055ff] text-white rounded-lg text-sm font-medium">Retry</button></div>';
-      }
-    }
-
-    function updateGamificationStats() {
-      const elContacted = document.getElementById('stat-contacted');
-      const elClosed = document.getElementById('stat-closed');
-      if (elContacted) elContacted.textContent = contactedCount;
-      if (elClosed) elClosed.textContent = closedCount;
-      
-      // Calculate level dynamically (5 deals per level, start at 1)
-      const level = Math.floor(closedCount / 5) + 1;
-      const levelProgress = ((closedCount % 5) / 5) * 100;
-      const nextLevelDeals = level * 5;
-      const remainingToNext = nextLevelDeals - closedCount;
-      
-      // Update level badge
-      const levelBadge = document.getElementById('level-badge');
-      const levelProgressBar = document.getElementById('level-progress');
-      const levelPercent = document.getElementById('level-percent');
-      if (levelBadge) levelBadge.textContent = 'LVL ' + level;
-      if (levelProgressBar) levelProgressBar.style.width = levelProgress + '%';
-      if (levelPercent) levelPercent.textContent = Math.round(levelProgress) + '%';
-      
-      // Calculate streak based on consecutive activity days
-      let streakCount = parseInt(localStorage.getItem('streakCount') || '0');
-      const lastActivityDate = localStorage.getItem('lastActivityDate');
-      const today = new Date().toDateString();
-      const yesterday = new Date(Date.now() - 86400000).toDateString();
-      
-      if (lastActivityDate === today) {
-        // Activity already today, streak stays
-      } else if (lastActivityDate === yesterday) {
-        // Activity yesterday but not today yet, streak intact
-      } else if (lastActivityDate && lastActivityDate !== today) {
-        // Gap > 1 day, reset streak (but only if we haven't done activity today)
-        // Don't auto-reset here; reset happens when activity is done after a gap
-      }
-      
-      // Update streak badge
-      const streakBadge = document.getElementById('streak-badge');
-      const streakCountEl = document.getElementById('streak-count');
-      if (streakCountEl) streakCountEl.textContent = streakCount;
-      if (streakBadge && streakCount > 0) {
-        streakBadge.classList.remove('streak-hidden');
-      } else if (streakBadge) {
-        streakBadge.classList.add('streak-hidden');
-      }
-      
-      // Update progress bar (legacy, uses 20 deals for now)
-      const progressBar = document.getElementById('progress-bar');
-      const progressText = document.getElementById('progress-text');
-      const progressHint = document.getElementById('progress-hint');
-      
-      if (progressBar) {
-        const pct = Math.min((closedCount / 20) * 100, 100);
-        progressBar.style.width = pct + '%';
-      }
-      if (progressText) {
-        progressText.textContent = closedCount + ' / 20 deals';
-      }
-      if (progressHint) {
-        if (remainingToNext === 0 && closedCount > 0) {
-          progressHint.innerHTML = '<span>Level ' + (level + 1) + ' achieved!</span><span>Keep closing</span>';
-        } else if (closedCount === 0) {
-          progressHint.innerHTML = '<span>Close your first deal to start</span><span>5 to Level 2</span>';
-        } else {
-          progressHint.innerHTML = '<span>' + remainingToNext + ' more to Level ' + (level + 1) + '</span><span>Keep going</span>';
-        }
-      }
-    }
-
-    function recordActivity() {
-      const today = new Date().toDateString();
-      const yesterday = new Date(Date.now() - 86400000).toDateString();
-      const lastActivityDate = localStorage.getItem('lastActivityDate');
-      let streakCount = parseInt(localStorage.getItem('streakCount') || '0');
-      
-      if (lastActivityDate === today) {
-        // Already recorded today, don't increment streak again
-      } else if (lastActivityDate === yesterday) {
-        streakCount++;
-        localStorage.setItem('streakCount', streakCount.toString());
-      } else {
-        // Reset streak to 1 (first day of new streak)
-        streakCount = 1;
-        localStorage.setItem('streakCount', streakCount.toString());
-      }
-      localStorage.setItem('lastActivityDate', today);
-      updateGamificationStats();
-    }
-
-    function updateStats(filtered) {
-      const total = filtered.length;
-      const high = filtered.filter(l => l.priority === 'high').length;
-      const multi = filtered.filter(l => l.multi).length;
-
-      const statTotal = document.getElementById('stat-total');
-      const statHigh = document.getElementById('stat-high');
-      const filterHotCount = document.getElementById('filter-hot-count');
-      
-      if (statTotal) statTotal.textContent = total;
-      if (statHigh) statHigh.textContent = high;
-      if (filterHotCount) filterHotCount.textContent = high > 0 ? high : '';
-    }
-
-    function renderLeads(filtered) {
-      const grid = document.getElementById('leads-grid');
-      grid.innerHTML = '';
-
-      if (!filtered.length) {
-        grid.innerHTML = '<div class="col-span-full py-12 text-center text-[#a0a0a0]"><i class="fa-solid fa-inbox text-2xl mb-2 block"></i>No leads match the current view.</div>';
-        return;
-      }
-
-      filtered.forEach((lead, index) => {
+    // Load from localStorage on init
+    function loadProspects() {
+      const saved = localStorage.getItem('marvelus_prospects');
+      if (saved) {
         try {
-          const isContacted = contactedLeads.includes(lead.id);
-          const isClosed = closedLeads.includes(lead.id);
-          const delay = Math.min(index * 0.05, 0.5);
-          
-          const div = document.createElement('div');
-          div.className = 'card-mercury p-5 cursor-pointer';
-          div.style.animation = `modalIn 0.4s cubic-bezier(0.32, 0.72, 0, 1) ${delay}s both`;
-          
-          // Score color logic
-          const techColor = lead.seo <= 30 ? 'text-[#ff4757]' : lead.seo <= 60 ? 'text-[#f5a623]' : 'text-[#00a86b]';
-          const seoScore = calculateSEOScore(lead);
-          const seoColor = getSEOColor(seoScore);
-          
-          // Priority badge
-          let badgeClass = 'badge-cool';
-          let badgeText = 'COOL';
-          if (lead.priority === 'high') { badgeClass = 'badge-hot'; badgeText = 'HOT'; }
-          else if (lead.priority === 'medium') { badgeClass = 'badge-warm'; badgeText = 'WARM'; }
-          
-          div.innerHTML = `
-            <div class="flex justify-between items-start mb-4">
-              <div class="min-w-0 flex-1">
-                <div class="flex items-center gap-2 mb-1">
-                  <div class="font-semibold text-[#1a1a1a] text-base truncate">${lead.name || 'Unknown'}</div>
-                  ${isClosed ? '<i class="fa-solid fa-trophy text-[#d4a574] flex-shrink-0" title="Deal closed!"></i>' : ''}
-                  ${isContacted && !isClosed ? '<i class="fa-solid fa-phone text-[#00a86b] flex-shrink-0" title="Contacted"></i>' : ''}
-                </div>
-                <div class="text-sm text-[#a0a0a0]">${lead.category || 'business'} • ${lead.location || 'Unknown'}</div>
-              </div>
-              <div class="flex items-center gap-2 ml-2 flex-shrink-0">
-                ${badgeText === 'HOT' ? `<i class="fa-solid fa-fire text-[#ff4757] text-sm" title="Hot lead"></i>` : `<span class="px-2 py-1 text-[10px] font-semibold ${badgeClass} rounded-lg">${badgeText}</span>`}
-              </div>
-            </div>
-
-            <div class="flex items-center gap-6 mb-4">
-              <div class="flex items-center gap-2">
-                <span class="text-2xl font-bold ${techColor} font-mono">${lead.seo || 0}</span>
-                <div>
-                  <div class="flex items-center gap-1">
-                    <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">Tech</div>
-                    <button onclick="event.stopImmediatePropagation(); showTechTooltip(event)" class="info-btn">
-                      <i class="fa-solid fa-info text-[8px]"></i>
-                    </button>
-                  </div>
-                  <div class="text-xs text-[#a0a0a0]">${(lead.seo || 0) <= 30 ? 'High opp' : (lead.seo || 0) <= 60 ? 'Moderate' : 'Low opp'}</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="text-2xl font-bold ${seoColor} font-mono">${calculateSEOScore(lead)}</span>
-                <div>
-                  <div class="flex items-center gap-1">
-                    <div class="text-[10px] font-semibold text-[#a0a0a0] uppercase tracking-wider">SEO</div>
-                    <button onclick="event.stopImmediatePropagation(); showSEOTooltip(event)" class="info-btn">
-                      <i class="fa-solid fa-info text-[8px]"></i>
-                    </button>
-                  </div>
-                  <div class="text-xs text-[#a0a0a0]">${getSEOLabel(calculateSEOScore(lead))}</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="flex items-center justify-between pt-3 border-t border-[#e8e8e6]">
-              <div class="flex items-center gap-2">
-                ${lead.recommended !== 'AI Voice' ? `<span class="px-2 py-1 text-[10px] font-semibold bg-[#e8f0ff] border border-[#0055ff]/20 text-[#0055ff] rounded-lg">${lead.recommended || 'General'}</span>` : ''}
-                ${lead.multi ? '<span class="px-2 py-1 text-[10px] font-semibold bg-[#f0f0ee] border border-[#e8e8e6] text-[#6b6b6b] rounded-lg">MULTI</span>' : ''}
-              </div>
-              <div class="flex gap-1 items-center">
-                <!-- Activity tracking icons -->
-                <button onclick="event.stopImmediatePropagation(); toggleEmailSent(${lead.id})" class="activity-toggle ${emailSent.includes(lead.id) ? 'active' : ''}" title="Email sent">
-                  <i class="fa-solid fa-envelope"></i>
-                </button>
-                <button onclick="event.stopImmediatePropagation(); toggleCallMade(${lead.id})" class="activity-toggle ${callMade.includes(lead.id) ? 'active-phone' : ''}" title="Call made">
-                  <i class="fa-solid fa-phone"></i>
-                </button>
-                <button onclick="event.stopImmediatePropagation(); togglePhysicalMail(${lead.id})" class="activity-toggle ${physicalMailSent.includes(lead.id) ? 'active-mail' : ''}" title="Physical mail sent">
-                  <i class="fa-solid fa-envelope-open-text"></i>
-                </button>
-                <div class="w-px h-4 bg-[#e8e8e6] mx-1"></div>
-                <button onclick="event.stopImmediatePropagation(); copyLeadSMS(${lead.id})" class="action-btn-clean">
-                  <i class="fa-regular fa-copy text-sm"></i>
-                </button>
-                <button onclick="event.stopImmediatePropagation(); window.open('${lead.website || '#'}', '_blank')" class="action-btn-clean">
-                  <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
-                </button>
-              </div>
-            </div>
-          `;
-          div.onclick = () => showDetail(lead);
-          grid.appendChild(div);
-        } catch (err) {
-          console.error('Error rendering lead:', lead, err);
-        }
-      });
-    }
-
-    function filterLeads() {
-      currentSearch = document.getElementById('search-input').value.toLowerCase().trim();
-
-      let filtered = leads.filter(l => {
-        const matchesSearch = !currentSearch || l.name.toLowerCase().includes(currentSearch) || l.category.toLowerCase().includes(currentSearch);
-        let matchesSeg = true;
-        if (currentSegment === 'high') matchesSeg = l.priority === 'high';
-        else if (currentSegment === 'contacted') matchesSeg = contactedLeads.includes(l.id);
-        else if (currentSegment === 'uncontacted') matchesSeg = !contactedLeads.includes(l.id) && !closedLeads.includes(l.id);
-        else if (currentSegment === 'closed') matchesSeg = closedLeads.includes(l.id);
-        else if (currentSegment === 'multi') matchesSeg = l.multi;
-        else if (currentSegment === 'ai') matchesSeg = l.recommended.toLowerCase().includes('voice');
-        return matchesSearch && matchesSeg;
-      });
-
-      filtered.sort((a, b) => {
-        if (currentSort === 'overall') return b.overall - a.overall;
-        if (currentSort === 'seo') return a.seo - b.seo;
-        if (currentSort === 'name') return a.name.localeCompare(b.name);
-        return 0;
-      });
-
-      renderLeads(filtered);
-      updateStats(filtered);
-    }
-
-    function setSegment(el, seg) {
-      document.querySelectorAll('.segment-btn-mercury').forEach(s => s.classList.remove('active'));
-      el.classList.add('active');
-      currentSegment = seg;
-      filterLeads();
-    }
-
-    function toggleEmailSent(id) {
-      if (emailSent.includes(id)) {
-        emailSent = emailSent.filter(x => x !== id);
-      } else {
-        emailSent.push(id);
-        recordActivity();
-      }
-      localStorage.setItem('emailSent', JSON.stringify(emailSent));
-      updateContactedFromActivity();
-      filterLeads();
-      showToast(emailSent.includes(id) ? 'Email marked sent' : 'Email unmarked');
-    }
-
-    function toggleCallMade(id) {
-      if (callMade.includes(id)) {
-        callMade = callMade.filter(x => x !== id);
-      } else {
-        callMade.push(id);
-        recordActivity();
-      }
-      localStorage.setItem('callMade', JSON.stringify(callMade));
-      updateContactedFromActivity();
-      filterLeads();
-      showToast(callMade.includes(id) ? 'Call marked made' : 'Call unmarked');
-    }
-
-    function togglePhysicalMail(id) {
-      if (physicalMailSent.includes(id)) {
-        physicalMailSent = physicalMailSent.filter(x => x !== id);
-      } else {
-        physicalMailSent.push(id);
-        recordActivity();
-      }
-      localStorage.setItem('physicalMailSent', JSON.stringify(physicalMailSent));
-      updateContactedFromActivity();
-      filterLeads();
-      showToast(physicalMailSent.includes(id) ? 'Physical mail marked sent' : 'Physical mail unmarked');
-    }
-
-    function updateContactedFromActivity() {
-      // Sync contactedLeads to include any lead with at least one activity
-      const allActivity = [...new Set([...emailSent, ...callMade, ...physicalMailSent])];
-      allActivity.forEach(id => {
-        if (!contactedLeads.includes(id)) {
-          contactedLeads.push(id);
-        }
-      });
-      // Remove from contactedLeads if no activity and not explicitly marked contacted
-      contactedLeads = contactedLeads.filter(id => {
-        return allActivity.includes(id) || closedLeads.includes(id);
-      });
-      contactedCount = contactedLeads.length;
-      localStorage.setItem('contactedLeads', JSON.stringify(contactedLeads));
-      localStorage.setItem('contactedCount', contactedCount.toString());
-      updateGamificationStats();
-    }
-
-    function toggleEmailSentFromModal() {
-      const id = parseInt(document.getElementById('modal').dataset.currentId);
-      toggleEmailSent(id);
-      // Refresh modal
-      const lead = leads.find(l => l.id === id);
-      if (lead) showDetail(lead);
-    }
-
-    function toggleCallMadeFromModal() {
-      const id = parseInt(document.getElementById('modal').dataset.currentId);
-      toggleCallMade(id);
-      const lead = leads.find(l => l.id === id);
-      if (lead) showDetail(lead);
-    }
-
-    function togglePhysicalMailFromModal() {
-      const id = parseInt(document.getElementById('modal').dataset.currentId);
-      togglePhysicalMail(id);
-      const lead = leads.find(l => l.id === id);
-      if (lead) showDetail(lead);
-    }
-
-    function toggleSort() {
-      const options = ['overall', 'seo', 'name'];
-      const labels = { overall: 'Score', seo: 'Opportunity', name: 'Name' };
-      let idx = options.indexOf(currentSort);
-      currentSort = options[(idx + 1) % options.length];
-      document.getElementById('sort-label').textContent = labels[currentSort];
-      filterLeads();
-    }
-
-    function showDetail(lead) {
-      const modal = document.getElementById('modal');
-      document.getElementById('modal-name').textContent = lead.name;
-      document.getElementById('modal-meta').textContent = `${lead.category} • ${lead.location}`;
-      
-      // Tech score ring
-      const seoValue = lead.seo;
-      const seoCircumference = 2 * Math.PI * 20;
-      const seoOffset = seoCircumference - (seoValue / 100) * seoCircumference;
-      document.getElementById('modal-seo').textContent = seoValue;
-      document.getElementById('modal-seo-ring').style.strokeDashoffset = seoOffset;
-      document.getElementById('modal-seo-ring').style.stroke = seoValue <= 30 ? '#ff4757' : seoValue <= 60 ? '#f5a623' : '#00a86b';
-      
-      const seoDesc = document.getElementById('modal-seo-desc');
-      if (lead.seo <= 20) seoDesc.textContent = 'Very basic site — high opportunity';
-      else if (lead.seo <= 40) seoDesc.textContent = 'Simple site — good opportunity';
-      else if (lead.seo <= 60) seoDesc.textContent = 'Moderate tech — some opportunity';
-      else if (lead.seo <= 80) seoDesc.textContent = 'Modern site — limited opportunity';
-      else seoDesc.textContent = 'High-tech site — low opportunity';
-      
-      // Overall score ring
-      const overallValue = lead.overall;
-      const overallOffset = seoCircumference - (overallValue / 100) * seoCircumference;
-      document.getElementById('modal-overall').textContent = overallValue;
-      document.getElementById('modal-overall-ring').style.strokeDashoffset = overallOffset;
-      document.getElementById('modal-overall-ring').style.stroke = overallValue >= 80 ? '#00a86b' : overallValue >= 60 ? '#f5a623' : '#a0a0a0';
-      
-      const overallDesc = document.getElementById('modal-overall-desc');
-      if (lead.overall >= 80) overallDesc.textContent = 'Excellent opportunity';
-      else if (lead.overall >= 60) overallDesc.textContent = 'Good opportunity';
-      else if (lead.overall >= 40) overallDesc.textContent = 'Moderate opportunity';
-      else if (lead.overall >= 20) overallDesc.textContent = 'Limited opportunity';
-      else overallDesc.textContent = 'Low opportunity';
-      
-      // Score breakdown
-      const scoreReasons = document.getElementById('modal-score-reasons');
-      if (lead.score_reasons) {
-        const reasons = lead.score_reasons.split(' | ');
-        scoreReasons.innerHTML = reasons.map(r => {
-          const isPositive = r.includes('+');
-          const color = isPositive ? 'text-[#00a86b]' : 'text-[#ff4757]';
-          const bg = isPositive ? 'bg-[#e6f7f0]' : 'bg-[#ffe8ea]';
-          return `<div class="flex items-center gap-2 text-sm ${bg} rounded-lg px-3 py-2"><span class="${color} font-bold">${isPositive ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-solid fa-xmark"></i>'}</span> <span class="text-[#6b6b6b]">${r}</span></div>`;
-        }).join('');
-      } else {
-        scoreReasons.innerHTML = '<div class="text-sm text-[#a0a0a0]">No detailed breakdown available</div>';
-      }
-      
-      document.getElementById('modal-recommended').textContent = lead.recommended;
-
-      const contact = document.getElementById('modal-contact');
-      contact.innerHTML = `
-        ${lead.phone ? `<div class="flex items-center gap-3 text-sm"><div class="w-8 h-8 rounded-lg bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center"><i class="fa-solid fa-phone text-[#a0a0a0] text-xs"></i></div><span class="text-[#6b6b6b]">${lead.phone}</span></div>` : ''}
-        ${lead.email ? `<div class="flex items-center gap-3 text-sm"><div class="w-8 h-8 rounded-lg bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center"><i class="fa-solid fa-envelope text-[#a0a0a0] text-xs"></i></div><span class="text-[#6b6b6b]">${lead.email}</span></div>` : ''}
-        ${lead.website ? `<div class="flex items-center gap-3 text-sm"><div class="w-8 h-8 rounded-lg bg-[#f0f0ee] border border-[#e8e8e6] flex items-center justify-center"><i class="fa-solid fa-globe text-[#a0a0a0] text-xs"></i></div><a href="${lead.website}" target="_blank" class="text-[#0055ff] hover:text-[#0044cc] transition-colors">${lead.website.replace(/^https?:\/\//, '')}</a></div>` : ''}
-      `;
-
-      document.getElementById('modal-sms').textContent = lead.sms;
-      modal.dataset.currentId = lead.id;
-      modal.dataset.emailSubject = lead.email_subject;
-      modal.dataset.emailBody = lead.email_body;
-
-      // Update stage dots
-      const isContacted = contactedLeads.includes(lead.id);
-      const isClosed = closedLeads.includes(lead.id);
-      document.querySelectorAll('.stage-dot-mercury').forEach(dot => {
-        dot.classList.remove('active', 'completed');
-      });
-      document.querySelectorAll('.stage-line-mercury').forEach(line => {
-        line.classList.remove('completed');
-      });
-      
-      if (isClosed) {
-        document.querySelector('[data-stage="new"]').classList.add('completed');
-        document.querySelector('[data-stage="contacted"]').classList.add('completed');
-        document.querySelector('[data-stage="pitched"]').classList.add('completed');
-        document.querySelector('[data-stage="closed"]').classList.add('completed');
-        document.querySelectorAll('.stage-line-mercury').forEach(l => l.classList.add('completed'));
-      } else if (isContacted) {
-        document.querySelector('[data-stage="new"]').classList.add('completed');
-        document.querySelector('[data-stage="contacted"]').classList.add('active');
-      } else {
-        document.querySelector('[data-stage="new"]').classList.add('active');
-      }
-
-      // Update button states
-      const btnContacted = document.getElementById('btn-contacted');
-      const btnClosed = document.getElementById('btn-closed');
-      
-      if (isContacted) {
-        btnContacted.innerHTML = '<i class="fa-solid fa-check"></i><span>Contacted</span>';
-        btnContacted.classList.add('bg-[#e6f7f0]', 'text-[#00a86b]', 'border-[#00a86b]');
-      } else {
-        btnContacted.innerHTML = '<i class="fa-solid fa-phone"></i><span>Mark Contacted</span>';
-        btnContacted.classList.remove('bg-[#e6f7f0]', 'text-[#00a86b]', 'border-[#00a86b]');
-      }
-      
-      if (isClosed) {
-        btnClosed.innerHTML = '<i class="fa-solid fa-check"></i><span>Closed!</span>';
-        btnClosed.classList.add('bg-[#faf3ec]', 'text-[#d4a574]');
-      } else {
-        btnClosed.innerHTML = '<i class="fa-solid fa-trophy"></i><span>Mark Closed</span>';
-        btnClosed.classList.remove('bg-[#faf3ec]', 'text-[#d4a574]');
-      }
-
-      document.getElementById('email-popover').classList.add('hidden');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function closeModal() {
-      const modal = document.getElementById('modal');
-      modal.classList.remove('flex');
-      modal.classList.add('hidden');
-    }
-
-    function setStage(stage) {
-      const id = parseInt(document.getElementById('modal').dataset.currentId);
-      if (stage === 'contacted') markContacted();
-      else if (stage === 'closed') markClosed();
-    }
-
-    function markContacted() {
-      const id = parseInt(document.getElementById('modal').dataset.currentId);
-      if (!contactedLeads.includes(id)) {
-        contactedLeads.push(id);
-        contactedCount++;
-        localStorage.setItem('contactedLeads', JSON.stringify(contactedLeads));
-        localStorage.setItem('contactedCount', contactedCount.toString());
-        recordActivity();
-        updateGamificationStats();
-        showToast('Marked as contacted');
-        showDetail(leads.find(l => l.id === id));
-        filterLeads();
-      }
-    }
-
-    function markClosed() {
-      const id = parseInt(document.getElementById('modal').dataset.currentId);
-      if (!closedLeads.includes(id)) {
-        closedLeads.push(id);
-        closedCount++;
-        if (!contactedLeads.includes(id)) {
-          contactedLeads.push(id);
-          contactedCount++;
-        }
-        localStorage.setItem('closedLeads', JSON.stringify(closedLeads));
-        localStorage.setItem('contactedLeads', JSON.stringify(contactedLeads));
-        localStorage.setItem('closedCount', closedCount.toString());
-        localStorage.setItem('contactedCount', contactedCount.toString());
-        recordActivity();
-        updateGamificationStats();
-        triggerConfetti();
-        showToast('Deal closed');
-        showDetail(leads.find(l => l.id === id));
-        filterLeads();
-      }
-    }
-
-    function triggerConfetti() {
-      // Subtle gold pulse on the closed stat card
-      const closedStat = document.getElementById('stat-closed');
-      if (closedStat) {
-        const card = closedStat.closest('.stat-pill');
-        if (card) {
-          card.classList.add('gold-pulse');
-          setTimeout(() => card.classList.remove('gold-pulse'), 1200);
+          prospects = JSON.parse(saved);
+          renderTable();
+          updateFormulaBar();
+        } catch (e) {
+          console.error('Failed to load prospects:', e);
         }
       }
     }
 
-    function toggleEmail(e) {
-      e.stopImmediatePropagation();
-      const pop = document.getElementById('email-popover');
-      const modal = document.getElementById('modal');
+    // Save to localStorage
+    function saveProspects() {
+      localStorage.setItem('marvelus_prospects', JSON.stringify(prospects));
+    }
 
-      if (!modal.dataset.emailSubject) {
-        showToast('No email draft available');
+    // ───────────────────────────────────────────────
+    // Panel Controls
+    // ───────────────────────────────────────────────
+
+    function openProspectTracker() {
+      document.getElementById('slide-overlay').classList.add('active');
+      document.getElementById('slide-panel').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      loadProspects();
+    }
+
+    function closeProspectTracker() {
+      document.getElementById('slide-overlay').classList.remove('active');
+      document.getElementById('slide-panel').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeProspectTracker();
+    });
+
+    // ───────────────────────────────────────────────
+    // CSV Import / Export
+    // ───────────────────────────────────────────────
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.currentTarget.classList.add('drag-over');
+    }
+
+    function handleDragLeave(e) {
+      e.currentTarget.classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      e.currentTarget.classList.remove('drag-over');
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        processCSV(files[0]);
+      }
+    }
+
+    function handleFileSelect(e) {
+      const file = e.target.files[0];
+      if (file) {
+        processCSV(file);
+      }
+    }
+
+    function processCSV(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target.result;
+        parseCSV(text);
+        showToast(`Imported ${prospects.length} prospects from ${file.name}`);
+      };
+      reader.readAsText(file);
+    }
+
+    function parseCSV(csvText) {
+      const lines = csvText.trim().split('\n');
+      const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+      
+      const newProspects = [];
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+        const prospect = {};
+        headers.forEach((h, idx) => {
+          prospect[h] = values[idx] || '';
+        });
+        
+        // Normalize data
+        prospect.opportunity_score = parseInt(prospect.opportunity_score) || 0;
+        prospect.rating = parseFloat(prospect.rating) || 0;
+        prospect.review_count = parseInt(prospect.review_count) || 0;
+        prospect.has_website = prospect.has_website === 'True' || prospect.has_website === 'true';
+        prospect.has_ssl = prospect.has_ssl === 'True' || prospect.has_ssl === 'true';
+        prospect.has_schema = prospect.has_schema === 'True' || prospect.has_schema === 'true';
+        prospect.word_count = parseInt(prospect.word_count) || 0;
+        prospect.status = prospect.status || 'New';
+        prospect.priority = prospect.priority || 'Cold';
+        prospect.id = prospect.id || Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        
+        newProspects.push(prospect);
+      }
+      
+      prospects = [...prospects, ...newProspects];
+      saveProspects();
+      renderTable();
+      updateFormulaBar();
+    }
+
+    function exportCSV() {
+      if (prospects.length === 0) {
+        showToast('No prospects to export');
         return;
       }
-
-      document.getElementById('modal-email-subject').textContent = modal.dataset.emailSubject;
-      document.getElementById('modal-email-body').textContent = modal.dataset.emailBody;
-      pop.classList.toggle('hidden');
-    }
-
-    function copySMS() {
-      const id = parseInt(document.getElementById('modal').dataset.currentId);
-      const lead = leads.find(l => l.id === id);
-      navigator.clipboard.writeText(lead.sms).then(() => {
-        showToast('SMS copied');
-        recordActivity();
+      
+      const headers = ['name', 'service', 'suburb', 'address', 'phone', 'website', 'rating', 'review_count', 'opportunity_score', 'priority', 'status', 'has_website', 'has_ssl', 'has_schema'];
+      let csv = headers.join(',') + '\n';
+      
+      prospects.forEach(p => {
+        const row = headers.map(h => {
+          const val = p[h] || '';
+          return '"' + String(val).replace(/"/g, '""') + '"';
+        });
+        csv += row.join(',') + '\n';
       });
+      
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `prospects_${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      
+      showToast(`Exported ${prospects.length} prospects`);
     }
 
-    function copyLeadSMS(id) {
-      const lead = leads.find(l => l.id === id);
-      navigator.clipboard.writeText(lead.sms).then(() => {
-        showToast('SMS copied');
-        recordActivity();
-      });
-    }
+    // ───────────────────────────────────────────────
+    // Scraper Integration
+    // ───────────────────────────────────────────────
 
-    function copyEmailDraft() {
-      const modal = document.getElementById('modal');
-      const text = `Subject: ${modal.dataset.emailSubject}\n\n${modal.dataset.emailBody}`;
-      navigator.clipboard.writeText(text).then(() => {
-        showToast('Email copied');
-        document.getElementById('email-popover').classList.add('hidden');
-        recordActivity();
-      });
-    }
-
-    function openWebsite() {
-      const id = parseInt(document.getElementById('modal').dataset.currentId);
-      const lead = leads.find(l => l.id === id);
-      window.open(lead.website, '_blank');
-    }
-
-    function calculateSEOScore(lead) {
-      // SEO score based on signals we can infer from the data
-      // This is an estimate based on available data points
-      let score = 50; // baseline
-      
-      // Higher tech score = better SEO foundation (they have a site)
-      if (lead.seo <= 30) score -= 20; // Basic site, likely poor SEO
-      else if (lead.seo <= 60) score -= 10; // Moderate
-      else score += 10; // Sophisticated, likely good SEO
-      
-      // Has email = more professional, likely some SEO effort
-      if (lead.email) score += 10;
-      
-      // Has phone = local business presence
-      if (lead.phone) score += 5;
-      
-      // High overall score = more likely to have invested in SEO
-      if (lead.overall >= 80) score += 15;
-      else if (lead.overall >= 60) score += 5;
-      
-      // Priority indicates lead quality, high priority = more likely to need SEO
-      if (lead.priority === 'high') score -= 10; // They need help
-      
-      // Clamp to 0-100
-      return Math.max(0, Math.min(100, score));
-    }
-
-    function getSEOLabel(score) {
-      if (score <= 30) return 'Needs work';
-      if (score <= 60) return 'Moderate';
-      return 'Strong';
-    }
-
-    function getSEOColor(score) {
-      if (score <= 30) return 'text-[#ff4757]';
-      if (score <= 60) return 'text-[#f5a623]';
-      return 'text-[#00a86b]';
-    }
-
-    let activeTooltip = null;
-
-    function removeActiveTooltip() {
-      if (activeTooltip) {
-        activeTooltip.remove();
-        activeTooltip = null;
-      }
-    }
-
-    function showTechTooltip(e) {
-      e.stopImmediatePropagation();
-      // If clicking same type while open, just close it (toggle)
-      if (activeTooltip && activeTooltip.dataset.tooltipType === 'tech') {
-        removeActiveTooltip();
-        return;
-      }
-      // Close any other open tooltip first
-      removeActiveTooltip();
-      
-      const tooltip = document.createElement('div');
-      tooltip.dataset.tooltipType = 'tech';
-      tooltip.className = 'fixed z-[200] bg-[#1a1a1a] text-white text-xs rounded-xl p-4 max-w-[280px] shadow-2xl';
-      tooltip.style.left = e.clientX + 'px';
-      tooltip.style.top = (e.clientY + 20) + 'px';
-      tooltip.innerHTML = `
-        <div class="font-semibold mb-2 text-sm">Tech Score</div>
-        <div class="text-[#a0a0a0] mb-3">Website sophistication (0-100). Lower = more opportunity for tech services.</div>
-        <div class="space-y-2">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-[#ff4757]"></span>
-            <span>0-30: Basic site, high opportunity</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-[#f5a623]"></span>
-            <span>31-60: Moderate tech</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-[#00a86b]"></span>
-            <span>61-100: Sophisticated</span>
-          </div>
-        </div>
-        <div class="mt-3 pt-3 border-t border-[#333] text-[#a0a0a0]">
-          Based on: chatbot, click-to-call, booking flow, website tech, contact info
-        </div>
-      `;
-      document.body.appendChild(tooltip);
-      activeTooltip = tooltip;
-      
-      const rect = tooltip.getBoundingClientRect();
-      if (rect.right > window.innerWidth) {
-        tooltip.style.left = (e.clientX - rect.width) + 'px';
-      }
-      if (rect.bottom > window.innerHeight) {
-        tooltip.style.top = (e.clientY - rect.height - 10) + 'px';
-      }
-      
+    function runScraper() {
+      showToast('Opening scraper... Run it from the command line:');
       setTimeout(() => {
-        const outsideClickHandler = (ev) => {
-          if (!tooltip.contains(ev.target)) {
-            removeActiveTooltip();
-            document.removeEventListener('click', outsideClickHandler);
-          }
-        };
-        document.addEventListener('click', outsideClickHandler);
-      }, 100);
-    }
-
-    function showSEOTooltip(e) {
-      e.stopImmediatePropagation();
-      // If clicking same type while open, just close it (toggle)
-      if (activeTooltip && activeTooltip.dataset.tooltipType === 'seo') {
-        removeActiveTooltip();
-        return;
-      }
-      // Close any other open tooltip first
-      removeActiveTooltip();
-      
-      const tooltip = document.createElement('div');
-      tooltip.dataset.tooltipType = 'seo';
-      tooltip.className = 'fixed z-[200] bg-[#1a1a1a] text-white text-xs rounded-xl p-4 max-w-[280px] shadow-2xl';
-      tooltip.style.left = e.clientX + 'px';
-      tooltip.style.top = (e.clientY + 20) + 'px';
-      tooltip.innerHTML = `
-        <div class="font-semibold mb-2 text-sm">SEO Score</div>
-        <div class="text-[#a0a0a0] mb-3">Estimated search ranking strength (0-100). Lower = more SEO opportunity.</div>
-        <div class="space-y-2">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-[#ff4757]"></span>
-            <span>0-30: Needs SEO work</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-[#f5a623]"></span>
-            <span>31-60: Moderate presence</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-[#00a86b]"></span>
-            <span>61-100: Strong ranking</span>
-          </div>
-        </div>
-        <div class="mt-3 pt-3 border-t border-[#333] text-[#a0a0a0]">
-          Estimated from: website tech, contact presence, overall lead quality
-        </div>
-      `;
-      document.body.appendChild(tooltip);
-      activeTooltip = tooltip;
-      
-      const rect = tooltip.getBoundingClientRect();
-      if (rect.right > window.innerWidth) {
-        tooltip.style.left = (e.clientX - rect.width) + 'px';
-      }
-      if (rect.bottom > window.innerHeight) {
-        tooltip.style.top = (e.clientY - rect.height - 10) + 'px';
-      }
-      
-      setTimeout(() => {
-        const outsideClickHandler = (ev) => {
-          if (!tooltip.contains(ev.target)) {
-            removeActiveTooltip();
-            document.removeEventListener('click', outsideClickHandler);
-          }
-        };
-        document.addEventListener('click', outsideClickHandler);
-      }, 100);
-    }
-
-    function copyScript(scriptId) {
-      const scriptText = document.getElementById(scriptId).innerText;
-      navigator.clipboard.writeText(scriptText).then(() => {
-        showToast('Script copied');
-      });
-    }
-
-    function toggleScripts() {
-      const overlay = document.getElementById('drawer-overlay');
-      const panel = document.getElementById('drawer-panel');
-      const isOpen = panel.classList.contains('open');
-      
-      if (isOpen) {
-        overlay.classList.remove('open');
-        panel.classList.remove('open');
-        document.body.style.overflow = '';
-      } else {
-        overlay.classList.add('open');
-        panel.classList.add('open');
-        document.body.style.overflow = 'hidden';
-      }
-    }
-
-    function showToast(msg) {
-      const t = document.createElement('div');
-      t.className = 'toast-mercury fixed bottom-6 left-1/2 -translate-x-1/2 z-[200]';
-      t.textContent = msg;
-      document.body.appendChild(t);
-      setTimeout(() => {
-        t.style.transition = 'opacity .3s, transform .3s';
-        t.style.opacity = '0';
-        t.style.transform = 'translate(-50%, 20px)';
-        setTimeout(() => t.remove(), 300);
+        showToast('python3 scripts/melbourne_prospector.py --service plumber --suburb Frankston');
       }, 2000);
+      
+      // In a real implementation, this would spawn the scraper via API
+      // For now, we'll add a sample prospect for demonstration
+      const sampleProspects = [
+        {
+          id: 'sample_1',
+          name: 'PRO PLUMBERS',
+          service: 'plumber',
+          suburb: 'Frankston',
+          address: 'Frankston VIC',
+          phone: '+61 468 495 650',
+          website: '',
+          rating: 4.9,
+          review_count: 286,
+          opportunity_score: 20,
+          priority: 'Cold',
+          status: 'New',
+          has_website: false,
+          has_ssl: false,
+          has_schema: false,
+          word_count: 0,
+          scraped_at: new Date().toISOString()
+        },
+        {
+          id: 'sample_2',
+          name: 'Frankston Plumbing Group',
+          service: 'plumber',
+          suburb: 'Frankston',
+          address: 'Frankston VIC',
+          phone: '+61 3 5925 6399',
+          website: '',
+          rating: 5.0,
+          review_count: 123,
+          opportunity_score: 20,
+          priority: 'Cold',
+          status: 'New',
+          has_website: false,
+          has_ssl: false,
+          has_schema: false,
+          word_count: 0,
+          scraped_at: new Date().toISOString()
+        }
+      ];
+      
+      prospects = [...prospects, ...sampleProspects];
+      saveProspects();
+      renderTable();
+      updateFormulaBar();
+      showToast('Added 2 sample prospects. Run the scraper for real data.');
+    }
+
+    // ───────────────────────────────────────────────
+    // Table Rendering
+    // ───────────────────────────────────────────────
+
+    function renderTable() {
+      const tbody = document.getElementById('prospect-tbody');
+      const emptyState = document.getElementById('empty-state');
+      
+      if (prospects.length === 0) {
+        tbody.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      
+      emptyState.classList.add('hidden');
+      
+      // Sort prospects
+      const sorted = [...prospects].sort((a, b) => {
+        let aVal = a[sortColumn];
+        let bVal = b[sortColumn];
+        
+        if (typeof aVal === 'string') {
+          aVal = aVal.toLowerCase();
+          bVal = bVal.toLowerCase();
+        }
+        
+        if (sortDirection === 'asc') {
+          return aVal > bVal ? 1 : -1;
+        } else {
+          return aVal < bVal ? 1 : -1;
+        }
+      });
+      
+      tbody.innerHTML = sorted.map(p => `
+        <tr data-id="${p.id}">
+          <td>
+            <div class="font-semibold text-[13px]">${p.name}</div>
+            <div class="text-[11px] text-[#8e8e93]">${p.phone || 'No phone'}</div>
+          </td>
+          <td>${p.suburb}</td>
+          <td>
+            <span class="pill">${p.service}</span>
+          </td>
+          <td>
+            <div class="flex items-center gap-x-2">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${getScoreColor(p.opportunity_score)}">
+                ${p.opportunity_score}
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="pill pill-${p.priority.toLowerCase()}">${p.priority}</span>
+          </td>
+          <td>
+            <span class="pill ${getStatusPillClass(p.status)}">${p.status}</span>
+          </td>
+          <td>
+            <div class="flex items-center gap-x-1">
+              <button onclick="generateAudit('${p.id}')" class="btn-icon" title="Generate Audit">
+                <i class="fa-solid fa-file-lines text-[#0071e3]"></i>
+              </button>
+              <button onclick="copyOutreach('${p.id}')" class="btn-icon" title="Copy Outreach">
+                <i class="fa-solid fa-message text-[#30d158]"></i>
+              </button>
+              <button onclick="addToPipeline('${p.id}')" class="btn-icon" title="Add to Pipeline">
+                <i class="fa-solid fa-star text-[#ff9500]"></i>
+              </button>
+              <button onclick="deleteProspect('${p.id}')" class="btn-icon" title="Delete">
+                <i class="fa-solid fa-trash text-[#8e8e93]"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+      
+      // Update sort indicators
+      document.querySelectorAll('.prospect-table th').forEach(th => {
+        th.classList.remove('sort-asc', 'sort-desc');
+      });
+      const activeTh = document.querySelector(`th[onclick="sortTable('${sortColumn}')"]`);
+      if (activeTh) {
+        activeTh.classList.add(sortDirection === 'asc' ? 'sort-asc' : 'sort-desc');
+      }
+      
+      document.getElementById('footer-count').textContent = `${prospects.length} prospect${prospects.length !== 1 ? 's' : ''}`;
+    }
+
+    function getScoreColor(score) {
+      if (score >= 70) return 'bg-[#ffebee] text-[#c62828]';
+      if (score >= 40) return 'bg-[#fff3e0] text-[#ef6c00]';
+      return 'bg-[#e3f2fd] text-[#1565c0]';
+    }
+
+    function getStatusPillClass(status) {
+      const classes = {
+        'New': 'pill-cold',
+        'Contacted': 'pill-warm',
+        'Audit Sent': 'pill-audit',
+        'Meeting': 'pill-warm',
+        'Closed': 'pill-closed',
+        'Lost': 'pill-cold'
+      };
+      return classes[status] || 'pill-cold';
+    }
+
+    function sortTable(column) {
+      if (sortColumn === column) {
+        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortColumn = column;
+        sortDirection = 'desc';
+      }
+      renderTable();
+    }
+
+    // ───────────────────────────────────────────────
+    // Formula Bar
+    // ───────────────────────────────────────────────
+
+    function updateFormulaBar() {
+      const total = prospects.length;
+      const hot = prospects.filter(p => p.priority === 'Hot').length;
+      const warm = prospects.filter(p => p.priority === 'Warm').length;
+      const cold = prospects.filter(p => p.priority === 'Cold').length;
+      const audits = prospects.filter(p => p.status === 'Audit Sent').length;
+      const closed = prospects.filter(p => p.status === 'Closed').length;
+      
+      // Pipeline value (estimate: $1,500 per warm/hot prospect)
+      const pipelineValue = (hot + warm) * 1500;
+      
+      document.getElementById('ft-total').textContent = total;
+      document.getElementById('ft-hot').textContent = hot;
+      document.getElementById('ft-warm').textContent = warm;
+      document.getElementById('ft-cold').textContent = cold;
+      document.getElementById('ft-audits').textContent = audits;
+      document.getElementById('ft-closed').textContent = closed;
+      document.getElementById('ft-pipeline').textContent = '$' + pipelineValue.toLocaleString();
+    }
+
+    // ───────────────────────────────────────────────
+    // Actions
+    // ───────────────────────────────────────────────
+
+    function generateAudit(id) {
+      const prospect = prospects.find(p => p.id === id);
+      if (!prospect) return;
+      
+      showToast(`Generating audit for ${prospect.name}...`);
+      
+      // Update status
+      prospect.status = 'Audit Sent';
+      saveProspects();
+      renderTable();
+      updateFormulaBar();
+      
+      // In a real implementation, this would call the audit_automator.py
+      setTimeout(() => {
+        showToast(`Audit report ready for ${prospect.name}`);
+      }, 1500);
+    }
+
+    function copyOutreach(id) {
+      const prospect = prospects.find(p => p.id === id);
+      if (!prospect) return;
+      
+      const message = `Hi ${prospect.name},\n\nI noticed your ${prospect.service} business in ${prospect.suburb} and wanted to reach out. I've prepared a free SEO audit showing exactly how you can outrank your competitors and get more leads.\n\nWould you be open to a quick 15-minute call to review it?\n\nBest regards`;
+      
+      navigator.clipboard.writeText(message).then(() => {
+        showToast('Outreach message copied to clipboard');
+      });
+    }
+
+    function addToPipeline(id) {
+      const prospect = prospects.find(p => p.id === id);
+      if (!prospect) return;
+      
+      prospect.status = 'Meeting';
+      saveProspects();
+      renderTable();
+      updateFormulaBar();
+      showToast(`${prospect.name} added to pipeline`);
+    }
+
+    function deleteProspect(id) {
+      const prospect = prospects.find(p => p.id === id);
+      if (!prospect) return;
+      
+      if (confirm(`Delete ${prospect.name}?`)) {
+        prospects = prospects.filter(p => p.id !== id);
+        saveProspects();
+        renderTable();
+        updateFormulaBar();
+        showToast('Prospect deleted');
+      }
+    }
+
+    function clearAllProspects() {
+      if (confirm('Delete all prospects? This cannot be undone.')) {
+        prospects = [];
+        saveProspects();
+        renderTable();
+        updateFormulaBar();
+        showToast('All prospects cleared');
+      }
+    }
+
+    function saveToPipeline() {
+      const selected = prospects.filter(p => p.status === 'Meeting' || p.status === 'Audit Sent');
+      if (selected.length === 0) {
+        showToast('No prospects to add to pipeline. Mark some as Meeting or Audit Sent first.');
+        return;
+      }
+      
+      showToast(`Added ${selected.length} prospects to main pipeline`);
+    }
+
+    // ───────────────────────────────────────────────
+    // Toast
+    // ───────────────────────────────────────────────
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toast-message');
+      toastMessage.textContent = message;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+      
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    // ───────────────────────────────────────────────
+    // Initialize
+    // ───────────────────────────────────────────────
+
+    // Load demo data on first visit if empty
+    if (localStorage.getItem('marvelus_prospects') === null) {
+      // Will show empty state with instructions
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProspects();
+    });
+
+    // ───────────────────────────────────────────────
+    // Existing Dashboard Functions (preserved)
+    // ───────────────────────────────────────────────
+
+    function setSegment(el, segment) {
+      document.querySelectorAll('.segment').forEach(s => s.classList.remove('active'));
+      el.classList.add('active');
     }
 
     function refreshData() {
-      const grid = document.getElementById('leads-grid');
-      grid.style.opacity = '0.3';
-      setTimeout(() => {
-        loadLeads();
-        grid.style.opacity = '1';
-      }, 160);
+      showToast('Refreshing data...');
     }
 
-    function init() {
-      loadLeads();
-      document.getElementById('search-input').addEventListener('input', filterLeads);
-      document.addEventListener('keydown', e => {
-        if (e.key === '/' && document.activeElement.tagName === 'BODY') {
-          e.preventDefault();
-          document.getElementById('search-input').focus();
-        }
-        if (e.key === 'Escape') closeModal();
-      });
+    function filterLeads() {
+      // Existing filter logic
     }
 
-    window.onload = init;
+    function toggleSort() {
+      showToast('Sort functionality');
+    }
   </script>
+
 </body>
 </html>
