@@ -37,7 +37,7 @@ python3 "$GENERATOR"
 
 log "Preparing git commit"
 cd "$REPO_DIR"
-git add index.html scripts/generate_leads_dashboard.py scripts/run_leads_dashboard_pipeline.sh
+git add index.html dashboard_data.json scripts/generate_leads_dashboard.py scripts/run_leads_dashboard_pipeline.sh
 
 if git diff --cached --quiet; then
   log "No dashboard changes to commit"
