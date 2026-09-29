@@ -1271,7 +1271,7 @@
     "priority": "high",
     "multi": false,
     "phone": "1300 119 216",
-    "email": "MATT@AIRFIT.COM.AU",
+    "email": "matt@airfit.com.au",
     "sms": "Hi Airfit, I help hvac in Melbourne stop missing calls with a natural AI receptionist that books 24/7. Quick 10-min look? [Your Name] Marvelus",
     "email_subject": "AI receptionist for hvac in Melbourne (24/7 booking)",
     "email_body": "Hi Airfit Air-Conditioning,\n\nI help hvac businesses in Melbourne get more bookings with a natural Australian AI receptionist that answers 24/7 and books clients straight into your calendar.\n\nWould you be open to a quick 10-min chat this week?\n\nBest,\n[Your Name]\nMarvelus",
@@ -1351,6 +1351,114 @@
   },
   {
     "id": 76,
+    "name": "Air Elite",
+    "category": "hvac",
+    "location": "Melbourne",
+    "website": "https://www.airelite.com.au/",
+    "seo": 10,
+    "overall": 100,
+    "recommended": "AI Voice",
+    "priority": "high",
+    "multi": false,
+    "phone": "1300 235 483",
+    "email": "%20info@airelite.com.au",
+    "sms": "Hi Air, I help hvac in Melbourne stop missing calls with a natural AI receptionist that books 24/7. Quick 10-min look? [Your Name] Marvelus",
+    "email_subject": "AI receptionist for hvac in Melbourne (24/7 booking)",
+    "email_body": "Hi Air Elite,\n\nI help hvac businesses in Melbourne get more bookings with a natural Australian AI receptionist that answers 24/7 and books clients straight into your calendar.\n\nWould you be open to a quick 10-min chat this week?\n\nBest,\n[Your Name]\nMarvelus",
+    "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
+  },
+  {
+    "id": 77,
+    "name": "Airflow HVAC Air Conditioning Melbourne",
+    "category": "hvac",
+    "location": "Melbourne",
+    "website": "https://airflowairconditioning.store/",
+    "seo": 10,
+    "overall": 100,
+    "recommended": "AI Voice",
+    "priority": "high",
+    "multi": false,
+    "phone": "(03) 9125 8539",
+    "email": "you@example.com",
+    "sms": "Hi Airflow, I help hvac in Melbourne stop missing calls with a natural AI receptionist that books 24/7. Quick 10-min look? [Your Name] Marvelus",
+    "email_subject": "AI receptionist for hvac in Melbourne (24/7 booking)",
+    "email_body": "Hi Airflow HVAC Air Conditioning Melbourne,\n\nI help hvac businesses in Melbourne get more bookings with a natural Australian AI receptionist that answers 24/7 and books clients straight into your calendar.\n\nWould you be open to a quick 10-min chat this week?\n\nBest,\n[Your Name]\nMarvelus",
+    "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
+  },
+  {
+    "id": 78,
+    "name": "Dynamic Heating and Air Conditioning Repairs and Service",
+    "category": "hvac",
+    "location": "Melbourne",
+    "website": "https://www.dynamicservices.com.au/",
+    "seo": 10,
+    "overall": 100,
+    "recommended": "AI Voice",
+    "priority": "high",
+    "multi": false,
+    "phone": "0418 991 728",
+    "email": null,
+    "sms": "Hi Dynamic, I help hvac in Melbourne stop missing calls with a natural AI receptionist that books 24/7. Quick 10-min look? [Your Name] Marvelus",
+    "email_subject": "AI receptionist for hvac in Melbourne (24/7 booking)",
+    "email_body": "Hi Dynamic Heating and Air Conditioning Repairs and Service,\n\nI help hvac businesses in Melbourne get more bookings with a natural Australian AI receptionist that answers 24/7 and books clients straight into your calendar.\n\nWould you be open to a quick 10-min chat this week?\n\nBest,\n[Your Name]\nMarvelus",
+    "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
+  },
+  {
+    "id": 79,
+    "name": "Gridless Heating and Cooling",
+    "category": "hvac",
+    "location": "Melbourne",
+    "website": "http://gridless.com.au/",
+    "seo": 10,
+    "overall": 100,
+    "recommended": "AI Voice",
+    "priority": "high",
+    "multi": false,
+    "phone": "0483 917 472",
+    "email": null,
+    "sms": "Hi Gridless, I help hvac in Melbourne stop missing calls with a natural AI receptionist that books 24/7. Quick 10-min look? [Your Name] Marvelus",
+    "email_subject": "AI receptionist for hvac in Melbourne (24/7 booking)",
+    "email_body": "Hi Gridless Heating and Cooling,\n\nI help hvac businesses in Melbourne get more bookings with a natural Australian AI receptionist that answers 24/7 and books clients straight into your calendar.\n\nWould you be open to a quick 10-min chat this week?\n\nBest,\n[Your Name]\nMarvelus",
+    "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
+  },
+  {
+    "id": 80,
+    "name": "High Precision Air Conditioning & Mechanical Services (HPACS)",
+    "category": "hvac",
+    "location": "Melbourne",
+    "website": "http://hpacs.com.au/",
+    "seo": 10,
+    "overall": 100,
+    "recommended": "AI Voice",
+    "priority": "high",
+    "multi": false,
+    "phone": "1300 472 272",
+    "email": null,
+    "sms": "Hi High, I help hvac in Melbourne stop missing calls with a natural AI receptionist that books 24/7. Quick 10-min look? [Your Name] Marvelus",
+    "email_subject": "AI receptionist for hvac in Melbourne (24/7 booking)",
+    "email_body": "Hi High Precision Air Conditioning & Mechanical Services (HPACS),\n\nI help hvac businesses in Melbourne get more bookings with a natural Australian AI receptionist that answers 24/7 and books clients straight into your calendar.\n\nWould you be open to a quick 10-min chat this week?\n\nBest,\n[Your Name]\nMarvelus",
+    "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
+  },
+  {
+    "id": 81,
+    "name": "Setpoint Air",
+    "category": "hvac",
+    "location": "Melbourne",
+    "website": "http://www.setpointair.com.au/",
+    "seo": 10,
+    "overall": 100,
+    "recommended": "AI Voice",
+    "priority": "high",
+    "multi": false,
+    "phone": "1800 413 649",
+    "email": null,
+    "sms": "Hi Setpoint, I help hvac in Melbourne stop missing calls with a natural AI receptionist that books 24/7. Quick 10-min look? [Your Name] Marvelus",
+    "email_subject": "AI receptionist for hvac in Melbourne (24/7 booking)",
+    "email_body": "Hi Setpoint Air,\n\nI help hvac businesses in Melbourne get more bookings with a natural Australian AI receptionist that answers 24/7 and books clients straight into your calendar.\n\nWould you be open to a quick 10-min chat this week?\n\nBest,\n[Your Name]\nMarvelus",
+    "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
+  },
+  {
+    "id": 82,
     "name": "MB Locksmiths Melbourne",
     "category": "locksmiths",
     "location": "Melbourne",
@@ -1368,7 +1476,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 77,
+    "id": 83,
     "name": "Central Melbourne 24H Locksmiths",
     "category": "locksmiths",
     "location": "Melbourne",
@@ -1386,7 +1494,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 78,
+    "id": 84,
     "name": "Wynns Locksmiths Melbourne",
     "category": "locksmiths",
     "location": "Melbourne",
@@ -1404,7 +1512,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 79,
+    "id": 85,
     "name": "Paragon Locksmiths Richmond",
     "category": "locksmiths",
     "location": "Melbourne",
@@ -1422,7 +1530,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 80,
+    "id": 86,
     "name": "ASAP Locksmiths Melbourne",
     "category": "locksmiths",
     "location": "Melbourne",
@@ -1440,7 +1548,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 81,
+    "id": 87,
     "name": "Port Melbourne Locksmiths",
     "category": "locksmiths",
     "location": "Melbourne",
@@ -1458,7 +1566,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 82,
+    "id": 88,
     "name": "John Barnes & Co Pty Ltd",
     "category": "locksmiths",
     "location": "Melbourne",
@@ -1476,7 +1584,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 83,
+    "id": 89,
     "name": "Precision Locksmiths Melbourne",
     "category": "locksmiths",
     "location": "Melbourne",
@@ -1494,7 +1602,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 84,
+    "id": 90,
     "name": "On Call Locksmith",
     "category": "locksmiths",
     "location": "Melbourne",
@@ -1512,7 +1620,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 85,
+    "id": 91,
     "name": "Southern Cross Locksmiths & Auto Keys",
     "category": "locksmiths",
     "location": "Melbourne",
@@ -1530,7 +1638,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 86,
+    "id": 92,
     "name": "Plumb Medic - Emergency Plumber Melbourne",
     "category": "plumbers",
     "location": "Melbourne",
@@ -1548,7 +1656,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found"
   },
   {
-    "id": 87,
+    "id": 93,
     "name": "Your Pro Plumber - Blocked Drain & Emergency Plumber | Melbourne",
     "category": "plumbers",
     "location": "Melbourne",
@@ -1566,7 +1674,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 88,
+    "id": 94,
     "name": "24 Hour Melbourne Plumber",
     "category": "plumbers",
     "location": "Melbourne",
@@ -1584,7 +1692,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 89,
+    "id": 95,
     "name": "Melbourne Plumbing Co",
     "category": "plumbers",
     "location": "Melbourne",
@@ -1602,7 +1710,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 90,
+    "id": 96,
     "name": "Your Choice Plumbers",
     "category": "plumbers",
     "location": "Melbourne",
@@ -1620,7 +1728,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 91,
+    "id": 97,
     "name": "Melbourne Metro Plumbing Group",
     "category": "plumbers",
     "location": "Melbourne",
@@ -1638,7 +1746,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 92,
+    "id": 98,
     "name": "Maintenance Plumbing Melbourne",
     "category": "plumbers",
     "location": "Melbourne",
@@ -1656,7 +1764,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 93,
+    "id": 99,
     "name": "Neighborhood Plumbers Melbourne | Blocked Drains | Gas leak | Water Leak | Hot Water Unit | Emergency Plumber",
     "category": "plumbers",
     "location": "Melbourne",
@@ -1674,7 +1782,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 94,
+    "id": 100,
     "name": "Velaqua Plumbing",
     "category": "plumbers",
     "location": "Melbourne",
@@ -1692,7 +1800,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 95,
+    "id": 101,
     "name": "Service Today Plumber Melbourne",
     "category": "plumbers",
     "location": "Melbourne",
@@ -1710,7 +1818,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 96,
+    "id": 102,
     "name": "Plumb Medic - Emergency Plumber Melbourne",
     "category": "plumbers",
     "location": "Melbourne",
@@ -1728,7 +1836,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 97,
+    "id": 103,
     "name": "Fix It Right Plumbing Melbourne",
     "category": "plumbers",
     "location": "Melbourne",
@@ -1746,7 +1854,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 98,
+    "id": 104,
     "name": "Metropolitan Roof Repairs",
     "category": "roofers",
     "location": "Melbourne",
@@ -1764,7 +1872,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 99,
+    "id": 105,
     "name": "Melbourne Quality Roofing",
     "category": "roofers",
     "location": "Melbourne",
@@ -1782,7 +1890,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 100,
+    "id": 106,
     "name": "Central Roofing and Repairs",
     "category": "roofers",
     "location": "Melbourne",
@@ -1800,7 +1908,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 101,
+    "id": 107,
     "name": "Melbourne Roof Repairs",
     "category": "roofers",
     "location": "Melbourne",
@@ -1818,7 +1926,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 102,
+    "id": 108,
     "name": "First Class Roofing",
     "category": "roofers",
     "location": "Melbourne",
@@ -1836,7 +1944,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 103,
+    "id": 109,
     "name": "Captain Roof Repair",
     "category": "roofers",
     "location": "Melbourne",
@@ -1854,7 +1962,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 104,
+    "id": 110,
     "name": "Exclusive Roofing & Home Improvements",
     "category": "roofers",
     "location": "Melbourne",
@@ -1872,7 +1980,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 105,
+    "id": 111,
     "name": "New Look Roofing & Home Improvements",
     "category": "roofers",
     "location": "Melbourne",
@@ -1890,7 +1998,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 106,
+    "id": 112,
     "name": "BRP Roof Repair Melbourne",
     "category": "roofers",
     "location": "Melbourne",
@@ -1908,7 +2016,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 107,
+    "id": 113,
     "name": "All Seasons Roofing and Repairs",
     "category": "roofers",
     "location": "Melbourne",
@@ -1926,7 +2034,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 108,
+    "id": 114,
     "name": "Correct Roofing Melbourne",
     "category": "roofers",
     "location": "Melbourne",
@@ -1944,7 +2052,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 109,
+    "id": 115,
     "name": "ApexX Roof Plumbing Services",
     "category": "roofers",
     "location": "Melbourne",
@@ -1962,7 +2070,7 @@
     "score_reasons": "No AI chatbot | No click-to-call | Weak web presence | Reputation gaps | Website found | Phone found"
   },
   {
-    "id": 110,
+    "id": 116,
     "name": "Central Roofing and Property Repairs",
     "category": "roofers",
     "location": "Melbourne",
